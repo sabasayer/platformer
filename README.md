@@ -1,2 +1,0 @@
-# platformer
-Created with CodeSandbox
