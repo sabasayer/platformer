@@ -5,6 +5,7 @@ export class Player extends Object {
   velocityX: number = 0;
   speed: number = 15;
   jumpForce: number = 40;
+  airMove: boolean = false;
   constructor(initialPosition: Position, dimension: Dimension) {
     super(initialPosition, dimension, true);
     this.handleKeyboardEvents();
@@ -26,19 +27,11 @@ export class Player extends Object {
     if (KeyboardHelper.keys[EnumKeyboardKey.RIGHT]) this.moveRight();
     else if (KeyboardHelper.keys[EnumKeyboardKey.LEFT]) this.moveLeft();
     else {
+      //stops if left or right not pressing and if not is in the air
       if (this.velocityY == 0) {
         this.velocityX = 0;
-        if (this.state == EnumObjectState.jumping)
-          this.state = EnumObjectState.idle;
-      } else if (this.velocityY > 0) {
-        this.state = EnumObjectState.falling;
-      } else {
-        this.state = EnumObjectState.jumping;
       }
     }
-
-    if (this.velocityX != 0 && this.velocityY == 0)
-      this.state = EnumObjectState.moving;
 
     super.render();
   }
@@ -50,10 +43,12 @@ export class Player extends Object {
   }
 
   moveRight() {
-    if (this.velocityY == 0) this.velocityX = this.speed;
+    //disables airmove
+    if (this.airMove || this.velocityY == 0) this.velocityX = this.speed;
   }
 
   moveLeft() {
-    if (this.velocityY == 0) this.velocityX = -this.speed;
+    //disables airmove
+    if (this.airMove || this.velocityY == 0) this.velocityX = -this.speed;
   }
 }

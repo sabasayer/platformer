@@ -79,8 +79,11 @@ export class Object {
       this.dimension.height
     );
 
-    if (this.state != EnumObjectState.jumping)
+    if (this.velocityY == 0 && this.velocityX == 0)
       this.state = EnumObjectState.idle;
+    if (this.velocityY < 0) this.state = EnumObjectState.jumping;
+    else if (this.velocityY > 0) this.state = EnumObjectState.falling;
+    else if (this.velocityX != 0) this.state = EnumObjectState.moving;
   }
 
   //TODO: set moving state
