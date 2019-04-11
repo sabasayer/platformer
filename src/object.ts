@@ -60,7 +60,6 @@ export class Object {
   }
 
   render() {
-    this.state = EnumObjectState.idle;
     if (this.gravityHasEffectOnIt) this.fall();
     this.moveY(this.velocityY * frameRate * 10);
     this.moveX(this.velocityX * frameRate * 10);
@@ -79,6 +78,9 @@ export class Object {
       this.dimension.width,
       this.dimension.height
     );
+
+    if (this.state != EnumObjectState.jumping)
+      this.state = EnumObjectState.idle;
   }
 
   //TODO: set moving state
