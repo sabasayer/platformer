@@ -1,3 +1,7 @@
+import { AnimationUtils } from "../utils/animation.utils";
+import { ImageUtils } from "../utils/image.utils";
+import { Dimension, Position } from "../game-object/game-object";
+
 export class Sprite {
     private imageUrls: string[] = [];
     images: HTMLImageElement[] = [];
@@ -19,5 +23,22 @@ export class Sprite {
         image.onload = () => {
             this.images.push(image);
         };
+    }
+
+    findImage(frame: number) {
+        return AnimationUtils.findItemByFrame(this.images, frame);
+    }
+
+    render(
+        frame: number,
+        targetPosition: Position,
+        targetDimension: Dimension
+    ) {
+        const image = this.findImage(frame);
+        if (!image) return false;
+
+        ImageUtils.renderImage(image, targetPosition, targetDimension);
+
+        return true;
     }
 }

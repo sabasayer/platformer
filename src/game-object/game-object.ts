@@ -2,6 +2,7 @@ import { frameRate, framePerSecond } from "../constants";
 import { World } from "../world/world";
 import { Sprite } from "src/sprite/sprite";
 import { SpriteStore } from "src/sprite/sprite-store.interface";
+import { ImageUtils } from "../utils/image.utils";
 
 export interface Position {
     x: number;
@@ -31,11 +32,12 @@ export class GameObject {
     id: number = Math.random();
     protected position: Position;
     protected dimension: Dimension;
+    
     velocityY: number = 0;
     velocityX: number = 0;
     accelarationX: number = 1;
     accelarationY: number = 1;
-    /**Collides with other solid objects and world boundaries */
+
     isCollidable: boolean = false;
     gravityHasEffectOnIt: boolean = true;
     imageUrl: string = "";
@@ -45,18 +47,29 @@ export class GameObject {
 
     protected state: EnumObjectState = EnumObjectState.idle;
 
+    get calculatedPosition() {
+        return {
+            left: this.position.x,
+            right: this.position.x + this.dimension.width,
+            top: this.position.y,
+            bottom: this.position.y + this.dimension.height,
+        };
+    }
+
     constructor(options: {
         initialPosition: Position;
         dimension: Dimension;
         imageUrl?: string;
         spriteStore?: SpriteStore;
         isCollidable?: boolean;
+        gravityHasEffectOnIt?: boolean;
     }) {
         this.position = options.initialPosition;
         this.isCollidable = options.isCollidable;
         this.dimension = options.dimension;
         this.spriteStore = options.spriteStore;
         this.imageUrl = options.imageUrl;
+        this.gravityHasEffectOnIt = options.gravityHasEffectOnIt ?? true;
         this.createImage();
 
         World.registerObject(this);
@@ -81,17 +94,27 @@ export class GameObject {
         };
     }
 
-    render(frame: number) {
+    beforeRender() {
         this.move();
+    }
+
+    render(frame: number) {
+        this.beforeRender();
+
         this.renderDebugInfo();
-		this.renderBody(frame);
-		this.renderBoundingBox();
+        this.renderTempBody(frame);
+        this.renderBoundingBox();
+
+        this.afterRender();
+    }
+
+    afterRender() {
         this.setState();
     }
 
-    private renderBody(frame: number) {
-        if (this.spriteStore) {
-            this.renderSprite(frame);
+    private renderTempBody(frame: number) {
+        if (this.spriteStore && this.renderSprite(frame)) {
+            return;
         }
 
         if (this.image) {
@@ -108,19 +131,9 @@ export class GameObject {
         );
     }
 
-	renderBoundingBox(){
-		World.ctx.fillStyle = "blue";
+    renderBoundingBox() {
+        World.ctx.fillStyle = "blue";
         World.ctx.strokeRect(
-            this.position.x,
-            this.position.y,
-            this.dimension.width,
-            this.dimension.height
-        );
-	}
-
-    renderImage(image: HTMLImageElement) {
-        World.ctx.drawImage(
-            image,
             this.position.x,
             this.position.y,
             this.dimension.width,
@@ -128,20 +141,16 @@ export class GameObject {
         );
     }
 
-    renderSprite(frame: number) {
-        if (!this.spriteStore) return;
+    renderImage(image: HTMLImageElement) {
+        ImageUtils.renderImage(image, this.position, this.dimension);
+    }
 
-        let images = this.spriteStore[this.state]?.images;
-        if (!images) {
-            this.image && this.renderImage(this.image);
-            return;
-        }
-
-        let framePerImage = framePerSecond / images.length;
-
-		let index = Math.floor(frame / framePerImage);
-
-        images[index] && this.renderImage(images[index]);
+    renderSprite(frame: number): boolean {
+        return this.spriteStore?.[this.state]?.render(
+            frame,
+            this.position,
+            this.dimension
+        );
     }
 
     private renderDebugInfo() {
@@ -161,8 +170,9 @@ export class GameObject {
 
     private move() {
         if (this.gravityHasEffectOnIt) this.fall();
-        this.moveY(this.velocityY * frameRate * 10);
-        this.moveX(this.velocityX * frameRate * 10);
+
+        this.velocityY && this.moveY(this.velocityY * frameRate * 10);
+        this.velocityX && this.moveX(this.velocityX * frameRate * 10);
     }
 
     setState() {
@@ -180,10 +190,21 @@ export class GameObject {
 
         if (this.isCollidable) {
             let collision = World.collidesWithWorldBoundaries(this);
-            if (collision.x || World.detectCollision(this)) {
-                this.position.x -= amount;
+
+            if (collision.x) {
+                this.position.x =
+                    this.position.x <= 0
+                        ? 0
+                        : World.width - this.dimension.width;
                 this.velocityX = 0;
             }
+
+            let collidedObject = World.detectCollision(this);
+            if (!collidedObject) return;
+
+            this.popObjectHorizontal(collidedObject);
+
+            this.velocityX = 0;
         }
     }
 
@@ -192,11 +213,41 @@ export class GameObject {
 
         if (this.isCollidable) {
             let collision = World.collidesWithWorldBoundaries(this);
-            if (collision.y || World.detectCollision(this)) {
-                this.position.y -= amount;
+
+            if (collision.y) {
+                this.position.y =
+                    this.position.y <= 0
+                        ? 0
+                        : World.height - this.dimension.height;
                 this.velocityY = 0;
+                return;
             }
+
+            let collidedObject = World.detectCollision(this);
+            if (!collidedObject) return;
+
+            this.popObjectVertical(collidedObject);
+
+            this.velocityY = 0;
         }
+    }
+
+    popObjectVertical(collidedObject: GameObject) {
+        if (this.position.y < collidedObject.position.y)
+            this.position.y =
+                collidedObject.position.y - this.dimension.height - frameRate;
+        else
+            this.position.y =
+                collidedObject.calculatedPosition.bottom + frameRate;
+    }
+
+    popObjectHorizontal(collidedObject: GameObject) {
+        if (this.position.x < collidedObject.position.x)
+            this.position.x =
+                collidedObject.position.x - this.dimension.width - frameRate;
+        else
+            this.position.x =
+                collidedObject.calculatedPosition.right + frameRate;
     }
 
     fall() {

@@ -7,11 +7,14 @@
     "start": "parcel index.html --open",
     "build": "parcel build index.html"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+  "dependencies": {
+    "src": "^1.1.2"
   },
-  "prettier":{
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.2"
+  },
+  "prettier": {
     "tabWidth": 4
   }
 }

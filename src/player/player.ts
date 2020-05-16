@@ -10,7 +10,7 @@ import { SpriteStore } from "src/sprite/sprite-store.interface";
 export class Player extends GameObject {
     velocityX: number = 0;
     speed: number = 15;
-    jumpForce: number = 40;
+    jumpForce: number = 50;
     canMoveAtAir: boolean = false;
 
     constructor(options: {
@@ -20,6 +20,7 @@ export class Player extends GameObject {
         spriteStore?: SpriteStore;
         canMoveAtAir: boolean;
         isCollidable?: boolean;
+        gravityHasEffectOnIt?: boolean;
     }) {
         super(options);
         this.canMoveAtAir = options.canMoveAtAir;
