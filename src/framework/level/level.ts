@@ -3,7 +3,7 @@ import { LevelOptions } from "./level.options";
 import { GameObject } from "../game-object/game-object";
 import { World } from "../world/world";
 import { EnumGameObjectType } from "../game-object/game-object-type.enum";
-import { playerObject } from "../initializer/player.object";
+import { playerObject } from "../../initializer/player.object";
 
 export class Level {
     protected prevLevel?: string;

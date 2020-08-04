@@ -1,4 +1,4 @@
-import { GameStateManager } from "./initializer/game-state.manager";
+import { GameStateManager } from "./framework/initializer/game-state.manager";
 import { level1 } from "./level/level-1";
 import { level2 } from "./level/level-2";
 

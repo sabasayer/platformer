@@ -3,17 +3,19 @@ import {
     Position,
     GameObject,
     EnumObjectState,
-} from "../game-object/game-object";
-import { KeyboardHelper, EnumKeyboardKey } from "../input/keyboard.input";
-import { SpriteStore } from "src/sprite/sprite-store.interface";
+} from "../game-object";
+import { KeyboardHelper, EnumKeyboardKey } from "../../input/keyboard.input";
+import { SpriteStore } from "~/src/framework/sprite/sprite-store.interface";
 import { PlayerOptions } from "./player.options";
+import { EnumGameObjectType } from "../game-object-type.enum";
+import { Npc } from "../npc/npc";
+import { GameObjectOptions } from "../game-object.options";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
     private speed: number = 15;
     private jumpForce: number = 50;
     private canMoveAtAir: boolean = false;
-    protected health:number = 100
 
     constructor(options: PlayerOptions) {
         super(options);
@@ -33,7 +35,7 @@ export class Player extends GameObject {
         });
     }
 
-    render(frame:number) {
+    render(frame: number) {
         super.render(frame);
     }
 
@@ -47,6 +49,42 @@ export class Player extends GameObject {
             if (this.canMoveAtAir || this.velocityY == 0) {
                 this.velocityX = 0;
             }
+        }
+    }
+
+    moveX(amount: number) {
+        this.position.x += amount;
+        const collision = this.checkHorizontalCollision();
+
+        if (collision.collided) {
+            this.velocityX = 0;
+            const isEnemy = this.handleEnemyCollision(collision.collidedObj);
+
+            if (isEnemy)
+                this.moveX(-5 * amount)
+        }
+
+        return collision
+    }
+
+    moveY(amount: number) {
+        this.position.y += amount;
+        const collision = this.checkVerticalCollision();
+
+        if (collision.collided) {
+            this.velocityY = 0
+            const isEnemy = this.handleEnemyCollision(collision.collidedObj);
+            if (isEnemy)
+                this.moveY(-5 * amount)
+        }
+
+        return collision;
+    }
+
+    handleEnemyCollision(collidedObj?: GameObject) {
+        if (collidedObj?.getType() == EnumGameObjectType.Enemy) {
+            this.takeDamage((collidedObj as Npc).getDamage())
+            return true;
         }
     }
 
@@ -66,5 +104,10 @@ export class Player extends GameObject {
         //disables airmove
         if (this.canMoveAtAir || this.velocityY == 0)
             this.velocityX = -this.speed;
+    }
+
+    die() {
+        alert('you died');
+        this.destroy();
     }
 }

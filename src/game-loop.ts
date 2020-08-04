@@ -1,7 +1,7 @@
-import { Player } from "./player/player";
-import { World } from "./world/world";
-import { frameDelay } from "./constants";
-import { GameStateManager } from "./initializer/game-state.manager";
+import { Player } from "./framework/game-object/player/player";
+import { World } from "./framework/world/world";
+import { frameDelay } from "./framework/constants";
+import { GameStateManager } from "./framework/initializer/game-state.manager";
 import './game.boot'
 
 

@@ -9,5 +9,6 @@ export interface GameObjectOptions{
     spriteStore?: SpriteStore;
     isCollidable?: boolean;
     gravityHasEffectOnIt?: boolean;
-    type:EnumGameObjectType
+    type:EnumGameObjectType;
+    health?:number
 }

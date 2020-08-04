@@ -1,5 +1,5 @@
-import { World } from "~/src/world/world";
-import { Position, Dimension } from "~/src/game-object/game-object";
+import { World } from "~/src/framework/world/world";
+import { Position, Dimension } from "~/src/framework/game-object/game-object";
 import { ImageDimension } from "./image-dimension.interface";
 
 export abstract class ImageUtils {

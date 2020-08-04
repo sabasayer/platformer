@@ -1,9 +1,10 @@
 import { frameRate, framePerSecond } from "../constants";
 import { World } from "../world/world";
-import { SpriteStore } from "src/sprite/sprite-store.interface";
+import { SpriteStore } from "~/src/framework/sprite/sprite-store.interface";
 import { ImageUtils } from "../utils/image.utils";
 import { GameObjectOptions } from "./game-object.options";
 import { EnumGameObjectType } from "./game-object-type.enum";
+import { Initializer } from "../initializer/initializer";
 
 export interface Position {
     x: number;
@@ -50,6 +51,8 @@ export class GameObject {
     protected state: EnumObjectState = EnumObjectState.idle;
 
     protected initialPositions: Position;
+    protected health?: number;
+    protected initializer?: Initializer;
 
     get calculatedPosition() {
         return {
@@ -68,6 +71,7 @@ export class GameObject {
         this.imageUrl = options.imageUrl;
         this.gravityHasEffectOnIt = options.gravityHasEffectOnIt ?? true;
         this.type = options.type;
+        this.health = options.health;
 
         this.initialPositions = {
             x: options.initialPosition.x,
@@ -86,6 +90,10 @@ export class GameObject {
 
     register() {
         World.registerObject(this);
+    }
+
+    setInitializer(initializer: Initializer) {
+        this.initializer = initializer
     }
 
     createImage() {
@@ -117,6 +125,8 @@ export class GameObject {
         this.renderDebugInfo();
         this.renderBody(frame);
         this.renderBoundingBox();
+        if (this.health)
+            this.renderHealthBar()
 
         this.afterRender();
     }
@@ -171,7 +181,7 @@ export class GameObject {
         World.ctx.fillText(
             EnumObjectState[this.state],
             this.position.x,
-            this.position.y - 10
+            this.position.y - 15
         );
 
         World.ctx.fillText(
@@ -179,6 +189,15 @@ export class GameObject {
             this.position.x,
             this.position.y - 30
         );
+    }
+
+    private renderHealthBar() {
+        World.ctx.fillStyle = "red";
+
+        World.ctx.fillRect(this.position.x,
+            this.position.y - 10,
+            this.health ?? 0,
+            5)
     }
 
     private move() {
@@ -208,6 +227,17 @@ export class GameObject {
     moveX(amount: number) {
         this.position.x += amount;
 
+        const collision = this.checkHorizontalCollision();
+        if (collision.collided)
+            this.velocityX = 0;
+
+        return collision;
+    }
+
+    checkHorizontalCollision(): {
+        collided: boolean,
+        collidedObj?: GameObject
+    } {
         if (this.isCollidable) {
             let collision = World.collidesWithWorldBoundaries(this);
 
@@ -216,24 +246,44 @@ export class GameObject {
                     this.position.x <= 0
                         ? 0
                         : World.width - this.dimension.width;
-                this.velocityX = 0;
+                return {
+                    collided: true
+                }
             }
 
-            let collidedObject = World.detectCollision(this);
-            if (!collidedObject) return;
+            let collidedObj = World.detectCollision(this);
+            if (!collidedObj) return {
+                collided: false
+            };
 
-            console.log('collided object', collidedObject)
+            this.popObjectHorizontal(collidedObj);
 
+            return {
+                collided: true,
+                collidedObj
+            }
+        }
 
-            this.popObjectHorizontal(collidedObject);
-
-            this.velocityX = 0;
+        return {
+            collided: true
         }
     }
 
     moveY(amount: number) {
         this.position.y += amount;
 
+        const collision = this.checkVerticalCollision();
+
+        if (collision.collided)
+            this.velocityY = 0;
+
+        return collision
+    }
+
+    checkVerticalCollision(): {
+        collided: boolean,
+        collidedObj?: GameObject
+    } {
         if (this.isCollidable) {
             let collision = World.collidesWithWorldBoundaries(this);
 
@@ -242,17 +292,27 @@ export class GameObject {
                     this.position.y <= 0
                         ? 0
                         : World.height - this.dimension.height;
-                this.velocityY = 0;
-                return;
+                return {
+                    collided: true
+                };
             }
 
-            let collidedObject = World.detectCollision(this);
-            if (!collidedObject) return;
+            let collidedObj = World.detectCollision(this);
+            if (!collidedObj) return {
+                collided: false
+            };
 
-            this.popObjectVertical(collidedObject);
+            this.popObjectVertical(collidedObj);
 
-            this.velocityY = 0;
+            return {
+                collided: true,
+                collidedObj
+            };
         }
+
+        return {
+            collided: false
+        };
     }
 
     popObjectVertical(collidedObject: GameObject) {
@@ -277,8 +337,14 @@ export class GameObject {
         this.velocityY += World.gravity * frameRate * 10;
     }
 
-    takeDamage() {
+    takeDamage(damage: number) {
+        if (this.health == undefined) return;
 
+        // run take damage animation
+
+        this.health -= damage;
+        if (this.health <= 0)
+            this.die()
     }
 
     die() {
@@ -288,6 +354,7 @@ export class GameObject {
     }
 
     destroy() {
+        this.initializer?.removeObject(e => e.id == this.id)
         World.removeObject(this);
     }
 }

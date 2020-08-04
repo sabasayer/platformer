@@ -1,4 +1,4 @@
-import { Level } from "./level";
+import { Level } from "../framework/level/level";
 import { level2Initializer } from "../initializer/level-2.initializer";
 
 export const level2 = new Level({

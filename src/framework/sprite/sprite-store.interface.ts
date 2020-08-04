@@ -1,4 +1,4 @@
-import { EnumObjectState } from "src/game-object/game-object";
+import { EnumObjectState } from "~/src/framework/game-object/game-object";
 import { Sprite } from "./sprite";
 
 export type SpriteStore = {

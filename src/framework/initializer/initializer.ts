@@ -14,7 +14,10 @@ export class Initializer {
     }
 
     registerObjects() {
-        this.gameObjects.forEach(object => object.register())
+        this.gameObjects.forEach(object => {
+            object.register();
+            object.setInitializer(this);
+        })
     }
 
     addObject(gameObject: GameObject) {

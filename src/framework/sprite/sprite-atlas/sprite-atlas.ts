@@ -1,8 +1,8 @@
 import { SpriteAtlasMap } from "./sprite-atlas-map.interface";
 import { ImageUtils } from "../../utils/image.utils";
-import { Position, Dimension } from "~/src/game-object/game-object";
-import { framePerSecond } from "~/src/constants";
-import { AnimationUtils } from "~/src/utils/animation.utils";
+import { Position, Dimension } from "~/src/framework/game-object/game-object";
+import { framePerSecond } from "~/src/framework/constants";
+import { AnimationUtils } from "~/src/framework/utils/animation.utils";
 
 export class SpriteAtlas {
     image: HTMLImageElement;
