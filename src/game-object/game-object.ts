@@ -1,8 +1,9 @@
 import { frameRate, framePerSecond } from "../constants";
 import { World } from "../world/world";
-import { Sprite } from "src/sprite/sprite";
 import { SpriteStore } from "src/sprite/sprite-store.interface";
 import { ImageUtils } from "../utils/image.utils";
+import { GameObjectOptions } from "./game-object.options";
+import { EnumGameObjectType } from "./game-object-type.enum";
 
 export interface Position {
     x: number;
@@ -30,22 +31,25 @@ export enum EnumObjectState {
 
 export class GameObject {
     id: number = Math.random();
+    protected type: EnumGameObjectType
     protected position: Position;
     protected dimension: Dimension;
-    
-    velocityY: number = 0;
-    velocityX: number = 0;
-    accelarationX: number = 1;
-    accelarationY: number = 1;
 
-    isCollidable: boolean = false;
-    gravityHasEffectOnIt: boolean = true;
-    imageUrl: string = "";
-    image: HTMLImageElement;
+    protected velocityY: number = 0;
+    protected velocityX: number = 0;
+    protected accelarationX: number = 1;
+    protected accelarationY: number = 1;
 
-    spriteStore: SpriteStore;
+    protected isCollidable: boolean = false;
+    protected gravityHasEffectOnIt: boolean = true;
+    protected imageUrl: string = "";
+    protected image: HTMLImageElement;
+
+    protected spriteStore: SpriteStore;
 
     protected state: EnumObjectState = EnumObjectState.idle;
+
+    protected initialPositions: Position;
 
     get calculatedPosition() {
         return {
@@ -56,22 +60,31 @@ export class GameObject {
         };
     }
 
-    constructor(options: {
-        initialPosition: Position;
-        dimension: Dimension;
-        imageUrl?: string;
-        spriteStore?: SpriteStore;
-        isCollidable?: boolean;
-        gravityHasEffectOnIt?: boolean;
-    }) {
+    constructor(options: GameObjectOptions) {
         this.position = options.initialPosition;
         this.isCollidable = options.isCollidable;
         this.dimension = options.dimension;
         this.spriteStore = options.spriteStore;
         this.imageUrl = options.imageUrl;
         this.gravityHasEffectOnIt = options.gravityHasEffectOnIt ?? true;
-        this.createImage();
+        this.type = options.type;
 
+        this.initialPositions = {
+            x: options.initialPosition.x,
+            y: options.initialPosition.y
+        };
+        this.createImage();
+    }
+
+    getIsCollidable() {
+        return this.isCollidable;
+    }
+
+    getType() {
+        return this.type;
+    }
+
+    register() {
         World.registerObject(this);
     }
 
@@ -102,17 +115,17 @@ export class GameObject {
         this.beforeRender();
 
         this.renderDebugInfo();
-        this.renderTempBody(frame);
+        this.renderBody(frame);
         this.renderBoundingBox();
 
         this.afterRender();
     }
 
     afterRender() {
-        this.setState();
+        this.calculateState();
     }
 
-    private renderTempBody(frame: number) {
+    private renderBody(frame: number) {
         if (this.spriteStore && this.renderSprite(frame)) {
             return;
         }
@@ -175,7 +188,7 @@ export class GameObject {
         this.velocityX && this.moveX(this.velocityX * frameRate * 10);
     }
 
-    setState() {
+    private calculateState() {
         if (this.velocityY == 0 && this.velocityX == 0)
             this.state = EnumObjectState.idle;
         if (this.velocityY < 0) this.state = EnumObjectState.jumping;
@@ -183,8 +196,15 @@ export class GameObject {
         else if (this.velocityX != 0) this.state = EnumObjectState.moving;
     }
 
-    //TODO: set moving state
-    //TODO: check collision on world object
+    resetPosition() {
+        this.position.x = this.initialPositions.x;
+        this.position.y = this.initialPositions.y;
+    }
+
+    setPositions(position: Position) {
+        this.position = position;
+    }
+
     moveX(amount: number) {
         this.position.x += amount;
 
@@ -201,6 +221,9 @@ export class GameObject {
 
             let collidedObject = World.detectCollision(this);
             if (!collidedObject) return;
+
+            console.log('collided object', collidedObject)
+
 
             this.popObjectHorizontal(collidedObject);
 
@@ -252,5 +275,19 @@ export class GameObject {
 
     fall() {
         this.velocityY += World.gravity * frameRate * 10;
+    }
+
+    takeDamage() {
+
+    }
+
+    die() {
+        // run die animation or set state to die
+        // dont render
+        this.destroy();
+    }
+
+    destroy() {
+        World.removeObject(this);
     }
 }

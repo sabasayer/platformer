@@ -8,7 +8,6 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "src": "^1.1.2"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4",

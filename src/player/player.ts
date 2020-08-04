@@ -6,22 +6,16 @@ import {
 } from "../game-object/game-object";
 import { KeyboardHelper, EnumKeyboardKey } from "../input/keyboard.input";
 import { SpriteStore } from "src/sprite/sprite-store.interface";
+import { PlayerOptions } from "./player.options";
 
 export class Player extends GameObject {
-    velocityX: number = 0;
-    speed: number = 15;
-    jumpForce: number = 50;
-    canMoveAtAir: boolean = false;
+    protected velocityX: number = 0;
+    private speed: number = 15;
+    private jumpForce: number = 50;
+    private canMoveAtAir: boolean = false;
+    protected health:number = 100
 
-    constructor(options: {
-        initialPosition: Position;
-        dimension: Dimension;
-        imageUrl?: string;
-        spriteStore?: SpriteStore;
-        canMoveAtAir: boolean;
-        isCollidable?: boolean;
-        gravityHasEffectOnIt?: boolean;
-    }) {
+    constructor(options: PlayerOptions) {
         super(options);
         this.canMoveAtAir = options.canMoveAtAir;
         this.handleKeyboardEvents();
