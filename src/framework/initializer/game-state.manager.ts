@@ -5,6 +5,7 @@ import { Level } from "../level/level";
 export abstract class GameStateManager {
     private static states: GameStates = {};
     private static currentState: string = '';
+    private static isEnding: boolean = false;
 
     static addState(state: string, level: Level) {
         this.states[state] = level;
@@ -22,14 +23,16 @@ export abstract class GameStateManager {
     }
 
     static runEndCondition() {
+        if (this.isEnding) return;
+
         const currentLevel = this.getCurrentLevel();
         if (!currentLevel?.endCondition()) return;
 
-        currentLevel.end();
-        if (!currentLevel.getNextLevel()) return
+        this.isEnding = true;
+        if (!currentLevel.getNextLevel()) return;
 
         this.setCurrentState(currentLevel.getNextLevel())
-
+        this.isEnding = false;
     }
 
     static getCurrentState() {

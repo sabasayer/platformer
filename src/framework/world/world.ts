@@ -1,16 +1,18 @@
 import { GameObject } from "../game-object/game-object";
 
 abstract class World {
-    static width: number = 1366;
-    static height: number = 768;
+    static width: number = 2500;
+    static height: number = 2000;
     static gravity: number = 13;
     static ctx: CanvasRenderingContext2D;
     static canvas: HTMLCanvasElement;
     private static worldObjects: GameObject[] = [];
+
     static initialize() {
         if (this.canvas) return;
         this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
         this.ctx = this.canvas.getContext("2d");
+        (window as any).gameWorld = this;
     }
 
     static render() {
@@ -57,6 +59,7 @@ abstract class World {
 
     static removeObject(object: GameObject) {
         const index = this.worldObjects.findIndex(e => e.id == object.id);
+
         if (index > -1)
             this.worldObjects.splice(index, 1)
     }

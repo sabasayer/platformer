@@ -51,7 +51,7 @@ export class Level {
         this.initializer.render(frame)
     }
 
-     end() {
+    end() {
         // run end animation
         this.initializer.end();
     }

@@ -1,6 +1,8 @@
 import { World } from "~/src/framework/world/world";
 import { Position, Dimension } from "~/src/framework/game-object/game-object";
 import { ImageDimension } from "./image-dimension.interface";
+import { Camera } from "../camera/camera";
+import { Drawer } from "../camera/drawer";
 
 export abstract class ImageUtils {
     static createImage(url: string, onload: (image: HTMLImageElement) => void) {
@@ -9,33 +11,5 @@ export abstract class ImageUtils {
         image.onload = () => {
             onload(image);
         };
-    }
-
-    static renderImage(
-        image: HTMLImageElement,
-        position: Position,
-        dimension: Dimension,
-        imageDimension?: ImageDimension
-    ) {
-        if (!imageDimension)
-            World.ctx.drawImage(
-                image,
-                position.x,
-                position.y,
-                dimension.width,
-                dimension.height
-            );
-        else
-            World.ctx.drawImage(
-                image,
-                position.x,
-                position.y,
-                dimension.width,
-                dimension.height,
-                imageDimension?.x,
-                imageDimension?.y,
-                imageDimension?.width,
-                imageDimension?.height
-            );
     }
 }

@@ -4,6 +4,7 @@ import { playerObject } from "./player.object";
 import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
 import { patrol1 } from "./partol.object";
 
+import flag from '../../assets/sprites/red-flag.png'
 
 let object = new GameObject({
     type: EnumGameObjectType.IdleObject,
@@ -41,17 +42,52 @@ let object4 = new GameObject({
 let objectEndGame = new GameObject({
     type: EnumGameObjectType.EndGameFlag,
     initialPosition: {
-        x: 1050, y: 700
+        x: 190, y: 150
     },
     dimension: {
         width: 50,
         height: 50
     },
     isCollidable: false,
+    gravityHasEffectOnIt: false,
+    imageUrl: flag
+})
+
+let ground = new GameObject({
+    type: EnumGameObjectType.IdleObject,
+    initialPosition: {
+        x: 0, y: 758
+    },
+    dimension: {
+        width: 500,
+        height: 10
+    },
+    isCollidable: true,
+    gravityHasEffectOnIt: false
+})
+
+let ground2 = new GameObject({
+    type: EnumGameObjectType.IdleObject,
+    initialPosition: {
+        x: 550, y: 1208
+    },
+    dimension: {
+        width: 500,
+        height: 10
+    },
+    isCollidable: true,
     gravityHasEffectOnIt: false
 })
 
 
 export const level1Initializer = new Initializer([
-    playerObject, object, object2, object3, object4, objectEndGame, patrol1
+    playerObject,
+    object,
+    object2,
+    object3,
+    object4,
+    objectEndGame,
+    patrol1,
+    ground,
+    ground2
 ]);

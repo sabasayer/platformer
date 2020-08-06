@@ -51,6 +51,8 @@ export class Initializer {
     }
 
     protected destroyObjects() {
-        this.gameObjects.forEach(object => object.destroy())
+        this.gameObjects.forEach(object => {
+            object.destroy()
+        });
     }
 }

@@ -1,6 +1,7 @@
 import { AnimationUtils } from "../utils/animation.utils";
 import { ImageUtils } from "../utils/image.utils";
 import { Dimension, Position } from "../game-object/game-object";
+import { Drawer } from "../camera/drawer";
 
 export class Sprite {
     private imageUrls: string[] = [];
@@ -37,7 +38,7 @@ export class Sprite {
         const image = this.findImage(frame);
         if (!image) return false;
 
-        ImageUtils.renderImage(image, targetPosition, targetDimension);
+        Drawer.drawImage(image, targetPosition, targetDimension);
 
         return true;
     }

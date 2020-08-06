@@ -5,6 +5,9 @@ import { ImageUtils } from "../utils/image.utils";
 import { GameObjectOptions } from "./game-object.options";
 import { EnumGameObjectType } from "./game-object-type.enum";
 import { Initializer } from "../initializer/initializer";
+import { Camera } from "../camera/camera";
+import { Drawer } from "../camera/drawer";
+import { Collision } from "../world/collision.interface";
 
 export interface Position {
     x: number;
@@ -122,9 +125,9 @@ export class GameObject {
     render(frame: number) {
         this.beforeRender();
 
-        this.renderDebugInfo();
+        // this.renderDebugInfo();
         this.renderBody(frame);
-        this.renderBoundingBox();
+        // this.renderBoundingBox();
         if (this.health)
             this.renderHealthBar()
 
@@ -145,27 +148,15 @@ export class GameObject {
             return;
         }
 
-        World.ctx.fillStyle = "orange";
-        World.ctx.fillRect(
-            this.position.x,
-            this.position.y,
-            this.dimension.width,
-            this.dimension.height
-        );
+        Drawer.fillRect(this.position, this.dimension, "orange")
     }
 
     renderBoundingBox() {
-        World.ctx.fillStyle = "blue";
-        World.ctx.strokeRect(
-            this.position.x,
-            this.position.y,
-            this.dimension.width,
-            this.dimension.height
-        );
+        Drawer.strokeRect(this.position, this.dimension, "blue")
     }
 
     renderImage(image: HTMLImageElement) {
-        ImageUtils.renderImage(image, this.position, this.dimension);
+        Drawer.drawImage(image, this.position, this.dimension);
     }
 
     renderSprite(frame: number): boolean {
@@ -177,27 +168,26 @@ export class GameObject {
     }
 
     private renderDebugInfo() {
-        World.ctx.fillStyle = "red";
-        World.ctx.fillText(
-            EnumObjectState[this.state],
-            this.position.x,
-            this.position.y - 15
-        );
+        Drawer.writeText(EnumObjectState[this.state], {
+            x: this.position.x,
+            y: this.position.y - 15
+        }, "red")
 
-        World.ctx.fillText(
-            this.velocityY + "",
-            this.position.x,
-            this.position.y - 30
-        );
+        Drawer.writeText(this.velocityY + "", {
+            x: this.position.x,
+            y: this.position.y - 30
+        }, "blue")
     }
 
     private renderHealthBar() {
-        World.ctx.fillStyle = "red";
+        Drawer.fillRect({
+            x: this.position.x,
+            y: this.position.y - 10
+        }, {
+            width: this.health ?? 0,
+            height: 5
+        }, "pink")
 
-        World.ctx.fillRect(this.position.x,
-            this.position.y - 10,
-            this.health ?? 0,
-            5)
     }
 
     private move() {
@@ -234,10 +224,11 @@ export class GameObject {
         return collision;
     }
 
-    checkHorizontalCollision(): {
-        collided: boolean,
-        collidedObj?: GameObject
-    } {
+    checkHorizontalCollision(): Collision {
+        let res: Collision = {
+            collided: false
+        }
+
         if (this.isCollidable) {
             let collision = World.collidesWithWorldBoundaries(this);
 
@@ -246,27 +237,18 @@ export class GameObject {
                     this.position.x <= 0
                         ? 0
                         : World.width - this.dimension.width;
-                return {
-                    collided: true
-                }
+                res.collided = true;
             }
 
             let collidedObj = World.detectCollision(this);
-            if (!collidedObj) return {
-                collided: false
-            };
+            if (!collidedObj) return res
 
             this.popObjectHorizontal(collidedObj);
-
-            return {
-                collided: true,
-                collidedObj
-            }
+            res.collided = true;
+            res.collidedObj = collidedObj;
         }
 
-        return {
-            collided: true
-        }
+        return res
     }
 
     moveY(amount: number) {
@@ -280,10 +262,11 @@ export class GameObject {
         return collision
     }
 
-    checkVerticalCollision(): {
-        collided: boolean,
-        collidedObj?: GameObject
-    } {
+    checkVerticalCollision(): Collision {
+        let res: Collision = {
+            collided: false
+        }
+
         if (this.isCollidable) {
             let collision = World.collidesWithWorldBoundaries(this);
 
@@ -292,27 +275,21 @@ export class GameObject {
                     this.position.y <= 0
                         ? 0
                         : World.height - this.dimension.height;
-                return {
-                    collided: true
-                };
+
+                res.collided = true;
             }
 
             let collidedObj = World.detectCollision(this);
-            if (!collidedObj) return {
-                collided: false
-            };
+            if (!collidedObj) return res;
 
             this.popObjectVertical(collidedObj);
 
-            return {
-                collided: true,
-                collidedObj
-            };
+            res.collided = true;
+            res.collidedObj = collidedObj
+
         }
 
-        return {
-            collided: false
-        };
+        return res;
     }
 
     popObjectVertical(collidedObject: GameObject) {
@@ -354,7 +331,6 @@ export class GameObject {
     }
 
     destroy() {
-        this.initializer?.removeObject(e => e.id == this.id)
         World.removeObject(this);
     }
 }

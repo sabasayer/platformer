@@ -10,6 +10,7 @@ import { PlayerOptions } from "./player.options";
 import { EnumGameObjectType } from "../game-object-type.enum";
 import { Npc } from "../npc/npc";
 import { GameObjectOptions } from "../game-object.options";
+import { Camera } from "../../camera/camera";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
@@ -61,9 +62,11 @@ export class Player extends GameObject {
             const isEnemy = this.handleEnemyCollision(collision.collidedObj);
 
             if (isEnemy)
-                this.moveX(-5 * amount)
+                return this.moveX(-5 * amount)
         }
 
+
+        Camera.focusTo(this.position)
         return collision
     }
 
@@ -75,9 +78,10 @@ export class Player extends GameObject {
             this.velocityY = 0
             const isEnemy = this.handleEnemyCollision(collision.collidedObj);
             if (isEnemy)
-                this.moveY(-5 * amount)
+                return this.moveY(-5 * amount)
         }
 
+        Camera.focusTo(this.position)
         return collision;
     }
 
