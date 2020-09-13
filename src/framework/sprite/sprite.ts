@@ -7,7 +7,10 @@ export class Sprite {
     private imageUrls: string[] = [];
     images: HTMLImageElement[] = [];
 
-    constructor(imageUrls?: string[]) {
+    constructor(
+        imageUrls?: string[],
+        private oneAnimationCycleTime: number = 1
+    ) {
         imageUrls && this.setImageUrls(imageUrls);
     }
 
@@ -27,7 +30,12 @@ export class Sprite {
     }
 
     findImage(frame: number) {
-        return AnimationUtils.findItemByFrame(this.images, frame);
+
+        return AnimationUtils.findItemByFrame(
+            this.images,
+            frame,
+            this.oneAnimationCycleTime
+        );
     }
 
     render(

@@ -1,4 +1,5 @@
-export const framePerSecond:number = 60;
-export const frameRate: number = 1 / framePerSecond;
-export const frameDelay: number = frameRate / 1000;
+export const FRAME_PER_SECOND:number = 60;
+export const FRAME_RATE: number = 1 / FRAME_PER_SECOND;
+export const FRAME_DELAY: number = FRAME_RATE / 1000;
 
+export const MOVEMENT_MULTIPLIER:number = 6;

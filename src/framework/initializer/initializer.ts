@@ -1,5 +1,9 @@
+import { loadingObject } from "~/src/initializer/loading.object";
+import { Camera } from "../camera/camera";
+import { Drawer } from "../camera/drawer";
 import { GameObject } from "../game-object/game-object";
 import { GameObjectOptions } from "../game-object/game-object.options";
+import { World } from "../world/world";
 
 export class Initializer {
     protected gameObjects: GameObject[] = [];
@@ -8,16 +12,20 @@ export class Initializer {
         this.gameObjects = objects;
     }
 
+    get loading() {
+        return this.gameObjects.some((e) => e.loading);
+    }
+
     start() {
         this.registerObjects();
         this.resetObjectsState();
     }
 
     registerObjects() {
-        this.gameObjects.forEach(object => {
+        this.gameObjects.forEach((object) => {
             object.register();
             object.setInitializer(this);
-        })
+        });
     }
 
     addObject(gameObject: GameObject) {
@@ -30,20 +38,35 @@ export class Initializer {
 
     removeObject(finder: (obj: GameObject) => boolean) {
         const index = this.gameObjects.findIndex(finder);
-        if (index > -1)
-            this.gameObjects.splice(index, 1)
+        if (index > -1) this.gameObjects.splice(index, 1);
     }
 
     render(frame: number) {
-        this.gameObjects.forEach(obj => {
-            obj.render(frame);
-        })
+        if (this.loading) {
+            this.showLoading();
+        } else {
+            this.gameObjects.forEach((obj) => {
+                obj.render(frame);
+            });
+        }
+    }
+
+    protected showLoading() {
+        Drawer.writeText(
+            "Loading...",
+            {
+                x: Camera.getRect().width / 2 - 100,
+                y: Camera.getRect().height / 2 - 50,
+            },
+            "red",
+            "40px"
+        );
     }
 
     protected resetObjectsState() {
-        this.gameObjects.forEach(object => {
-            object.resetPosition()
-        })
+        this.gameObjects.forEach((object) => {
+            object.resetPosition();
+        });
     }
 
     end() {
@@ -51,8 +74,8 @@ export class Initializer {
     }
 
     protected destroyObjects() {
-        this.gameObjects.forEach(object => {
-            object.destroy()
+        this.gameObjects.forEach((object) => {
+            object.destroy();
         });
     }
 }

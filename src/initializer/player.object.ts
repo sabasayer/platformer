@@ -1,35 +1,35 @@
 import { Sprite } from "../framework/sprite/sprite";
 import { Player } from "../framework/game-object/player/player";
 import { EnumObjectState } from "../framework/game-object/game-object";
-import idle1 from "../../assets/sprites/Player/idle/anim1.png";
-import idle2 from "../../assets/sprites/Player/idle/anim2.png";
-import idle3 from "../../assets/sprites/Player/idle/anim3.png";
-import idle4 from "../../assets/sprites/Player/idle/anim4.png";
 
-import run1 from "../../assets/sprites/Player/run/anim5.png";
-import run2 from "../../assets/sprites/Player/run/anim6.png";
-import run3 from "../../assets/sprites/Player/run/anim7.png";
-import run4 from "../../assets/sprites/Player/run/anim8.png";
-import run5 from "../../assets/sprites/Player/run/anim9.png";
-import run6 from "../../assets/sprites/Player/run/anim10.png";
-import run7 from "../../assets/sprites/Player/run/anim11.png";
-import run8 from "../../assets/sprites/Player/run/anim12.png";
 import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
 
-let playerIdleSprite = new Sprite([idle1, idle2, idle3, idle4]);
-let playerRunSprite = new Sprite([
-    run1,
-    run2,
-    run3,
-    run4,
-    run5,
-    run6,
-    run7,
-    run8,
+let playerIdleSprite = new Sprite([
+    "http://localhost:32/assets/sprites/player/idle/anim1.png",
+    "http://localhost:32/assets/sprites/player/idle/anim2.png",
+    "http://localhost:32/assets/sprites/player/idle/anim3.png",
+    "http://localhost:32/assets/sprites/player/idle/anim4.png",
 ]);
+let playerRunSprite = new Sprite(
+    [
+        "http://localhost:32/assets/sprites/player/run/anim5.png",
+        "http://localhost:32/assets/sprites/player/run/anim6.png",
+        "http://localhost:32/assets/sprites/player/run/anim7.png",
+        "http://localhost:32/assets/sprites/player/run/anim8.png",
+        "http://localhost:32/assets/sprites/player/run/anim9.png",
+        "http://localhost:32/assets/sprites/player/run/anim10.png",
+        "http://localhost:32/assets/sprites/player/run/anim11.png",
+        "http://localhost:32/assets/sprites/player/run/anim12.png",
+    ],
+    1.4
+);
 
-let playerJumpingSprite = new Sprite([run7]);
-let playerFallinggSprite = new Sprite([run4]);
+let playerJumpingSprite = new Sprite([
+    "http://localhost:32/assets/sprites/player/run/anim11.png",
+]);
+let playerFallinggSprite = new Sprite([
+    "http://localhost:32/assets/sprites/player/run/anim8.png",
+]);
 
 export const playerObject = new Player({
     initialPosition: { x: 30, y: 30 },
@@ -41,9 +41,8 @@ export const playerObject = new Player({
         [EnumObjectState.jumping]: playerJumpingSprite,
         [EnumObjectState.falling]: playerFallinggSprite,
     },
-    imageUrl: idle1,
+    imageUrl: "http://localhost:32/assets/sprites/player/idle/anim1.png",
     isCollidable: true,
     type: EnumGameObjectType.Player,
-    health: 100
+    health: 100,
 });
-

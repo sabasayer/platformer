@@ -4,8 +4,6 @@ import { playerObject } from "./player.object";
 import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
 import { patrol1 } from "./partol.object";
 
-import flag from '../../assets/sprites/red-flag.png'
-
 let object = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 42, y: 250 },
@@ -50,7 +48,7 @@ let objectEndGame = new GameObject({
     },
     isCollidable: false,
     gravityHasEffectOnIt: false,
-    imageUrl: flag
+    imageUrl: "http://localhost:32/assets/sprites/red-flag.png"
 })
 
 let ground = new GameObject({

@@ -1,8 +1,8 @@
 import { SpriteAtlasMap } from "./sprite-atlas-map.interface";
 import { ImageUtils } from "../../utils/image.utils";
 import { Position, Dimension } from "~/src/framework/game-object/game-object";
-import { framePerSecond } from "~/src/framework/constants";
 import { AnimationUtils } from "~/src/framework/utils/animation.utils";
+import { Drawer } from "../../camera/drawer";
 
 export class SpriteAtlas {
     image: HTMLImageElement;
@@ -25,7 +25,7 @@ export class SpriteAtlas {
         let imageDimensions = this.map[name];
         if (!imageDimensions?.[0]) return;
 
-        ImageUtils.renderImage(
+        Drawer.drawImage(
             this.image,
             targetPosition,
             targetDimension,
@@ -42,7 +42,7 @@ export class SpriteAtlas {
         const dimensions = this.findImageDimension(name, frame);
         if (!dimensions) return;
 
-        ImageUtils.renderImage(
+        Drawer.drawImage(
             this.image,
             targetPosition,
             targetDimension,

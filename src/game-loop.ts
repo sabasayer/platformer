@@ -1,6 +1,6 @@
 import { Player } from "./framework/game-object/player/player";
 import { World } from "./framework/world/world";
-import { frameDelay } from "./framework/constants";
+import { FRAME_DELAY } from "./framework/constants";
 import { GameStateManager } from "./framework/initializer/game-state.manager";
 import './game.boot'
 
@@ -16,7 +16,7 @@ let loop = () => {
 
     setTimeout(() => {
         requestAnimationFrame(loop);
-    }, frameDelay);
+    }, FRAME_DELAY);
 };
 
 requestAnimationFrame(loop);

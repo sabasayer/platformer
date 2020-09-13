@@ -15,7 +15,7 @@ import { Camera } from "../../camera/camera";
 export class Player extends GameObject {
     protected velocityX: number = 0;
     private speed: number = 15;
-    private jumpForce: number = 50;
+    private jumpForce: number = 80;
     private canMoveAtAir: boolean = false;
 
     constructor(options: PlayerOptions) {
