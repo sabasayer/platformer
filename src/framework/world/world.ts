@@ -34,19 +34,30 @@ abstract class World {
         return collisions;
     }
 
-    static collidesWithObject(object: GameObject, secondObject: GameObject, checkIsCollidable: boolean = true): boolean {
-        if (checkIsCollidable && (!object.getIsCollidable() || !secondObject.getIsCollidable())) return false;
+    static collidesWithObject(
+        object: GameObject,
+        secondObject: GameObject,
+        checkIsCollidable: boolean = true
+    ): boolean {
+        if (
+            checkIsCollidable &&
+            (!object.getIsCollidable() || !secondObject.getIsCollidable())
+        )
+            return false;
+
+        if (object.calculatedPosition.z != secondObject.calculatedPosition.z)
+            return false;
 
         let boundingBox = object.getBoundingBox();
         let boundingBoxSecond = secondObject.getBoundingBox();
 
         if (
             (boundingBox.left - boundingBoxSecond.right) *
-            (boundingBox.right - boundingBoxSecond.left) <=
-            0 &&
+                (boundingBox.right - boundingBoxSecond.left) <=
+                0 &&
             (boundingBox.top - boundingBoxSecond.bottom) *
-            (boundingBox.bottom - boundingBoxSecond.top) <=
-            0
+                (boundingBox.bottom - boundingBoxSecond.top) <=
+                0
         )
             return true;
 
@@ -58,10 +69,9 @@ abstract class World {
     }
 
     static removeObject(object: GameObject) {
-        const index = this.worldObjects.findIndex(e => e.id == object.id);
+        const index = this.worldObjects.findIndex((e) => e.id == object.id);
 
-        if (index > -1)
-            this.worldObjects.splice(index, 1)
+        if (index > -1) this.worldObjects.splice(index, 1);
     }
 
     static detectCollision(object: GameObject) {

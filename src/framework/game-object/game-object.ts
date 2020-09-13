@@ -16,6 +16,7 @@ import { Collision } from "../world/collision.interface";
 export interface Position {
     x: number;
     y: number;
+    z?: number;
 }
 
 export interface Dimension {
@@ -73,6 +74,7 @@ export class GameObject {
             right: this.position.x + this.dimension.width,
             top: this.position.y,
             bottom: this.position.y + this.dimension.height,
+            z: this.position.z ?? 0,
         };
     }
 

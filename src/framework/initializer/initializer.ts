@@ -41,11 +41,17 @@ export class Initializer {
         if (index > -1) this.gameObjects.splice(index, 1);
     }
 
+    sortObjectsByZ(): GameObject[] {
+        return this.gameObjects.sort(
+            (a, b) => a.calculatedPosition.z - b.calculatedPosition.z
+        );
+    }
+
     render(frame: number) {
         if (this.loading) {
             this.showLoading();
         } else {
-            this.gameObjects.forEach((obj) => {
+            this.sortObjectsByZ().forEach((obj) => {
                 obj.render(frame);
             });
         }
