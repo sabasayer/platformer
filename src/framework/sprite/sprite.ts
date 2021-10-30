@@ -1,7 +1,7 @@
 import { AnimationUtils } from "../utils/animation.utils";
-import { ImageUtils } from "../utils/image.utils";
-import { Dimension, Position } from "../game-object/game-object";
 import { Drawer } from "../camera/drawer";
+import { Position } from "../game-object/types/position";
+import { Dimension } from "../game-object/types/dimension";
 
 export class Sprite {
     private imageUrls: string[] = [];

@@ -1,26 +1,27 @@
 import { GameObject } from "../game-object/game-object";
 
-abstract class World {
-    static width: number = 2500;
-    static height: number = 2000;
-    static gravity: number = 13;
-    static ctx: CanvasRenderingContext2D;
-    static canvas: HTMLCanvasElement;
-    private static worldObjects: GameObject[] = [];
+class GameWorld {
+    width: number = 2500;
+    height: number = 2000;
+    gravity: number = 13;
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    private worldObjects: GameObject[] = [];
 
-    static initialize() {
+    initialize() {
         if (this.canvas) return;
         this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
+        this.canvas.width = window.innerWidth;
         this.ctx = this.canvas.getContext("2d");
-        (window as any).gameWorld = this;
+        window.$gameWorld = this;
     }
 
-    static render() {
+    render() {
         this.ctx.fillStyle = "white";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    static collidesWithWorldBoundaries(object: GameObject) {
+    collidesWithWorldBoundaries(object: GameObject) {
         let collisions: { [key: string]: boolean } = {};
         let boundingBox = object.getBoundingBox();
         if (boundingBox.right >= World.width) collisions.x = true;
@@ -34,7 +35,7 @@ abstract class World {
         return collisions;
     }
 
-    static collidesWithObject(
+    collidesWithObject(
         object: GameObject,
         secondObject: GameObject,
         checkIsCollidable: boolean = true
@@ -64,28 +65,28 @@ abstract class World {
         return false;
     }
 
-    static registerObject(object: GameObject) {
+    registerObject(object: GameObject) {
         this.worldObjects.push(object);
     }
 
-    static removeObject(object: GameObject) {
+    removeObject(object: GameObject) {
         const index = this.worldObjects.findIndex((e) => e.id == object.id);
 
         if (index > -1) this.worldObjects.splice(index, 1);
     }
 
-    static detectCollision(object: GameObject) {
-        let collidedObject: GameObject | null = null;
+    detectCollision(object: GameObject) {
+        let collidedObjects: GameObject[] = [];
         this.worldObjects.forEach((e) => {
             if (e.id != object.id && this.collidesWithObject(object, e)) {
-                collidedObject = e;
-                return;
+                collidedObjects.push(e);
             }
         });
 
-        return collidedObject;
+        return collidedObjects;
     }
 }
 
+const World = new GameWorld();
 World.initialize();
 export { World };

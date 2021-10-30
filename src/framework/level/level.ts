@@ -3,7 +3,6 @@ import { LevelOptions } from "./level.options";
 import { GameObject } from "../game-object/game-object";
 import { World } from "../world/world";
 import { EnumGameObjectType } from "../game-object/game-object-type.enum";
-import { playerObject } from "../../initializer/player.object";
 
 export class Level {
     protected prevLevel?: string;
@@ -23,11 +22,11 @@ export class Level {
     }
 
     getNextLevel() {
-        return this.nextLevel
+        return this.nextLevel;
     }
 
     getName() {
-        return this.name
+        return this.name;
     }
 
     protected getObject(finder: (obj: GameObject) => boolean) {
@@ -35,9 +34,13 @@ export class Level {
     }
 
     endCondition(): boolean {
-        const player = this.getObject(e => e.getType() == EnumGameObjectType.Player);
-        const endGameFlag = this.getObject(e => e.getType() == EnumGameObjectType.EndGameFlag);
-       
+        const player = this.getObject(
+            (e) => e.getType() == EnumGameObjectType.Player
+        );
+        const endGameFlag = this.getObject(
+            (e) => e.getType() == EnumGameObjectType.EndGameFlag
+        );
+
         if (!player || !endGameFlag) return;
 
         return World.collidesWithObject(player, endGameFlag, false);
@@ -48,7 +51,7 @@ export class Level {
     }
 
     render(frame: number) {
-        this.initializer.render(frame)
+        this.initializer.render(frame);
     }
 
     end() {

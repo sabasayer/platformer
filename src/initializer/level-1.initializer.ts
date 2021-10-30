@@ -1,10 +1,12 @@
 import { Initializer } from "../framework/initializer/initializer";
 import { GameObject } from "../framework/game-object/game-object";
-import { playerObject } from "./player.object";
 import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
-import { patrol1 } from "./partol.object";
+import { createPatrol } from "../objects/patrol.object";
+import { playerObject } from "../objects/player.object";
+import { getAsset } from "../framework/helper/index";
+import { createCoin } from "../objects/coin.object";
 
-let object = new GameObject({
+const object = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 42, y: 250 },
     dimension: { width: 250, height: 12 },
@@ -12,7 +14,7 @@ let object = new GameObject({
     gravityHasEffectOnIt: false,
 });
 
-let object2 = new GameObject({
+const object2 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 150, y: 330 },
     dimension: { width: 211, height: 11 },
@@ -20,7 +22,7 @@ let object2 = new GameObject({
     gravityHasEffectOnIt: false,
 });
 
-let object3 = new GameObject({
+const object3 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 392, y: 382 },
     dimension: { width: 211, height: 11 },
@@ -28,7 +30,7 @@ let object3 = new GameObject({
     gravityHasEffectOnIt: false,
 });
 
-let object4 = new GameObject({
+const object4 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 250, y: 720 },
     dimension: { width: 50, height: 50 },
@@ -36,7 +38,7 @@ let object4 = new GameObject({
     gravityHasEffectOnIt: false,
 });
 
-let objectEndGame = new GameObject({
+const objectEndGame = new GameObject({
     type: EnumGameObjectType.EndGameFlag,
     initialPosition: {
         x: 190,
@@ -48,10 +50,10 @@ let objectEndGame = new GameObject({
     },
     isCollidable: false,
     gravityHasEffectOnIt: false,
-    imageUrl: "http://localhost:32/assets/sprites/red-flag.png",
+    imageUrl: getAsset("sprites/red-flag.png"),
 });
 
-let ground = new GameObject({
+const ground = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: {
         x: 0,
@@ -65,7 +67,7 @@ let ground = new GameObject({
     gravityHasEffectOnIt: false,
 });
 
-let ground2 = new GameObject({
+const ground2 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: {
         x: 550,
@@ -79,13 +81,13 @@ let ground2 = new GameObject({
     gravityHasEffectOnIt: false,
 });
 
-let backGround = new GameObject({
+const backGround = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 0, y: 0, z: -1 },
     dimension: { width: 1920, height: 1080 },
     isCollidable: false,
     gravityHasEffectOnIt: false,
-    imageUrl: "http://localhost:32/assets/background.jpg",
+    imageUrl: getAsset("background.jpg"),
 });
 
 export const level1Initializer = new Initializer([
@@ -95,8 +97,9 @@ export const level1Initializer = new Initializer([
     object3,
     object4,
     objectEndGame,
-    patrol1,
+    createPatrol({ x: 200, y: 700 }),
     ground,
     ground2,
     backGround,
+    createCoin({ x: 150, y: 700 }),
 ]);

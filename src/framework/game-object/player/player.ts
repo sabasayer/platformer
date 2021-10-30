@@ -1,22 +1,18 @@
-import {
-    Dimension,
-    Position,
-    GameObject,
-    EnumObjectState,
-} from "../game-object";
+import { GameObject } from "../game-object";
 import { KeyboardHelper, EnumKeyboardKey } from "../../input/keyboard.input";
-import { SpriteStore } from "~/src/framework/sprite/sprite-store.interface";
 import { PlayerOptions } from "./player.options";
 import { EnumGameObjectType } from "../game-object-type.enum";
 import { Npc } from "../npc/npc";
-import { GameObjectOptions } from "../game-object.options";
 import { Camera } from "../../camera/camera";
+import { Inventory } from "./inventory";
+import { ItemObject } from "../item/item";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
     private speed: number = 15;
     private jumpForce: number = 80;
     private canMoveAtAir: boolean = false;
+    private inventory = new Inventory();
 
     constructor(options: PlayerOptions) {
         super(options);
@@ -25,16 +21,19 @@ export class Player extends GameObject {
     }
 
     handleKeyboardEvents() {
-        window.addEventListener("keydown", (ev) => {
-            KeyboardHelper.keyDown(ev);
-            this.checkKeyboardInputs();
-        });
-
-        window.addEventListener("keyup", (ev) => {
-            KeyboardHelper.keyUp(ev);
-            this.checkKeyboardInputs();
-        });
+        window.addEventListener("keydown", this.keydown);
+        window.addEventListener("keyup", this.keyup);
     }
+
+    keydown = (ev: KeyboardEvent) => {
+        KeyboardHelper.keyDown(ev);
+        this.checkKeyboardInputs();
+    };
+
+    keyup = (ev: KeyboardEvent) => {
+        KeyboardHelper.keyUp(ev);
+        this.checkKeyboardInputs();
+    };
 
     render(frame: number) {
         super.render(frame);
@@ -53,43 +52,59 @@ export class Player extends GameObject {
         }
     }
 
-    moveX(amount: number) {
-        this.position.x += amount;
-        const collision = this.checkHorizontalCollision();
+    onCollisionX(amount: number, collidedObjects: GameObject[]) {
+        super.onCollisionX(amount, collidedObjects);
+        if (!collidedObjects.length) return;
 
-        if (collision.collided) {
-            this.velocityX = 0;
-            const isEnemy = this.handleEnemyCollision(collision.collidedObj);
+        const isEnemy = this.handleEnemyCollision(collidedObjects);
+        if (isEnemy) return this.moveX(-5 * amount);
 
-            if (isEnemy)
-                return this.moveX(-5 * amount)
-        }
-
-
-        Camera.focusTo(this.position)
-        return collision
+        this.handleItemCollision(collidedObjects);
     }
 
-    moveY(amount: number) {
-        this.position.y += amount;
-        const collision = this.checkVerticalCollision();
+    onCollisionY(amount: number, collidedObjects: GameObject[]) {
+        super.onCollisionY(amount, collidedObjects);
+        if (!collidedObjects.length) return;
 
-        if (collision.collided) {
-            this.velocityY = 0
-            const isEnemy = this.handleEnemyCollision(collision.collidedObj);
-            if (isEnemy)
-                return this.moveY(-5 * amount)
-        }
+        const isEnemy = this.handleEnemyCollision(collidedObjects);
+        if (isEnemy) return this.moveY(-5 * amount);
 
-        Camera.focusTo(this.position)
-        return collision;
+        this.handleItemCollision(collidedObjects);
     }
 
-    handleEnemyCollision(collidedObj?: GameObject) {
-        if (collidedObj?.getType() == EnumGameObjectType.Enemy) {
-            this.takeDamage((collidedObj as Npc).getDamage())
+    afterMoveX() {
+        Camera.focusTo(this.position);
+    }
+
+    afterMoveY() {
+        Camera.focusTo(this.position);
+    }
+
+    handleEnemyCollision(collidedObjects: GameObject[]) {
+        const enemies = collidedObjects.filter(
+            (e) => e.getType() === EnumGameObjectType.Npc
+        );
+
+        enemies.forEach((enemy) => {
+            this.takeDamage((enemy as any as Npc).getDamage());
+        });
+
+        if (enemies.length) {
             return true;
         }
+    }
+
+    handleItemCollision(collidedObjects: GameObject[]) {
+        const items = collidedObjects.filter(
+            (e) => e.getType() === EnumGameObjectType.Item
+        );
+
+        items.forEach((e) => {
+            if (e.getType() === EnumGameObjectType.Item) {
+                this.inventory.addItem(e as ItemObject);
+                e.die();
+            }
+        });
     }
 
     jump() {
@@ -111,7 +126,13 @@ export class Player extends GameObject {
     }
 
     die() {
-        alert('you died');
+        alert("you died");
         this.destroy();
+    }
+
+    destroy() {
+        window.removeEventListener("keydown", this.keydown);
+        window.removeEventListener("keyup", this.keyup);
+        super.destroy();
     }
 }

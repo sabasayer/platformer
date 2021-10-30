@@ -1,7 +1,8 @@
 export enum EnumGameObjectType {
     Player = 1,
     IdleObject = 2,
-    Coin = 3,
+    Item = 3,
     EndGameFlag = 4,
-    Enemy = 5
+    Projectile = 5,
+    Npc = 6,
 }

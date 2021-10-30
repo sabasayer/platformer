@@ -1,42 +1,16 @@
-import {
-    FRAME_RATE,
-    FRAME_PER_SECOND,
-    MOVEMENT_MULTIPLIER,
-} from "../constants";
+import { FRAME_RATE, MOVEMENT_MULTIPLIER, ENVS } from "../constants";
 import { World } from "../world/world";
 import { SpriteStore } from "~/src/framework/sprite/sprite-store.interface";
-import { ImageUtils } from "../utils/image.utils";
 import { GameObjectOptions } from "./game-object.options";
 import { EnumGameObjectType } from "./game-object-type.enum";
 import { Initializer } from "../initializer/initializer";
-import { Camera } from "../camera/camera";
 import { Drawer } from "../camera/drawer";
 import { Collision } from "../world/collision.interface";
-
-export interface Position {
-    x: number;
-    y: number;
-    z?: number;
-}
-
-export interface Dimension {
-    width: number;
-    height: number;
-}
-
-export interface BoundingBox {
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
-}
-
-export enum EnumObjectState {
-    idle = 1,
-    moving = 2,
-    falling = 3,
-    jumping = 4,
-}
+import { Position } from "./types/position";
+import { Dimension } from "./types/dimension";
+import { EnumObjectState } from "./object-state.enum";
+import { BoundingBox } from "./types/bounding-box";
+import { Game } from "../game";
 
 export class GameObject {
     id: number = Math.random();
@@ -63,6 +37,7 @@ export class GameObject {
     protected initializer?: Initializer;
 
     protected _loading: boolean = false;
+    protected lastHorizontalState = EnumObjectState.movingRight;
 
     get loading() {
         return this._loading;
@@ -93,6 +68,14 @@ export class GameObject {
             y: options.initialPosition.y,
         };
         this.createImage();
+    }
+
+    get isSolid() {
+        return [
+            EnumGameObjectType.IdleObject,
+            EnumGameObjectType.Npc,
+            EnumGameObjectType.Player,
+        ].includes(this.type);
     }
 
     getIsCollidable() {
@@ -140,9 +123,9 @@ export class GameObject {
     render(frame: number) {
         this.beforeRender();
 
-        // this.renderDebugInfo();
+        if (Game.env == ENVS.dev) this.renderDebugInfo();
         this.renderBody(frame);
-        // this.renderBoundingBox();
+        if (Game.env == ENVS.dev) this.renderBoundingBox();
         if (this.health) this.renderHealthBar();
 
         this.afterRender();
@@ -150,6 +133,7 @@ export class GameObject {
 
     afterRender() {
         this.calculateState();
+        this.setHorizontalLastState();
     }
 
     private renderBody(frame: number) {
@@ -225,11 +209,34 @@ export class GameObject {
     }
 
     private calculateState() {
-        if (this.velocityY == 0 && this.velocityX == 0)
-            this.state = EnumObjectState.idle;
-        if (this.velocityY < 0) this.state = EnumObjectState.jumping;
-        else if (this.velocityY > 0) this.state = EnumObjectState.falling;
-        else if (this.velocityX != 0) this.state = EnumObjectState.moving;
+        if (this.velocityY == 0 && this.velocityX == 0) {
+            this.state =
+                this.lastHorizontalState === EnumObjectState.movingLeft
+                    ? EnumObjectState.idleLeft
+                    : EnumObjectState.idle;
+        }
+        if (this.velocityY < 0) {
+            this.state =
+                this.lastHorizontalState === EnumObjectState.movingLeft
+                    ? EnumObjectState.jumpingLeft
+                    : EnumObjectState.jumping;
+        } else if (this.velocityY > 0)
+            this.state =
+                this.lastHorizontalState === EnumObjectState.movingLeft
+                    ? EnumObjectState.fallingLeft
+                    : EnumObjectState.falling;
+        else if (this.velocityX > 0) {
+            this.state = EnumObjectState.movingRight;
+        } else if (this.velocityX < 0) {
+            this.state = EnumObjectState.movingLeft;
+        }
+    }
+
+    private setHorizontalLastState() {
+        if (this.velocityX > 0)
+            this.lastHorizontalState = EnumObjectState.movingRight;
+        else if (this.velocityX < 0)
+            this.lastHorizontalState = EnumObjectState.movingLeft;
     }
 
     resetPosition() {
@@ -243,77 +250,102 @@ export class GameObject {
 
     moveX(amount: number) {
         this.position.x += amount;
-
         const collision = this.checkHorizontalCollision();
-        if (collision.collided) this.velocityX = 0;
-
-        return collision;
-    }
-
-    checkHorizontalCollision(): Collision {
-        let res: Collision = {
-            collided: false,
-        };
-
-        if (this.isCollidable) {
-            let collision = World.collidesWithWorldBoundaries(this);
-
-            if (collision.x) {
-                this.position.x =
-                    this.position.x <= 0
-                        ? 0
-                        : World.width - this.dimension.width;
-                res.collided = true;
-            }
-
-            let collidedObj = World.detectCollision(this);
-            if (!collidedObj) return res;
-
-            this.popObjectHorizontal(collidedObj);
-            res.collided = true;
-            res.collidedObj = collidedObj;
+        if (collision.collided) {
+            this.onCollisionX(amount, collision.collidedObjects);
         }
 
-        return res;
+        this.afterMoveX();
+
+        return collision;
     }
 
     moveY(amount: number) {
         this.position.y += amount;
-
         const collision = this.checkVerticalCollision();
+        if (collision.collided) {
+            this.onCollisionY(amount, collision.collidedObjects);
+        }
 
-        if (collision.collided) this.velocityY = 0;
+        this.afterMoveY();
 
         return collision;
     }
 
-    checkVerticalCollision(): Collision {
-        let res: Collision = {
+    fall() {
+        this.velocityY += World.gravity * FRAME_RATE * 10;
+    }
+
+    onCollisionX(amount: number, collidedObjects: GameObject[]) {
+        if (!collidedObjects.length || collidedObjects.some((e) => e.isSolid))
+            this.velocityX = 0;
+    }
+    onCollisionY(amount: number, collidedObjects: GameObject[]) {
+        if (!collidedObjects.length || collidedObjects.some((e) => e.isSolid))
+            this.velocityY = 0;
+    }
+
+    afterMoveX() {}
+    afterMoveY() {}
+
+    checkHorizontalCollision(): Collision {
+        const res: Collision = {
             collided: false,
+            collidedObjects: [],
         };
 
-        if (this.isCollidable) {
-            let collision = World.collidesWithWorldBoundaries(this);
+        if (!this.isCollidable) return res;
 
-            if (collision.y) {
-                this.position.y =
-                    this.position.y <= 0
-                        ? 0
-                        : World.height - this.dimension.height;
-
-                res.collided = true;
-            }
-
-            let collidedObj = World.detectCollision(this);
-            if (!collidedObj) return res;
-
-            this.popObjectVertical(collidedObj);
-
+        const collision = World.collidesWithWorldBoundaries(this);
+        if (collision.x) {
+            this.keepInWorldBoundariesX();
             res.collided = true;
-            res.collidedObj = collidedObj;
         }
 
+        const collidedObjects = World.detectCollision(this);
+        if (!collidedObjects.length) return res;
+
+        const solidObjects = collidedObjects.filter((e) => e.isSolid);
+        if (solidObjects.length) this.popObjectHorizontal(solidObjects[0]);
+
+        res.collided = true;
+        res.collidedObjects = collidedObjects;
         return res;
+    }
+
+    checkVerticalCollision(): Collision {
+        const res: Collision = {
+            collided: false,
+            collidedObjects: [],
+        };
+
+        if (!this.isCollidable && !this.isSolid) return res;
+
+        const collision = World.collidesWithWorldBoundaries(this);
+        if (collision.y) {
+            this.keepInWorldBoundariesY();
+            res.collided = true;
+        }
+
+        const collidedObjects = World.detectCollision(this);
+        if (!collidedObjects.length) return res;
+
+        const solidObjects = collidedObjects.filter((e) => e.isSolid);
+        if (solidObjects.length) this.popObjectVertical(solidObjects[0]);
+
+        res.collided = true;
+        res.collidedObjects = collidedObjects;
+        return res;
+    }
+
+    keepInWorldBoundariesX() {
+        this.position.x =
+            this.position.x <= 0 ? 0 : World.width - this.dimension.width;
+    }
+
+    keepInWorldBoundariesY() {
+        this.position.y =
+            this.position.y <= 0 ? 0 : World.height - this.dimension.height;
     }
 
     popObjectVertical(collidedObject: GameObject) {
@@ -334,10 +366,6 @@ export class GameObject {
                 collidedObject.calculatedPosition.right + FRAME_RATE;
     }
 
-    fall() {
-        this.velocityY += World.gravity * FRAME_RATE * 10;
-    }
-
     takeDamage(damage: number) {
         if (this.health == undefined) return;
 
@@ -349,11 +377,13 @@ export class GameObject {
 
     die() {
         // run die animation or set state to die
-        // dont render
+        this.state = EnumObjectState.dying;
         this.destroy();
     }
 
     destroy() {
         World.removeObject(this);
+        this.initializer?.removeObject((obj) => obj === this);
+        console.log(this.initializer);
     }
 }

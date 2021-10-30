@@ -1,9 +1,6 @@
-import { loadingObject } from "~/src/initializer/loading.object";
 import { Camera } from "../camera/camera";
 import { Drawer } from "../camera/drawer";
 import { GameObject } from "../game-object/game-object";
-import { GameObjectOptions } from "../game-object/game-object.options";
-import { World } from "../world/world";
 
 export class Initializer {
     protected gameObjects: GameObject[] = [];
@@ -18,18 +15,24 @@ export class Initializer {
 
     start() {
         this.registerObjects();
-        this.resetObjectsState();
+        this.sortObjectsByZ();
     }
 
     registerObjects() {
         this.gameObjects.forEach((object) => {
             object.register();
             object.setInitializer(this);
+            object.resetPosition();
         });
     }
 
     addObject(gameObject: GameObject) {
         this.gameObjects.push(gameObject);
+        gameObject.register();
+        gameObject.setInitializer(this);
+        gameObject.resetPosition();
+
+        this.sortObjectsByZ();
     }
 
     getObject(finder: (obj: GameObject) => boolean): GameObject | null {
@@ -51,7 +54,7 @@ export class Initializer {
         if (this.loading) {
             this.showLoading();
         } else {
-            this.sortObjectsByZ().forEach((obj) => {
+            this.gameObjects.forEach((obj) => {
                 obj.render(frame);
             });
         }

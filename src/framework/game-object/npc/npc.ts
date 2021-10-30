@@ -20,24 +20,21 @@ export class Npc extends GameObject {
         return this.damage;
     }
 
-    moveX(amount: number) {
-        this.position.x += amount;
-        const collision = this.checkHorizontalCollision();
+    onCollisionX(amount: number, collidedObjects: GameObject[]) {
+        if (collidedObjects.length && collidedObjects.every((e) => !e.isSolid))
+            return;
 
-        if (collision.collided) {
-            const newVelocityX = this.npcType == EnumNpcType.Patrol ? -this.velocityX : 0
-            this.velocityX = newVelocityX;
+        const newVelocityX =
+            this.npcType == EnumNpcType.Patrol ? -this.velocityX : 0;
+        this.velocityX = newVelocityX;
 
-            if (this.type == EnumGameObjectType.Enemy) {
-                const collidedObj = collision.collidedObj;
-                if (collidedObj?.getType() == EnumGameObjectType.Player) {
-                    collidedObj.takeDamage(this.damage);
-
-                    collision.collidedObj.moveX(amount * 5)
-                }
+        if (this.type == EnumGameObjectType.Npc) {
+            const player = collidedObjects.find(
+                (e) => e.getType() === EnumGameObjectType.Player
+            );
+            if (player) {
+                player.takeDamage(this.damage);
             }
         }
-
-        return collision
     }
 }
