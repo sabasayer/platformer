@@ -23,12 +23,13 @@ export class GameObject {
     protected accelarationX: number = 1;
     protected accelarationY: number = 1;
 
-    protected isCollidable: boolean = false;
+    protected collidesWith: GameObjectOptions["collidesWith"];
     protected gravityHasEffectOnIt: boolean = true;
-    protected imageUrl: string = "";
-    protected image: HTMLImageElement;
+    protected solid: boolean = true;
+    protected imageUrl?: string = "";
+    protected image?: HTMLImageElement;
 
-    protected spriteStore: SpriteStore;
+    protected spriteStore?: SpriteStore;
 
     protected state: EnumObjectState = EnumObjectState.idle;
 
@@ -55,31 +56,25 @@ export class GameObject {
 
     constructor(options: GameObjectOptions) {
         this.position = options.initialPosition;
-        this.isCollidable = options.isCollidable;
+        this.collidesWith = options.collidesWith;
         this.dimension = options.dimension;
         this.spriteStore = options.spriteStore;
         this.imageUrl = options.imageUrl;
-        this.gravityHasEffectOnIt = options.gravityHasEffectOnIt ?? true;
+        this.gravityHasEffectOnIt =
+            options.gravityHasEffectOnIt ?? this.gravityHasEffectOnIt;
+        this.solid = options.solid ?? this.solid;
         this.type = options.type;
         this.health = options.health;
 
         this.initialPositions = {
-            x: options.initialPosition.x,
-            y: options.initialPosition.y,
+            ...options.initialPosition,
         };
+
         this.createImage();
     }
 
-    get isSolid() {
-        return [
-            EnumGameObjectType.IdleObject,
-            EnumGameObjectType.Npc,
-            EnumGameObjectType.Player,
-        ].includes(this.type);
-    }
-
-    getIsCollidable() {
-        return this.isCollidable;
+    getCollidesWith() {
+        return this.collidesWith;
     }
 
     getType() {
@@ -158,10 +153,12 @@ export class GameObject {
     }
 
     renderSprite(frame: number): boolean {
-        return this.spriteStore?.[this.state]?.render(
-            frame,
-            this.position,
-            this.dimension
+        return (
+            this.spriteStore?.[this.state]?.render(
+                frame,
+                this.position,
+                this.dimension
+            ) ?? false
         );
     }
 
@@ -277,12 +274,14 @@ export class GameObject {
     }
 
     onCollisionX(amount: number, collidedObjects: GameObject[]) {
-        if (!collidedObjects.length || collidedObjects.some((e) => e.isSolid))
-            this.velocityX = 0;
+        if (this.shouldResetVelocity(collidedObjects)) this.velocityX = 0;
     }
     onCollisionY(amount: number, collidedObjects: GameObject[]) {
-        if (!collidedObjects.length || collidedObjects.some((e) => e.isSolid))
-            this.velocityY = 0;
+        if (this.shouldResetVelocity(collidedObjects)) this.velocityY = 0;
+    }
+
+    shouldResetVelocity(collidedObjects: GameObject[]) {
+        return !collidedObjects.length || collidedObjects.some((e) => e.solid);
     }
 
     afterMoveX() {}
@@ -294,7 +293,7 @@ export class GameObject {
             collidedObjects: [],
         };
 
-        if (!this.isCollidable) return res;
+        if (!this.collidesWith) return res;
 
         const collision = World.collidesWithWorldBoundaries(this);
         if (collision.x) {
@@ -305,8 +304,7 @@ export class GameObject {
         const collidedObjects = World.detectCollision(this);
         if (!collidedObjects.length) return res;
 
-        const solidObjects = collidedObjects.filter((e) => e.isSolid);
-        if (solidObjects.length) this.popObjectHorizontal(solidObjects[0]);
+        this.popObjectHorizontal(collidedObjects[0]);
 
         res.collided = true;
         res.collidedObjects = collidedObjects;
@@ -319,7 +317,7 @@ export class GameObject {
             collidedObjects: [],
         };
 
-        if (!this.isCollidable && !this.isSolid) return res;
+        if (!this.collidesWith) return res;
 
         const collision = World.collidesWithWorldBoundaries(this);
         if (collision.y) {
@@ -330,8 +328,7 @@ export class GameObject {
         const collidedObjects = World.detectCollision(this);
         if (!collidedObjects.length) return res;
 
-        const solidObjects = collidedObjects.filter((e) => e.isSolid);
-        if (solidObjects.length) this.popObjectVertical(solidObjects[0]);
+        this.popObjectVertical(collidedObjects[0]);
 
         res.collided = true;
         res.collidedObjects = collidedObjects;

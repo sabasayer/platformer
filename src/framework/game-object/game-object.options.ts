@@ -3,13 +3,14 @@ import { EnumGameObjectType } from "./game-object-type.enum";
 import { Dimension } from "./types/dimension";
 import { Position } from "./types/position";
 
-export interface GameObjectOptions{
+export interface GameObjectOptions {
     initialPosition: Position;
     dimension: Dimension;
     imageUrl?: string;
     spriteStore?: SpriteStore;
-    isCollidable?: boolean;
+    collidesWith?: "all" | EnumGameObjectType[];
     gravityHasEffectOnIt?: boolean;
-    type:EnumGameObjectType;
-    health?:number
+    type: EnumGameObjectType;
+    health?: number;
+    solid?: boolean;
 }

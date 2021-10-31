@@ -1,4 +1,5 @@
 import { GameObject } from "../game-object/game-object";
+import { collisionHelper } from "../helper/collision.helper";
 
 class GameWorld {
     width: number = 2500;
@@ -8,11 +9,13 @@ class GameWorld {
     canvas: HTMLCanvasElement;
     private worldObjects: GameObject[] = [];
 
-    initialize() {
-        if (this.canvas) return;
+    constructor() {
         this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
         this.canvas.width = window.innerWidth;
-        this.ctx = this.canvas.getContext("2d");
+        const ctx = this.canvas.getContext("2d");
+        if (!ctx) throw new Error("Context is not found");
+
+        this.ctx = ctx;
         window.$gameWorld = this;
     }
 
@@ -42,27 +45,11 @@ class GameWorld {
     ): boolean {
         if (
             checkIsCollidable &&
-            (!object.getIsCollidable() || !secondObject.getIsCollidable())
+            (!object.getCollidesWith() || !secondObject.getCollidesWith())
         )
             return false;
 
-        if (object.calculatedPosition.z != secondObject.calculatedPosition.z)
-            return false;
-
-        let boundingBox = object.getBoundingBox();
-        let boundingBoxSecond = secondObject.getBoundingBox();
-
-        if (
-            (boundingBox.left - boundingBoxSecond.right) *
-                (boundingBox.right - boundingBoxSecond.left) <=
-                0 &&
-            (boundingBox.top - boundingBoxSecond.bottom) *
-                (boundingBox.bottom - boundingBoxSecond.top) <=
-                0
-        )
-            return true;
-
-        return false;
+        return collisionHelper.checkForObjects(object, secondObject);
     }
 
     registerObject(object: GameObject) {
@@ -88,5 +75,4 @@ class GameWorld {
 }
 
 const World = new GameWorld();
-World.initialize();
 export { World };

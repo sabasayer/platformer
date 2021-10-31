@@ -1,7 +1,7 @@
 import { Initializer } from "../framework/initializer/initializer";
 import { GameObject } from "../framework/game-object/game-object";
 import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
-import { playerObject } from "../objects/player.object";
+import { playerObject } from "../level/objects/player.object";
 
 const object1 = new GameObject({
     type: EnumGameObjectType.IdleObject,
