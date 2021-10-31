@@ -1,7 +1,6 @@
 import { Sprite } from "../../framework/sprite/sprite";
 import { Player } from "../../framework/game-object/player/player";
 
-import { EnumGameObjectType } from "../../framework/game-object/game-object-type.enum";
 import { EnumObjectState } from "../../framework/game-object/object-state.enum";
 import { getAsset } from "../../framework/helper/index";
 import { Position } from "../../framework/game-object/types/position";
@@ -68,7 +67,6 @@ export const createPlayer = (position: Position) =>
         },
         imageUrl: getAsset("sprites/player/idle/anim1.png"),
         collidesWith: "all",
-        type: EnumGameObjectType.Player,
         health: 100,
     });
 

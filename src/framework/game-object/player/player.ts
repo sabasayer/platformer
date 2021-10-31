@@ -15,7 +15,7 @@ export class Player extends GameObject {
     private inventory = new Inventory();
 
     constructor(options: PlayerOptions) {
-        super(options);
+        super({ ...options, type: EnumGameObjectType.Player });
         this.canMoveAtAir = options.canMoveAtAir;
         this.handleKeyboardEvents();
     }
