@@ -36,7 +36,7 @@ export class Initializer {
     }
 
     getObject(finder: (obj: GameObject) => boolean): GameObject | null {
-        return this.gameObjects.find(finder);
+        return this.gameObjects.find(finder) ?? null;
     }
 
     removeObject(finder: (obj: GameObject) => boolean) {

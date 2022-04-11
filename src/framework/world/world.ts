@@ -1,4 +1,7 @@
 import { GameObject } from "../game-object/game-object";
+import { EnumGameObjectType } from "../game-object/game-object-type.enum";
+import { Player } from "../game-object/player/player";
+import { Projectile } from "../game-object/projectile/projectile";
 import { collisionHelper } from "../helper/collision.helper";
 
 class GameWorld {
@@ -38,6 +41,31 @@ class GameWorld {
         return collisions;
     }
 
+    isOwnProjectile(
+        object: GameObject,
+        secondObject: GameObject,
+        end?: boolean
+    ): boolean {
+        const hasProjectile = (obj: GameObject) =>
+            [EnumGameObjectType.Player, EnumGameObjectType.Npc].includes(
+                obj.getType()
+            );
+
+        const isProjectile = (obj: GameObject) =>
+            obj.getType() === EnumGameObjectType.Projectile;
+
+        const result =
+            hasProjectile(object) &&
+            isProjectile(secondObject) &&
+            (secondObject as Projectile).getOwner.id === object.id;
+
+        const bothResult =
+            result ||
+            (!end && this.isOwnProjectile(secondObject, object, true));
+
+        return bothResult;
+    }
+
     collidesWithObject(
         object: GameObject,
         secondObject: GameObject,
@@ -48,6 +76,8 @@ class GameWorld {
             (!object.getCollidesWith() || !secondObject.getCollidesWith())
         )
             return false;
+
+        if (this.isOwnProjectile(object, secondObject)) return false;
 
         return collisionHelper.checkForObjects(object, secondObject);
     }

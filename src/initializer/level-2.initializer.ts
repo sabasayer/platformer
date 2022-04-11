@@ -13,7 +13,7 @@ const object1 = new GameObject({
         x: 150,
         y: 600,
     },
-    isCollidable: true,
+    collidesWith:'all',
     gravityHasEffectOnIt: false,
 });
 
@@ -27,7 +27,7 @@ const object2 = new GameObject({
         x: 50,
         y: 670,
     },
-    isCollidable: true,
+    collidesWith:'all',
     gravityHasEffectOnIt: false,
 });
 

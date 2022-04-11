@@ -41,7 +41,7 @@ export class Level {
             (e) => e.getType() == EnumGameObjectType.EndGameFlag
         );
 
-        if (!player || !endGameFlag) return;
+        if (!player || !endGameFlag) return false;
 
         return World.collidesWithObject(player, endGameFlag, false);
     }

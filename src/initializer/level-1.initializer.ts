@@ -6,6 +6,7 @@ import { playerObject } from "../level/objects/player.object";
 import { getAsset } from "../framework/helper/index";
 import { createCoin } from "../level/objects/coin.object";
 
+
 const object = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 42, y: 250 },
@@ -88,6 +89,17 @@ const backGround = new GameObject({
     imageUrl: getAsset("background.jpg"),
 });
 
+
+const testPinnedObject = new GameObject({
+    type: EnumGameObjectType.IdleObject,
+    initialPosition: { x: 30, y: 110 },
+    dimension: { width: 10, height: 10 },
+    gravityHasEffectOnIt: false,
+    solid: false
+});
+
+playerObject.pinObject(testPinnedObject);
+
 export const level1Initializer = new Initializer([
     playerObject,
     object,
@@ -100,4 +112,5 @@ export const level1Initializer = new Initializer([
     ground2,
     backGround,
     createCoin({ x: 150, y: 720 }),
+    testPinnedObject
 ]);

@@ -32,7 +32,8 @@ export class Patrol extends Npc {
             velocityX,
             canFly: false,
             npcType: EnumNpcType.Patrol,
-            damage: 10,
+            attackPower: 10,
+            health: 20,
         });
     }
 }

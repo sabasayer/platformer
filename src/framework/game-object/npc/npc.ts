@@ -6,18 +6,18 @@ import { EnumGameObjectType } from "../game-object-type.enum";
 export class Npc extends GameObject {
     protected canFly: boolean;
     protected npcType: EnumNpcType;
-    protected damage: number;
+    protected attackPower: number;
 
     constructor(options: NpcOptions) {
         super(options);
         this.canFly = options.canFly;
         this.npcType = options.npcType;
         this.velocityX = options.velocityX;
-        this.damage = options.damage;
+        this.attackPower = options.attackPower;
     }
 
-    getDamage() {
-        return this.damage;
+    getAttackPower() {
+        return this.attackPower;
     }
 
     onCollisionX(amount: number, collidedObjects: GameObject[]) {
@@ -29,7 +29,7 @@ export class Npc extends GameObject {
             (e) => e.getType() === EnumGameObjectType.Player
         );
         if (player) {
-            player.takeDamage(this.damage);
+            player.takeDamage(this.attackPower);
         }
     }
 }

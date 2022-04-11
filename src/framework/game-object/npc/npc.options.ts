@@ -5,5 +5,5 @@ export interface NpcOptions extends GameObjectOptions{
     velocityX:number;
     npcType:EnumNpcType;
     canFly:boolean;
-    damage:number;
+    attackPower:number;
 }

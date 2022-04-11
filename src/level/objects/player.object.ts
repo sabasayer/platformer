@@ -68,6 +68,7 @@ export const createPlayer = (position: Position) =>
         imageUrl: getAsset("sprites/player/idle/anim1.png"),
         collidesWith: "all",
         health: 100,
+        attackPower: 10,
     });
 
 export const playerObject = createPlayer({ x: 30, y: 130 });

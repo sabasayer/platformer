@@ -11,6 +11,7 @@ import { Dimension } from "./types/dimension";
 import { EnumObjectState } from "./object-state.enum";
 import { BoundingBox } from "./types/bounding-box";
 import { Game } from "../game";
+import { PinnedObject } from "./types/pinned-object";
 
 export class GameObject {
     id: number = Math.random();
@@ -40,8 +41,14 @@ export class GameObject {
     protected _loading: boolean = false;
     protected lastHorizontalState = EnumObjectState.movingRight;
 
+    protected pinnedObjects = new Set<GameObject>();
+
     get loading() {
         return this._loading;
+    }
+
+    get getPosition() {
+        return this.position;
     }
 
     get calculatedPosition() {
@@ -65,6 +72,8 @@ export class GameObject {
         this.solid = options.solid ?? this.solid;
         this.type = options.type;
         this.health = options.health;
+        this.pinnedObjects =
+            new Set(options.pinnedObjects) ?? new Set<GameObject>();
 
         this.initialPositions = {
             ...options.initialPosition,
@@ -100,6 +109,8 @@ export class GameObject {
             this.image = image;
             this._loading = false;
         };
+
+        this._loading = false;
     }
 
     getBoundingBox(): BoundingBox {
@@ -206,7 +217,7 @@ export class GameObject {
     }
 
     private calculateState() {
-        if (this.velocityY == 0 && this.velocityX == 0) {
+        if (!this.velocityY && !this.velocityX) {
             this.state =
                 this.lastHorizontalState === EnumObjectState.movingLeft
                     ? EnumObjectState.idleLeft
@@ -236,6 +247,11 @@ export class GameObject {
             this.lastHorizontalState = EnumObjectState.movingLeft;
     }
 
+    pinObject = (object: GameObject) => {
+        this.pinnedObjects.add(object);
+        console.log(this.pinnedObjects);
+    };
+
     resetPosition() {
         this.position.x = this.initialPositions.x;
         this.position.y = this.initialPositions.y;
@@ -252,7 +268,7 @@ export class GameObject {
             this.onCollisionX(amount, collision.collidedObjects);
         }
 
-        this.afterMoveX();
+        this.afterMoveX(amount, collision.collided);
 
         return collision;
     }
@@ -264,7 +280,7 @@ export class GameObject {
             this.onCollisionY(amount, collision.collidedObjects);
         }
 
-        this.afterMoveY();
+        this.afterMoveY(amount, collision.collided);
 
         return collision;
     }
@@ -284,8 +300,15 @@ export class GameObject {
         return !collidedObjects.length || collidedObjects.some((e) => e.solid);
     }
 
-    afterMoveX() {}
-    afterMoveY() {}
+    afterMoveX(amount: number, collided: boolean) {
+        if (!collided)
+            this.pinnedObjects.forEach((object) => object.moveX(amount));
+    }
+
+    afterMoveY(amount: number, collided: boolean) {
+        if (!collided)
+            this.pinnedObjects.forEach((object) => object.moveY(amount));
+    }
 
     checkHorizontalCollision(): Collision {
         const res: Collision = {

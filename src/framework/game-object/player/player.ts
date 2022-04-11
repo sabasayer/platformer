@@ -6,6 +6,8 @@ import { Npc } from "../npc/npc";
 import { Camera } from "../../camera/camera";
 import { Inventory } from "./inventory";
 import { ItemObject } from "../item/item";
+import { Projectile } from "../projectile/projectile";
+import { projectileFactory } from "../projectile/projectile.factory";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
@@ -13,11 +15,17 @@ export class Player extends GameObject {
     private jumpForce: number = 80;
     private canMoveAtAir: boolean = false;
     private inventory = new Inventory();
+    private attackPower: number;
 
     constructor(options: PlayerOptions) {
         super({ ...options, type: EnumGameObjectType.Player });
         this.canMoveAtAir = options.canMoveAtAir;
+        this.attackPower = options.attackPower;
         this.handleKeyboardEvents();
+    }
+
+    getAttackPower() {
+        return this.attackPower;
     }
 
     handleKeyboardEvents() {
@@ -50,6 +58,8 @@ export class Player extends GameObject {
                 this.velocityX = 0;
             }
         }
+
+        if (KeyboardHelper.keys[EnumKeyboardKey.X]) this.fire();
     }
 
     onCollisionX(amount: number, collidedObjects: GameObject[]) {
@@ -72,11 +82,13 @@ export class Player extends GameObject {
         this.handleItemCollision(collidedObjects);
     }
 
-    afterMoveX() {
+    afterMoveX(amount: number, collided: boolean) {
+        super.afterMoveX(amount, collided);
         Camera.focusTo(this.position);
     }
 
-    afterMoveY() {
+    afterMoveY(amount: number, collided: boolean) {
+        super.afterMoveY(amount, collided);
         Camera.focusTo(this.position);
     }
 
@@ -86,7 +98,7 @@ export class Player extends GameObject {
         );
 
         enemies.forEach((enemy) => {
-            this.takeDamage((enemy as any as Npc).getDamage());
+            this.takeDamage((enemy as any as Npc).getAttackPower());
         });
 
         if (enemies.length) {
@@ -123,6 +135,11 @@ export class Player extends GameObject {
         //disables airmove
         if (this.canMoveAtAir || this.velocityY == 0)
             this.velocityX = -this.speed;
+    }
+
+    fire() {
+        const projectile = projectileFactory(this, { x: 5, y: 0 });
+        this.initializer?.addObject(projectile);
     }
 
     die() {

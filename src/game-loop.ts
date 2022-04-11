@@ -7,7 +7,8 @@ let frame = 0;
 let loop = () => {
     try {
         World.render();
-        GameStateManager.getCurrentLevel()?.render(frame);
+        const level = GameStateManager.getCurrentLevel();
+        level?.render(frame);
         GameStateManager.runEndCondition();
 
         frame++;

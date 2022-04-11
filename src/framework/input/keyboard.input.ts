@@ -3,7 +3,8 @@ export enum EnumKeyboardKey {
   UP = 38,
   LEFT = 37,
   RIGHT = 39,
-  DOWN = 40
+  DOWN = 40,
+  X = 88
 }
 
 export abstract class KeyboardHelper {
