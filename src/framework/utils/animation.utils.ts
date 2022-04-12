@@ -1,4 +1,6 @@
 import { FRAME_PER_SECOND } from "../constants";
+import { Dimension } from "../game-object/types/dimension";
+import { ImageDimension } from "./image-dimension.interface";
 
 export abstract class AnimationUtils {
     /**
@@ -32,5 +34,26 @@ export abstract class AnimationUtils {
             oneAnimationCycleTime
         );
         return items[index];
+    }
+
+    static findDimensionsInSprite(
+        totalCount: number,
+        frame: number,
+        oneItemDimension: Dimension,
+        oneAnimationCycleTime?: number
+    ): ImageDimension | undefined {
+        if (!totalCount) return;
+
+        const index = this.findIndexByFrame(
+            totalCount,
+            frame,
+            oneAnimationCycleTime
+        );
+
+        return {
+            ...oneItemDimension,
+            x: index * oneItemDimension.width,
+            y: 0,
+        };
     }
 }

@@ -35,14 +35,14 @@ export class Level {
 
     endCondition(): boolean {
         const player = this.getObject(
-            (e) => e.getType() == EnumGameObjectType.Player
+            (e) => e.getType() === EnumGameObjectType.Player
         );
         const endGameFlag = this.getObject(
-            (e) => e.getType() == EnumGameObjectType.EndGameFlag
+            (e) => e.getType() === EnumGameObjectType.EndGameFlag
         );
 
         if (!player || !endGameFlag) return false;
-
+        
         return World.collidesWithObject(player, endGameFlag, false);
     }
 

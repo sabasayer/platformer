@@ -11,7 +11,7 @@ import { Dimension } from "./types/dimension";
 import { EnumObjectState } from "./object-state.enum";
 import { BoundingBox } from "./types/bounding-box";
 import { Game } from "../game";
-import { PinnedObject } from "./types/pinned-object";
+import { CollisionLogger } from "../logger/collision-logger";
 
 export class GameObject {
     id: number = Math.random();
@@ -42,6 +42,7 @@ export class GameObject {
     protected lastHorizontalState = EnumObjectState.movingRight;
 
     protected pinnedObjects = new Set<GameObject>();
+    private logger: CollisionLogger;
 
     get loading() {
         return this._loading;
@@ -78,6 +79,8 @@ export class GameObject {
         this.initialPositions = {
             ...options.initialPosition,
         };
+
+        this.logger = new CollisionLogger(this);
 
         this.createImage();
     }
@@ -290,13 +293,15 @@ export class GameObject {
     }
 
     onCollisionX(amount: number, collidedObjects: GameObject[]) {
-        if (this.shouldResetVelocity(collidedObjects)) this.velocityX = 0;
+        this.logger.onCollision(collidedObjects);
+        if (this.hasSolidCollision(collidedObjects)) this.velocityX = 0;
     }
     onCollisionY(amount: number, collidedObjects: GameObject[]) {
-        if (this.shouldResetVelocity(collidedObjects)) this.velocityY = 0;
+        this.logger.onCollision(collidedObjects);
+        if (this.hasSolidCollision(collidedObjects)) this.velocityY = 0;
     }
 
-    shouldResetVelocity(collidedObjects: GameObject[]) {
+    hasSolidCollision(collidedObjects: GameObject[]) {
         return !collidedObjects.length || collidedObjects.some((e) => e.solid);
     }
 
@@ -327,7 +332,8 @@ export class GameObject {
         const collidedObjects = World.detectCollision(this);
         if (!collidedObjects.length) return res;
 
-        this.popObjectHorizontal(collidedObjects[0]);
+        if (this.hasSolidCollision(collidedObjects))
+            this.popObjectHorizontal(collidedObjects[0]);
 
         res.collided = true;
         res.collidedObjects = collidedObjects;
@@ -351,7 +357,8 @@ export class GameObject {
         const collidedObjects = World.detectCollision(this);
         if (!collidedObjects.length) return res;
 
-        this.popObjectVertical(collidedObjects[0]);
+        if (this.hasSolidCollision(collidedObjects))
+            this.popObjectVertical(collidedObjects[0]);
 
         res.collided = true;
         res.collidedObjects = collidedObjects;

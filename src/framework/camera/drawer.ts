@@ -70,14 +70,14 @@ export abstract class Drawer {
         else
             World.ctx.drawImage(
                 image,
+                imageDimension?.x,
+                imageDimension?.y,
+                imageDimension?.width,
+                imageDimension?.height,
                 position.x,
                 position.y,
                 dimension.width,
                 dimension.height,
-                imageDimension?.x,
-                imageDimension?.y,
-                imageDimension?.width,
-                imageDimension?.height
             );
     }
 }

@@ -37,8 +37,6 @@ export class Projectile extends GameObject {
 
         if (targets.length) this.giveDamage(targets);
 
-        console.log("collided");
-
         this.die();
     }
 

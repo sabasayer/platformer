@@ -11,6 +11,7 @@ class GameWorld {
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     private worldObjects: GameObject[] = [];
+    private logsOn = false;
 
     constructor() {
         this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -20,6 +21,14 @@ class GameWorld {
 
         this.ctx = ctx;
         window.$gameWorld = this;
+    }
+
+    get isLogsOn() {
+        return this.logsOn;
+    }
+
+    setLogsOn() {
+        this.logsOn = true;
     }
 
     render() {

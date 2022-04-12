@@ -17,7 +17,7 @@ class CollisionHelper {
     };
 
     checkForObjects = (obj: GameObject, obj2: GameObject): boolean => {
-        if (obj.calculatedPosition.z != obj2.calculatedPosition.z) return false;
+        if (obj.calculatedPosition.z !== obj2.calculatedPosition.z) return false;
 
         if (!this.checksCollidesWith(obj, obj2)) return false;
 

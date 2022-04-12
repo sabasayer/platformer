@@ -29,9 +29,10 @@ export abstract class GameStateManager {
         if (!currentLevel?.endCondition()) return;
 
         this.isEnding = true;
-        if (!currentLevel.getNextLevel()) return;
+        const nextLevel = currentLevel.getNextLevel();
+        if (!nextLevel) return;
 
-        this.setCurrentState(currentLevel.getNextLevel())
+        this.setCurrentState(nextLevel)
         this.isEnding = false;
     }
 

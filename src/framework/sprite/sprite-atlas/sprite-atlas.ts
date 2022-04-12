@@ -1,11 +1,12 @@
 import { SpriteAtlasMap } from "./sprite-atlas-map.interface";
 import { ImageUtils } from "../../utils/image.utils";
-import { Position, Dimension } from "~/src/framework/game-object/game-object";
 import { AnimationUtils } from "~/src/framework/utils/animation.utils";
 import { Drawer } from "../../camera/drawer";
+import { Position } from "../../game-object/types/position";
+import { Dimension } from "../../game-object/types/dimension";
 
 export class SpriteAtlas {
-    image: HTMLImageElement;
+    image: HTMLImageElement | null = null;
     map: SpriteAtlasMap;
 
     constructor(imageUrl: string, map: SpriteAtlasMap) {

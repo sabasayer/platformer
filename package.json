@@ -1,18 +1,19 @@
 {
-  "name": "parcel-sandbox",
-  "version": "1.0.0",
-  "description": "Simple Parcel Sandbox",
-  "scripts": {
-    "dev": "parcel index.html --open",
-    "build": "parcel build index.html"
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "parcel": "^2.4.1",
-    "typescript": "^4.6.3"
-  },
-  "prettier": {
-    "tabWidth": 4
-  }
+    "name": "parcel-sandbox",
+    "version": "1.0.0",
+    "description": "Simple Parcel Sandbox",
+    "scripts": {
+        "dev": "parcel index.html --open",
+        "serve":"http-server -p 40",
+        "build": "parcel build index.html"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "parcel": "^2.4.1",
+        "typescript": "^4.6.3",
+        "http-server": "14.1.0"
+    },
+    "prettier": {
+        "tabWidth": 4
+    }
 }

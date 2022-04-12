@@ -5,6 +5,7 @@ import { EnumObjectState } from "~/src/framework/game-object/object-state.enum";
 import { Position } from "~/src/framework/game-object/types/position";
 import { getAsset } from "~/src/framework/helper/index";
 import { Sprite } from "~/src/framework/sprite/sprite";
+import { SpriteGroup } from "../framework/sprite/sprite-group";
 
 export class Coin extends ItemObject {
     constructor(position: Position) {
@@ -12,24 +13,17 @@ export class Coin extends ItemObject {
             initialPosition: position,
             type: EnumGameObjectType.Item,
             itemType: EnumItemType.Coin,
-            dimension: { width: 32, height: 32 },
+            dimension: { width: 16, height: 16 },
             collidesWith: [
                 EnumGameObjectType.Player,
                 EnumGameObjectType.IdleObject,
             ],
-            imageUrl: getAsset("sprites/goldCoin/goldCoin1.png"),
             spriteStore: {
-                [EnumObjectState.idle]: new Sprite([
-                    getAsset("sprites/goldCoin/goldCoin1.png"),
-                    getAsset("sprites/goldCoin/goldCoin2.png"),
-                    getAsset("sprites/goldCoin/goldCoin3.png"),
-                    getAsset("sprites/goldCoin/goldCoin4.png"),
-                    getAsset("sprites/goldCoin/goldCoin5.png"),
-                    getAsset("sprites/goldCoin/goldCoin6.png"),
-                    getAsset("sprites/goldCoin/goldCoin7.png"),
-                    getAsset("sprites/goldCoin/goldCoin8.png"),
-                    getAsset("sprites/goldCoin/goldCoin9.png"),
-                ]),
+                [EnumObjectState.idle]: new SpriteGroup(
+                    getAsset("sprites/coins/MonedaD.png"),
+                    { height: 16, width: 16 },
+                    5
+                ),
             },
             solid: false,
         });

@@ -6,12 +6,11 @@ import { playerObject } from "../level/objects/player.object";
 import { getAsset } from "../framework/helper/index";
 import { createCoin } from "../level/objects/coin.object";
 
-
 const object = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 42, y: 250 },
     dimension: { width: 250, height: 12 },
-    collidesWith: 'all',
+    collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
@@ -19,7 +18,7 @@ const object2 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 150, y: 330 },
     dimension: { width: 211, height: 11 },
-    collidesWith: 'all',
+    collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
@@ -27,7 +26,7 @@ const object3 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 392, y: 382 },
     dimension: { width: 211, height: 11 },
-    collidesWith: 'all',
+    collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
@@ -35,7 +34,7 @@ const object4 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: { x: 250, y: 720 },
     dimension: { width: 50, height: 50 },
-    collidesWith: 'all',
+    collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
@@ -49,6 +48,8 @@ const objectEndGame = new GameObject({
         width: 50,
         height: 50,
     },
+    collidesWith: [EnumGameObjectType.Player],
+    solid: false,
     gravityHasEffectOnIt: false,
     imageUrl: getAsset("sprites/red-flag.png"),
 });
@@ -63,7 +64,7 @@ const ground = new GameObject({
         width: 500,
         height: 10,
     },
-    collidesWith: 'all',
+    collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
@@ -77,7 +78,7 @@ const ground2 = new GameObject({
         width: 500,
         height: 10,
     },
-    collidesWith: 'all',
+    collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
@@ -88,17 +89,6 @@ const backGround = new GameObject({
     gravityHasEffectOnIt: false,
     imageUrl: getAsset("background.jpg"),
 });
-
-
-const testPinnedObject = new GameObject({
-    type: EnumGameObjectType.IdleObject,
-    initialPosition: { x: 30, y: 110 },
-    dimension: { width: 10, height: 10 },
-    gravityHasEffectOnIt: false,
-    solid: false
-});
-
-playerObject.pinObject(testPinnedObject);
 
 export const level1Initializer = new Initializer([
     playerObject,
@@ -112,5 +102,4 @@ export const level1Initializer = new Initializer([
     ground2,
     backGround,
     createCoin({ x: 150, y: 720 }),
-    testPinnedObject
 ]);

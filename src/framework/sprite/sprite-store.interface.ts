@@ -1,6 +1,7 @@
-import { EnumObjectState } from "~/src/framework/game-object/game-object";
+import { EnumObjectState } from "../game-object/object-state.enum";
 import { Sprite } from "./sprite";
+import { SpriteGroup } from "./sprite-group";
 
 export type SpriteStore = {
-    [key in EnumObjectState]?: Sprite;
+    [key in EnumObjectState]?: Sprite | SpriteGroup;
 };

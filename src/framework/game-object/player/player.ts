@@ -6,7 +6,6 @@ import { Npc } from "../npc/npc";
 import { Camera } from "../../camera/camera";
 import { Inventory } from "./inventory";
 import { ItemObject } from "../item/item";
-import { Projectile } from "../projectile/projectile";
 import { projectileFactory } from "../projectile/projectile.factory";
 
 export class Player extends GameObject {
@@ -138,7 +137,7 @@ export class Player extends GameObject {
     }
 
     fire() {
-        const projectile = projectileFactory(this, { x: 5, y: 0 });
+        const projectile = projectileFactory(this, { x: 20, y: 0 });
         this.initializer?.addObject(projectile);
     }
 
