@@ -29,6 +29,7 @@ export class GameObject {
     protected solid: boolean = true;
     protected imageUrl?: string = "";
     protected image?: HTMLImageElement;
+    protected color?: string;
 
     protected spriteStore?: SpriteStore;
 
@@ -52,6 +53,10 @@ export class GameObject {
         return this.position;
     }
 
+    get getDimension() {
+        return this.dimension;
+    }
+
     get calculatedPosition() {
         return {
             left: this.position.x,
@@ -63,11 +68,12 @@ export class GameObject {
     }
 
     constructor(options: GameObjectOptions) {
-        this.position = options.initialPosition;
+        this.position = { ...options.initialPosition };
         this.collidesWith = options.collidesWith;
         this.dimension = options.dimension;
         this.spriteStore = options.spriteStore;
         this.imageUrl = options.imageUrl;
+        this.color = options.color;
         this.gravityHasEffectOnIt =
             options.gravityHasEffectOnIt ?? this.gravityHasEffectOnIt;
         this.solid = options.solid ?? this.solid;
@@ -155,7 +161,8 @@ export class GameObject {
             return;
         }
 
-        Drawer.fillRect(this.position, this.dimension, "orange");
+        if (this.color)
+            Drawer.fillRect(this.position, this.dimension, this.color);
     }
 
     renderBoundingBox() {
@@ -325,6 +332,8 @@ export class GameObject {
 
         const collision = World.collidesWithWorldBoundaries(this);
         if (collision.x) {
+            console.log(collision.x);
+
             this.keepInWorldBoundariesX();
             res.collided = true;
         }

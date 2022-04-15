@@ -41,7 +41,7 @@ export class SpriteAtlas {
         frame: number
     ) {
         const dimensions = this.findImageDimension(name, frame);
-        if (!dimensions) return;
+        if (!this.image || !dimensions) return;
 
         Drawer.drawImage(
             this.image,

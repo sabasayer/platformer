@@ -5,7 +5,7 @@ import { EnumObjectState } from "~/src/framework/game-object/object-state.enum";
 import { Position } from "~/src/framework/game-object/types/position";
 import { getAsset } from "~/src/framework/helper/index";
 import { Sprite } from "~/src/framework/sprite/sprite";
-import { SpriteGroup } from "../framework/sprite/sprite-group";
+import { SpriteAnimation } from "../framework/sprite/sprite-animation";
 
 export class Coin extends ItemObject {
     constructor(position: Position) {
@@ -19,7 +19,7 @@ export class Coin extends ItemObject {
                 EnumGameObjectType.IdleObject,
             ],
             spriteStore: {
-                [EnumObjectState.idle]: new SpriteGroup(
+                [EnumObjectState.idle]: new SpriteAnimation(
                     getAsset("sprites/coins/MonedaD.png"),
                     { height: 16, width: 16 },
                     5

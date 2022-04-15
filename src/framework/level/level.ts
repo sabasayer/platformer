@@ -9,12 +9,14 @@ export class Level {
     protected nextLevel?: string;
     protected name: string;
     protected initializer: Initializer;
+    protected audio: HTMLAudioElement | null = null;
 
     constructor(options: LevelOptions) {
         this.name = options.name;
         this.initializer = options.initializer;
         this.prevLevel = options.prevLevel;
         this.nextLevel = options.nextLevel;
+        if (options.music) this.audio = new Audio(options.music);
     }
 
     getPrevLevel() {
@@ -42,12 +44,13 @@ export class Level {
         );
 
         if (!player || !endGameFlag) return false;
-        
+
         return World.collidesWithObject(player, endGameFlag, false);
     }
 
     start() {
         this.initializer.start();
+        this.audio?.play();
     }
 
     render(frame: number) {
@@ -56,6 +59,7 @@ export class Level {
 
     end() {
         // run end animation
+        this.audio?.pause();
         this.initializer.end();
     }
 }

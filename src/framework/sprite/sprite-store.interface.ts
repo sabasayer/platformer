@@ -1,7 +1,7 @@
 import { EnumObjectState } from "../game-object/object-state.enum";
 import { Sprite } from "./sprite";
-import { SpriteGroup } from "./sprite-group";
+import { SpriteAnimation } from "./sprite-animation";
 
 export type SpriteStore = {
-    [key in EnumObjectState]?: Sprite | SpriteGroup;
+    [key in EnumObjectState]?: Sprite | SpriteAnimation;
 };

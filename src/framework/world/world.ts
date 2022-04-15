@@ -5,8 +5,8 @@ import { Projectile } from "../game-object/projectile/projectile";
 import { collisionHelper } from "../helper/collision.helper";
 
 class GameWorld {
-    width: number = 2500;
-    height: number = 2000;
+    width: number = 2048;
+    height: number = 1546;
     gravity: number = 13;
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;

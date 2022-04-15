@@ -8,6 +8,7 @@ export interface GameObjectOptions {
     initialPosition: Position;
     dimension: Dimension;
     imageUrl?: string;
+    color?: string;
     spriteStore?: SpriteStore;
     collidesWith?: "all" | EnumGameObjectType[];
     gravityHasEffectOnIt?: boolean;

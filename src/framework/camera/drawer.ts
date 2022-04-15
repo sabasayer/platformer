@@ -1,7 +1,8 @@
 import { World } from "../world/world";
 import { Camera } from "./camera";
-import { Position, Dimension } from "../game-object/game-object";
 import { ImageDimension } from "../utils/image-dimension.interface";
+import { Position } from "../game-object/types/position";
+import { Dimension } from "../game-object/types/dimension";
 
 export abstract class Drawer {
     static writeText(
@@ -77,7 +78,7 @@ export abstract class Drawer {
                 position.x,
                 position.y,
                 dimension.width,
-                dimension.height,
+                dimension.height
             );
     }
 }

@@ -5,6 +5,7 @@ import { createPatrol } from "../level/objects/patrol.object";
 import { playerObject } from "../level/objects/player.object";
 import { getAsset } from "../framework/helper/index";
 import { createCoin } from "../level/objects/coin.object";
+import { Background } from "../framework/game-object/background/background";
 
 const object = new GameObject({
     type: EnumGameObjectType.IdleObject,
@@ -71,23 +72,47 @@ const ground = new GameObject({
 const ground2 = new GameObject({
     type: EnumGameObjectType.IdleObject,
     initialPosition: {
-        x: 550,
-        y: 1208,
+        x: 0,
+        y: 1200,
     },
     dimension: {
-        width: 500,
-        height: 10,
+        width: 2000,
+        height: 1,
     },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
 });
 
-const backGround = new GameObject({
-    type: EnumGameObjectType.IdleObject,
+const background = new Background({
     initialPosition: { x: 0, y: 0, z: -1 },
-    dimension: { width: 1920, height: 1080 },
-    gravityHasEffectOnIt: false,
-    imageUrl: getAsset("background.jpg"),
+    dimension: { width: 2048, height: 1546 },
+    images: [
+        { url: getAsset("backgrounds/_11_background.png") },
+        {
+            url: getAsset("backgrounds/_10_distant_clouds.png"),
+            parrallaxSpeed: 0.1,
+        },
+        {
+            url: getAsset("backgrounds/_09_distant_clouds1.png"),
+            parrallaxSpeed: 0.2,
+        },
+        { url: getAsset("backgrounds/_08_clouds.png"), parrallaxSpeed: 0.3 },
+        {
+            url: getAsset("backgrounds/_07_huge_clouds.png"),
+            parrallaxSpeed: 0.3,
+        },
+        { url: getAsset("backgrounds/_06_hill2.png"), parrallaxSpeed: 0.1 },
+        { url: getAsset("backgrounds/_05_hill1.png"), parrallaxSpeed: 0.2 },
+        { url: getAsset("backgrounds/_04_bushes.png"), parrallaxSpeed: 0.3 },
+        {
+            url: getAsset("backgrounds/_03_distant_trees.png"),
+            parrallaxSpeed: 0.4,
+        },
+        {
+            url: getAsset("backgrounds/_02_trees_and_bushes.png"),
+        },
+        { url: getAsset("backgrounds/_01_ground.png") },
+    ],
 });
 
 export const level1Initializer = new Initializer([
@@ -98,8 +123,13 @@ export const level1Initializer = new Initializer([
     object4,
     objectEndGame,
     createPatrol({ x: 200, y: 700 }),
+    createPatrol({ x: 100, y: 1500 }),
+    createPatrol({ x: 100, y: 400 }),
+    createPatrol({ x: 100, y: 500 }),
+    createPatrol({ x: 100, y: 200 }),
+    createPatrol({ x: 100, y: 1100 }),
+    createCoin({ x: 150, y: 720 }),
     ground,
     ground2,
-    backGround,
-    createCoin({ x: 150, y: 720 }),
+    background,
 ]);

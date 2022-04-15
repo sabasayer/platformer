@@ -7,6 +7,7 @@ import { Camera } from "../../camera/camera";
 import { Inventory } from "./inventory";
 import { ItemObject } from "../item/item";
 import { projectileFactory } from "../projectile/projectile.factory";
+import { EnumObjectState } from "../object-state.enum";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
@@ -137,7 +138,13 @@ export class Player extends GameObject {
     }
 
     fire() {
-        const projectile = projectileFactory(this, { x: 20, y: 0 });
+        const velocityX = [
+            EnumObjectState.movingLeft,
+            EnumObjectState.idleLeft,
+        ].includes(this.state)
+            ? -20
+            : 20;
+        const projectile = projectileFactory(this, { x: velocityX, y: 0 });
         this.initializer?.addObject(projectile);
     }
 
