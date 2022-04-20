@@ -6,6 +6,10 @@ import { playerObject } from "../level/objects/player.object";
 import { getAsset } from "../framework/helper/index";
 import { createCoin } from "../level/objects/coin.object";
 import { Background } from "../framework/game-object/background/background";
+import { UIElement } from "../framework/game-object/ui/ui-element";
+import { LayerZIndexes } from "../framework/constants";
+import { score } from "../game-object/score";
+import { coinScore } from "../game-object/coin-score";
 
 const object = new GameObject({
     type: EnumGameObjectType.IdleObject,
@@ -84,7 +88,7 @@ const ground2 = new GameObject({
 });
 
 const background = new Background({
-    initialPosition: { x: 0, y: 0, z: -1 },
+    initialPosition: { x: 0, y: 0 },
     dimension: { width: 2048, height: 1546 },
     images: [
         { url: getAsset("backgrounds/_11_background.png") },
@@ -132,4 +136,6 @@ export const level1Initializer = new Initializer([
     ground,
     ground2,
     background,
+    score,
+    coinScore,
 ]);

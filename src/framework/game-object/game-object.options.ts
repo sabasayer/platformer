@@ -7,6 +7,7 @@ import { Position } from "./types/position";
 export interface GameObjectOptions {
     initialPosition: Position;
     dimension: Dimension;
+    name?: string;
     imageUrl?: string;
     color?: string;
     spriteStore?: SpriteStore;

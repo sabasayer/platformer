@@ -3,20 +3,23 @@ import { Camera } from "./camera";
 import { ImageDimension } from "../utils/image-dimension.interface";
 import { Position } from "../game-object/types/position";
 import { Dimension } from "../game-object/types/dimension";
+import { TextConstants } from "../constants";
 
 export abstract class Drawer {
     static writeText(
         text: string,
         absolutePosition: Position,
-        color: string,
-        size: string = "13px",
-        fontFamiliy: string = "Arial"
+        color: string = TextConstants.color,
+        size: number = TextConstants.size,
+        fontFamiliy: string = TextConstants.family,
+        maxWidth?: number
     ) {
         const position = Camera.calculatePosition(absolutePosition);
 
         World.ctx.fillStyle = color;
-        World.ctx.font = `${size} ${fontFamiliy}`;
-        World.ctx.fillText(text, position.x, position.y - 15);
+        World.ctx.font = `${size}px ${fontFamiliy}`;
+        World.ctx.textBaseline = "top";
+        World.ctx.fillText(text, position.x, position.y - 15, maxWidth);
     }
 
     static fillRect(

@@ -16,6 +16,7 @@ export class Player extends GameObject {
     private canMoveAtAir: boolean = false;
     private inventory = new Inventory();
     private attackPower: number;
+    private score: number = 0;
 
     constructor(options: PlayerOptions) {
         super({ ...options, type: EnumGameObjectType.Player });
@@ -23,6 +24,14 @@ export class Player extends GameObject {
         this.attackPower = options.attackPower;
         this.handleKeyboardEvents();
     }
+
+    get getScore() {
+        return this.score;
+    }
+
+    filterInventory = (finder: (e: ItemObject) => boolean) => {
+        return this.inventory.filterItems(finder);
+    };
 
     getAttackPower() {
         return this.attackPower;
@@ -142,8 +151,8 @@ export class Player extends GameObject {
             EnumObjectState.movingLeft,
             EnumObjectState.idleLeft,
         ].includes(this.state)
-            ? -20
-            : 20;
+            ? -40
+            : 40;
         const projectile = projectileFactory(this, { x: velocityX, y: 0 });
         this.initializer?.addObject(projectile);
     }

@@ -8,3 +8,16 @@ export const ENVS = {
     dev: "dev",
     preview: "preview",
 };
+
+export const LayerZIndexes = {
+    background: -1,
+    level: 0,
+    ui: 1,
+    menu: 2,
+};
+
+export const TextConstants = {
+    size: 13,
+    family: "Arial",
+    color: "black",
+};

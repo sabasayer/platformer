@@ -16,7 +16,10 @@ export class Level {
         this.initializer = options.initializer;
         this.prevLevel = options.prevLevel;
         this.nextLevel = options.nextLevel;
-        if (options.music) this.audio = new Audio(options.music);
+        if (options.music) {
+            this.audio = new Audio(options.music);
+            this.audio.volume = 0.5;
+        }
     }
 
     getPrevLevel() {

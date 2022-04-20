@@ -1,3 +1,5 @@
+import { EnumInteractionType } from "../../interaction-log/interaction-type.enum";
+import { World } from "../../world/world";
 import { GameObject } from "../game-object";
 import { EnumGameObjectType } from "../game-object-type.enum";
 import { Player } from "../player/player";
@@ -42,6 +44,22 @@ export class Projectile extends GameObject {
 
     giveDamage(targets: GameObject[]) {
         const damage = (this.owner as Player).getAttackPower();
-        targets.forEach((target) => target.takeDamage(damage));
+        targets.forEach((target) => {
+            const isDead = target.takeDamage(damage);
+            World.interactionLogContainer.addInteraction({
+                type: EnumInteractionType.damage,
+                source: this.owner,
+                target,
+                data: damage,
+            });
+
+            if (isDead) {
+                World.interactionLogContainer.addInteraction({
+                    type: EnumInteractionType.kill,
+                    source: this.owner,
+                    target,
+                });
+            }
+        });
     }
 }

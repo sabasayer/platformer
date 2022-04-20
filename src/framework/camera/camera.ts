@@ -8,8 +8,8 @@ export interface CameraListener {
 export abstract class Camera {
     private static x: number = 0;
     private static y: number = 0;
-    private static width: number = 1366;
-    private static height: number = 768;
+    private static width: number = window.innerWidth;
+    private static height: number = window.innerHeight;
     private static listeners: CameraListener[] = [];
 
     static getRect() {
@@ -58,6 +58,7 @@ export abstract class Camera {
     }
 
     static calculatePosition(position: Position): Position {
+        if (position.fixed) return position;
         return {
             x: position.x - this.x,
             y: position.y - this.y,

@@ -16,4 +16,8 @@ export class Inventory {
 
         this.items.splice(index, 1);
     }
+
+    filterItems(finder: (item: ItemObject) => boolean): ItemObject[] {
+        return this.items.filter((e) => finder(e));
+    }
 }

@@ -20,7 +20,6 @@ export class CollisionLogger {
 
         if (hasNew) {
             message && console.info("collision", message);
-            console.log(objects);
         }
 
         this.lastObjectIds = ids;

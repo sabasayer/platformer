@@ -5,4 +5,5 @@ export enum EnumGameObjectType {
     EndGameFlag = 4,
     Projectile = 5,
     Npc = 6,
+    UI = 7,
 }

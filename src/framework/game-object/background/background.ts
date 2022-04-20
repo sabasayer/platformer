@@ -1,6 +1,8 @@
 import { Camera } from "../../camera/camera";
+import { LayerZIndexes } from "../../constants";
 import { GameObject } from "../game-object";
 import { EnumGameObjectType } from "../game-object-type.enum";
+import { GameObjectOptions } from "../game-object.options";
 import { Position } from "../types/position";
 import { BackgroundImage, BackgroundOptions } from "./background.options";
 
@@ -8,8 +10,12 @@ export class Background extends GameObject {
     images: BackgroundImage[] = [];
 
     constructor(options: BackgroundOptions) {
-        const gameObjectOptions = {
+        const gameObjectOptions: GameObjectOptions = {
             ...options,
+            initialPosition: {
+                ...options.initialPosition,
+                z: LayerZIndexes.background,
+            },
             type: EnumGameObjectType.IdleObject,
             gravityHasEffectOnIt: false,
         };

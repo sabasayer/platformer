@@ -15,6 +15,7 @@ import { CollisionLogger } from "../logger/collision-logger";
 
 export class GameObject {
     id: number = Math.random();
+    protected name?: string;
     protected type: EnumGameObjectType;
     protected position: Position;
     protected dimension: Dimension;
@@ -44,6 +45,10 @@ export class GameObject {
 
     protected pinnedObjects = new Set<GameObject>();
     private logger: CollisionLogger;
+
+    get getName() {
+        return this.name;
+    }
 
     get loading() {
         return this._loading;
@@ -86,6 +91,7 @@ export class GameObject {
             ...options.initialPosition,
         };
 
+        this.name = options.name;
         this.logger = new CollisionLogger(this);
 
         this.createImage();
@@ -151,7 +157,7 @@ export class GameObject {
         this.setHorizontalLastState();
     }
 
-    private renderBody(frame: number) {
+    protected renderBody(frame: number) {
         if (this.spriteStore && this.renderSprite(frame)) {
             return;
         }
@@ -259,7 +265,6 @@ export class GameObject {
 
     pinObject = (object: GameObject) => {
         this.pinnedObjects.add(object);
-        console.log(this.pinnedObjects);
     };
 
     resetPosition() {
@@ -332,8 +337,6 @@ export class GameObject {
 
         const collision = World.collidesWithWorldBoundaries(this);
         if (collision.x) {
-            console.log(collision.x);
-
             this.keepInWorldBoundariesX();
             res.collided = true;
         }
@@ -402,13 +405,21 @@ export class GameObject {
                 collidedObject.calculatedPosition.right + FRAME_RATE;
     }
 
-    takeDamage(damage: number) {
-        if (this.health == undefined) return;
+    /**
+     * @returns true if object is died
+     */
+    takeDamage(damage: number): boolean {
+        if (this.health == undefined) return false;
 
         // run take damage animation
 
         this.health -= damage;
-        if (this.health <= 0) this.die();
+        if (this.health <= 0) {
+            this.die();
+            return true;
+        }
+
+        return false;
     }
 
     die() {
@@ -419,7 +430,7 @@ export class GameObject {
 
     destroy() {
         World.removeObject(this);
-        this.initializer?.removeObject((obj) => obj === this);
-        console.log(this.initializer);
+        this.initializer?.removeObject((obj) => obj.id === this.id);
+        console.log("destory", this);
     }
 }

@@ -68,7 +68,7 @@ export class Initializer {
                 y: Camera.getRect().height / 2 - 50,
             },
             "red",
-            "40px"
+            40
         );
     }
 
@@ -83,7 +83,8 @@ export class Initializer {
     }
 
     protected destroyObjects() {
-        this.gameObjects.forEach((object) => {
+        const objects = [...this.gameObjects];
+        objects.forEach((object) => {
             object.destroy();
         });
     }

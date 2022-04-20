@@ -3,6 +3,7 @@ import { EnumGameObjectType } from "../game-object/game-object-type.enum";
 import { Player } from "../game-object/player/player";
 import { Projectile } from "../game-object/projectile/projectile";
 import { collisionHelper } from "../helper/collision.helper";
+import { InteractionLogContainer } from "../interaction-log/interaction-log-container";
 
 class GameWorld {
     width: number = 2048;
@@ -10,12 +11,14 @@ class GameWorld {
     gravity: number = 13;
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
+    interactionLogContainer = new InteractionLogContainer();
     private worldObjects: GameObject[] = [];
     private logsOn = false;
 
     constructor() {
         this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
         this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         const ctx = this.canvas.getContext("2d");
         if (!ctx) throw new Error("Context is not found");
 
@@ -96,9 +99,11 @@ class GameWorld {
     }
 
     removeObject(object: GameObject) {
-        const index = this.worldObjects.findIndex((e) => e.id == object.id);
+        const index = this.worldObjects.findIndex((e) => e.id === object.id);
 
         if (index > -1) this.worldObjects.splice(index, 1);
+
+        console.log(index, this.worldObjects.length);
     }
 
     detectCollision(object: GameObject) {
