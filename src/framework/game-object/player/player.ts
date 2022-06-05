@@ -8,10 +8,11 @@ import { Inventory } from "./inventory";
 import { ItemObject } from "../item/item";
 import { projectileFactory } from "../projectile/projectile.factory";
 import { EnumObjectState } from "../object-state.enum";
+import { Initializer } from "../../initializer/initializer";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
-    private speed: number = 15;
+    private speed: number = 30;
     private jumpForce: number = 80;
     private canMoveAtAir: boolean = false;
     private inventory = new Inventory();
@@ -27,6 +28,11 @@ export class Player extends GameObject {
 
     get getScore() {
         return this.score;
+    }
+
+    onLevelStart(initializer: Initializer) {
+        super.onLevelStart(initializer);
+        this.handleKeyboardEvents();
     }
 
     filterInventory = (finder: (e: ItemObject) => boolean) => {
@@ -151,8 +157,8 @@ export class Player extends GameObject {
             EnumObjectState.movingLeft,
             EnumObjectState.idleLeft,
         ].includes(this.state)
-            ? -40
-            : 40;
+            ? -80
+            : 80;
         const projectile = projectileFactory(this, { x: velocityX, y: 0 });
         this.initializer?.addObject(projectile);
     }

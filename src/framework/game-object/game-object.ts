@@ -113,6 +113,12 @@ export class GameObject {
         this.initializer = initializer;
     }
 
+    onLevelStart(initializer: Initializer) {
+        this.register();
+        this.setInitializer(initializer);
+        this.resetPosition();
+    }
+
     createImage() {
         if (!this.imageUrl) return;
 
@@ -430,7 +436,5 @@ export class GameObject {
 
     destroy() {
         World.removeObject(this);
-        this.initializer?.removeObject((obj) => obj.id === this.id);
-        console.log("destory", this);
     }
 }

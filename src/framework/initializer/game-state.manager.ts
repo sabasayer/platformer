@@ -50,3 +50,5 @@ window.addEventListener("keydown", (ev) => {
     if (ev.which === EnumKeyboardKey.ESCAPE)
         GameStateManager.setCurrentState("menu");
 });
+
+window.$gameStateManager = GameStateManager;

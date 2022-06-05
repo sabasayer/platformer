@@ -4,6 +4,7 @@ declare global {
     interface Window {
         $game: any;
         $gameWorld: any;
+        $gameStateManager: any;
     }
 }
 

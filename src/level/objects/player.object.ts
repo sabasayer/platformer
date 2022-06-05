@@ -10,7 +10,7 @@ const playerIdleSprite = new Sprite([
     getAsset("sprites/player/idle/anim2.png"),
     getAsset("sprites/player/idle/anim3.png"),
     getAsset("sprites/player/idle/anim4.png"),
-]);
+],1);
 const playerIdleLeftSprite = new Sprite([
     getAsset("sprites/player/idle/anim5.png"),
     getAsset("sprites/player/idle/anim6.png"),
@@ -28,7 +28,7 @@ const playerRunSprite = new Sprite(
         getAsset("sprites/player/run/anim11.png"),
         getAsset("sprites/player/run/anim12.png"),
     ],
-    1.4
+    1
 );
 
 const playerRunLeftSprite = new Sprite(
@@ -42,7 +42,7 @@ const playerRunLeftSprite = new Sprite(
         getAsset("sprites/player/run/anim19.png"),
         getAsset("sprites/player/run/anim20.png"),
     ],
-    1.4
+    1
 );
 
 const playerJumpingSprite = new Sprite([

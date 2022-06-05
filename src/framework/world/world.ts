@@ -102,8 +102,6 @@ class GameWorld {
         const index = this.worldObjects.findIndex((e) => e.id === object.id);
 
         if (index > -1) this.worldObjects.splice(index, 1);
-
-        console.log(index, this.worldObjects.length);
     }
 
     detectCollision(object: GameObject) {

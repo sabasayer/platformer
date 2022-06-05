@@ -4,6 +4,7 @@ import { EnumEvent } from "./event.enum";
 import { MenuEvent, MenuOptions } from "./menu.options";
 import { collisionHelper } from "../../helper/collision.helper";
 import { BoundingBox } from "../types/bounding-box";
+import { Camera } from "../../camera/camera";
 
 export class Menu extends Level {
     private events: MenuEvent[];
@@ -15,6 +16,7 @@ export class Menu extends Level {
 
     start(): void {
         super.start();
+        Camera.move({ x: 0, y: 0 });
         this.listenEvents();
     }
 

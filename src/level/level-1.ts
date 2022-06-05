@@ -6,5 +6,5 @@ export const level1 = new Level({
     name: "level1",
     initializer: level1Initializer,
     nextLevel: "level2",
-    music: getAsset("musics/bg-music.mp3"),
+    // music: getAsset("musics/bg-music.mp3"),
 });

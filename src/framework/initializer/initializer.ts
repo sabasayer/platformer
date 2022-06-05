@@ -20,18 +20,13 @@ export class Initializer {
 
     registerObjects() {
         this.gameObjects.forEach((object) => {
-            object.register();
-            object.setInitializer(this);
-            object.resetPosition();
+            object.onLevelStart(this);
         });
     }
 
     addObject(gameObject: GameObject) {
         this.gameObjects.push(gameObject);
-        gameObject.register();
-        gameObject.setInitializer(this);
-        gameObject.resetPosition();
-
+        gameObject.onLevelStart(this);
         this.sortObjectsByZ();
     }
 
