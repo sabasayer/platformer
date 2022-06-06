@@ -3,7 +3,6 @@ import { World } from "../world/world";
 import { SpriteStore } from "~/src/framework/sprite/sprite-store.interface";
 import { GameObjectOptions } from "./game-object.options";
 import { EnumGameObjectType } from "./game-object-type.enum";
-import { Initializer } from "../initializer/initializer";
 import { Drawer } from "../camera/drawer";
 import { Collision } from "../world/collision.interface";
 import { Position } from "./types/position";
@@ -13,6 +12,7 @@ import { BoundingBox } from "./types/bounding-box";
 import { Game } from "../game";
 import { CollisionLogger } from "../logger/collision-logger";
 import { Scene } from "../scene/scene";
+import { collisionHelper } from "../helper/collision.helper";
 
 export class GameObject {
     id: number = World.getId();
@@ -39,7 +39,6 @@ export class GameObject {
 
     protected initialPositions: Position;
     protected health?: number;
-    protected initializer?: Initializer;
 
     protected _loading: boolean = false;
     protected lastHorizontalState = EnumObjectState.movingRight;
@@ -113,15 +112,6 @@ export class GameObject {
 
     getType() {
         return this.type;
-    }
-
-    setInitializer(initializer: Initializer) {
-        this.initializer = initializer;
-    }
-
-    onLevelStart(initializer: Initializer) {
-        this.setInitializer(initializer);
-        this.resetPosition();
     }
 
     createImage() {
@@ -387,12 +377,18 @@ export class GameObject {
 
     keepInWorldBoundariesX() {
         this.position.x =
-            this.position.x <= 0 ? 0 : World.width - this.dimension.width;
+            this.position.x <= 0
+                ? 0
+                : collisionHelper.getWordlDimensions().width -
+                  this.dimension.width;
     }
 
     keepInWorldBoundariesY() {
         this.position.y =
-            this.position.y <= 0 ? 0 : World.height - this.dimension.height;
+            this.position.y <= 0
+                ? 0
+                : collisionHelper.getWordlDimensions().height -
+                  this.dimension.height;
     }
 
     popObjectVertical(collidedObject: GameObject) {

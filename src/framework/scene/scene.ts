@@ -30,6 +30,10 @@ class GameScene {
         this.collisionGroup.removeObject(object);
     }
 
+    getObject(finder: (obj: GameObject) => boolean) {
+        return this.objects.find((e) => finder(e));
+    }
+
     clear() {
         this.objects = [];
         this.collisionGroup.clear();

@@ -1,8 +1,6 @@
 import { InteractionLogContainer } from "../interaction-log/interaction-log-container";
 
 class GameWorld {
-    width: number = 20048;
-    height: number = 1546;
     gravity: number = 13;
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;

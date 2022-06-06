@@ -1,10 +1,10 @@
 import { Level } from "../../level/level";
-import { World } from "../../world/world";
 import { EnumEvent } from "./event.enum";
 import { MenuEvent, MenuOptions } from "./menu.options";
 import { collisionHelper } from "../../helper/collision.helper";
 import { BoundingBox } from "../types/bounding-box";
 import { Camera } from "../../camera/camera";
+import { Scene } from "../../scene/scene";
 
 export class Menu extends Level {
     private events: MenuEvent[];
@@ -33,7 +33,7 @@ export class Menu extends Level {
         };
 
         this.mouseEvents.forEach((event) => {
-            const element = this.initializer.getObject(
+            const element = Scene.getObject(
                 (obj) => obj.getName === event.elementName
             );
             if (!element) return;

@@ -1,9 +1,9 @@
-import { Initializer } from "../initializer/initializer";
+import { GameObject } from "../game-object/game-object";
 
 export interface LevelOptions {
     name: string;
-    initializer: Initializer;
-    nextLevel?: string;
-    prevLevel?: string;
+    objects: GameObject[];
+    width: number;
+    height: number;
     music?: string;
 }

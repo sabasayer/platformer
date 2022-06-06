@@ -1,17 +1,35 @@
 import { EnumEvent } from "../framework/game-object/menu/event.enum";
 import { Menu } from "../framework/game-object/menu/menu";
-import { GameStateManager } from "../framework/initializer/game-state.manager";
-import { Level } from "../framework/level/level";
-import { menuInitializer } from "../initializer/menu.initializer";
+import { StateManager } from "../framework/state-manager/game-state.manager";
+import { LayerZIndexes } from "../framework/constants";
+import { UIElement } from "../framework/game-object/ui/ui-element";
+import { Camera } from "../framework/camera/camera";
+
+const width = Camera.getRect().width;
+const height = Camera.getRect().height;
+
+const playButton = new UIElement({
+    dimension: { width: width / 2, height: 80 },
+    initialPosition: { x: 100, y: 100, z: LayerZIndexes.menu },
+    name: "play",
+    text: {
+        content: "Start To Play",
+        color: "white",
+        fontSize: 30,
+    },
+    color: "steelblue",
+});
 
 export const levelMenu = new Menu({
     name: "menu",
-    initializer: menuInitializer,
+    width,
+    height,
     events: [
         {
             elementName: "play",
             eventName: EnumEvent.click,
-            listener: (menu) => GameStateManager.setCurrentState("level1"),
+            listener: (menu) => StateManager.setCurrentState("level1"),
         },
     ],
+    objects: [playButton],
 });

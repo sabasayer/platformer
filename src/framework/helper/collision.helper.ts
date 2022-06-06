@@ -1,6 +1,8 @@
+import { Camera } from "../camera/camera";
 import { GameObject } from "../game-object/game-object";
 import { BoundingBox } from "../game-object/types/bounding-box";
 import { Dimension } from "../game-object/types/dimension";
+import { StateManager } from "../state-manager/game-state.manager";
 
 class CollisionHelper {
     checkForBoundingBoxes = (
@@ -32,10 +34,9 @@ class CollisionHelper {
         );
     };
 
-    collidesWithWorldBoundaries(
-        object: GameObject,
-        worldDimensions: Dimension
-    ) {
+    collidesWithWorldBoundaries(object: GameObject) {
+        const worldDimensions = this.getWordlDimensions();
+
         let collisions: { [key: string]: boolean } = {};
         let boundingBox = object.getBoundingBox;
         if (boundingBox.right >= worldDimensions.width) collisions.x = true;
@@ -47,6 +48,17 @@ class CollisionHelper {
         if (boundingBox.bottom >= worldDimensions.height) collisions.y = true;
 
         return collisions;
+    }
+
+    getWordlDimensions(): Dimension {
+        const level = StateManager.getCurrentLevel();
+        if (!level)
+            return {
+                width: 1024,
+                height: 768,
+            };
+
+        return level.dimensions;
     }
 
     private checksCollidesWith = (

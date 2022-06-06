@@ -1,49 +1,42 @@
-import { Initializer } from "../initializer/initializer";
 import { LevelOptions } from "./level.options";
 import { GameObject } from "../game-object/game-object";
-import { World } from "../world/world";
 import { EnumGameObjectType } from "../game-object/game-object-type.enum";
 import { Scene } from "../scene/scene";
 
 export class Level {
-    protected prevLevel?: string;
-    protected nextLevel?: string;
     protected name: string;
-    protected initializer: Initializer;
     protected audio: HTMLAudioElement | null = null;
+    protected gameObjects: GameObject[] = [];
+    protected width: number;
+    protected height: number;
 
     constructor(options: LevelOptions) {
         this.name = options.name;
-        this.initializer = options.initializer;
-        this.prevLevel = options.prevLevel;
-        this.nextLevel = options.nextLevel;
+        this.gameObjects = options.objects;
+        this.width = options.width;
+        this.height = options.height;
         if (options.music) {
             this.audio = new Audio(options.music);
             this.audio.volume = 0.5;
         }
     }
 
-    getPrevLevel() {
-        return this.prevLevel;
-    }
-
-    getNextLevel() {
-        return this.nextLevel;
+    get dimensions() {
+        return {
+            width: this.width,
+            height: this.height,
+        };
     }
 
     getName() {
         return this.name;
     }
 
-    protected getObject(finder: (obj: GameObject) => boolean) {
-        return this.initializer.getObject(finder);
-    }
-
     endCondition(): boolean {
-        const player = this.getObject(
+        const player = this.gameObjects.find(
             (e) => e.getType() === EnumGameObjectType.Player
         );
-        const endGameFlag = this.getObject(
+        const endGameFlag = this.gameObjects.find(
             (e) => e.getType() === EnumGameObjectType.EndGameFlag
         );
 
@@ -57,13 +50,38 @@ export class Level {
     }
 
     start() {
-        this.initializer.start();
+        this.registerObjects();
         this.audio?.play();
+    }
+
+    registerObjects() {
+        Scene.setObjects(this.gameObjects);
+    }
+
+    addObject(gameObject: GameObject) {
+        Scene.addObject(gameObject);
+        this.gameObjects.push(gameObject);
+    }
+
+    getObject(finder: (obj: GameObject) => boolean): GameObject | null {
+        return this.gameObjects.find(finder) ?? null;
+    }
+
+    removeObject(object: GameObject) {
+        Scene.removeObject(object);
+        const index = this.gameObjects.findIndex((e) => e.id === object.id);
+        if (index > -1) this.gameObjects.splice(index, 1);
+    }
+
+    protected resetObjectsState() {
+        this.gameObjects.forEach((object) => {
+            object.resetPosition();
+        });
     }
 
     end() {
         // run end animation
         this.audio?.pause();
-        this.initializer.end();
+        Scene.clear();
     }
 }

@@ -8,7 +8,7 @@ export class CollisionGroup {
     private objects: GameObject[] = [];
 
     collidesWithWorldBoundaries(object: GameObject) {
-        return collisionHelper.collidesWithWorldBoundaries(object, World);
+        return collisionHelper.collidesWithWorldBoundaries(object);
     }
 
     detectCollision(object: GameObject) {

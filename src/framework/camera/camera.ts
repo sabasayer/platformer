@@ -1,5 +1,6 @@
 import { World } from "../world/world";
 import { Position } from "../game-object/types/position";
+import { collisionHelper } from "../helper/collision.helper";
 
 export interface CameraListener {
     onCameraMove: (moveAmount: Position) => void;
@@ -31,16 +32,18 @@ export abstract class Camera {
         let calculatedX = Math.ceil(position.x - this.width / 2);
         let calculatedX2 = calculatedX + this.width;
 
+        const worldDimensions = collisionHelper.getWordlDimensions();
+
         if (calculatedX < 0) calculatedX = 0;
-        else if (calculatedX2 > World.width)
-            calculatedX = World.width - this.width;
+        else if (calculatedX2 > worldDimensions.width)
+            calculatedX = worldDimensions.width - this.width;
 
         let calculatedY = Math.ceil(position.y - this.height / 2);
         let calculatedY2 = calculatedY + this.height;
 
         if (calculatedY < 0) calculatedY = 0;
-        else if (calculatedY2 > World.height)
-            calculatedY = World.height - this.height;
+        else if (calculatedY2 > worldDimensions.height)
+            calculatedY = worldDimensions.height - this.height;
 
         const oldX = this.x;
         const oldY = this.y;
