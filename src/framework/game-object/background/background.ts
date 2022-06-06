@@ -5,6 +5,7 @@ import { EnumGameObjectType } from "../game-object-type.enum";
 import { GameObjectOptions } from "../game-object.options";
 import { Position } from "../types/position";
 import { BackgroundImage, BackgroundOptions } from "./background.options";
+import clonedeep from "lodash/clonedeep";
 
 export class Background extends GameObject {
     images: BackgroundImage[] = [];
@@ -16,18 +17,20 @@ export class Background extends GameObject {
                 ...options.initialPosition,
                 z: LayerZIndexes.background,
             },
-            type: EnumGameObjectType.IdleObject,
+            type: EnumGameObjectType.Background,
             gravityHasEffectOnIt: false,
         };
         super(gameObjectOptions);
 
         this.images = options.images.map((e) => ({
-            parrallaxSpeed: e.parrallaxSpeed,
+            distance: e.distance,
             object: new GameObject({
-                ...gameObjectOptions,
+                ...clonedeep(gameObjectOptions),
                 imageUrl: e.url,
             }),
         }));
+
+        this.sort();
 
         Camera.addListener(this);
     }
@@ -39,10 +42,40 @@ export class Background extends GameObject {
     onCameraMove(amount: Position) {
         if (!amount.x) return;
 
-        const parrallaxImages = this.images.filter((e) => e.parrallaxSpeed);
-        parrallaxImages.forEach((image) =>
-            image.object.moveX(amount.x * (image.parrallaxSpeed ?? 0))
-        );
+        this.images.forEach((image) => {
+            this.moveImage(image, amount);
+        });
+    }
+
+    moveImage(image: BackgroundImage, amount: Position) {
+        if (image.distance) {
+            image.object.moveX(amount.x / ((image.distance ?? 0) * 10));
+        }
+
+        if (image.hasDuplicate) return;
+
+        const imageRight = image.object.getBoundingBox.right;
+        const cameraRight = Camera.getRect().right;
+
+        if (imageRight >= cameraRight) return;
+
+        this.createDuplicate(image);
+    }
+
+    private createDuplicate(image: BackgroundImage) {
+        const clone = clonedeep(image);
+        clone.object.setPositions({
+            y: image.object.getPosition.y,
+            x: image.object.getPosition.x + image.object.getDimension.width,
+        });
+        image.hasDuplicate = true;
+
+        this.images.push(clone);
+        this.sort();
+    }
+
+    private sort() {
+        this.images.sort((a, b) => (b.distance ?? 0) - (a.distance ?? 0));
     }
 
     destroy(): void {

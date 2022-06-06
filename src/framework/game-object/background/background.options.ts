@@ -3,13 +3,14 @@ import { GameObjectOptions } from "../game-object.options";
 
 export interface BackgroundImage {
     object: GameObject;
-    parrallaxSpeed?: number;
+    hasDuplicate?: boolean;
+    distance?: number;
 }
 
 export interface BackgroundOptions
     extends Pick<GameObjectOptions, "initialPosition" | "dimension"> {
     images: {
         url: string;
-        parrallaxSpeed?: number;
+        distance?: number;
     }[];
 }

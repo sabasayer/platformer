@@ -46,8 +46,8 @@ const object4 = new GameObject({
 const objectEndGame = new GameObject({
     type: EnumGameObjectType.EndGameFlag,
     initialPosition: {
-        x: 190,
-        y: 150,
+        x: 590,
+        y: 850,
     },
     dimension: {
         width: 50,
@@ -91,26 +91,26 @@ const background = new Background({
     initialPosition: { x: 0, y: 0 },
     dimension: { width: 2048, height: 1546 },
     images: [
-        { url: getAsset("backgrounds/_11_background.png") },
+        { url: getAsset("backgrounds/_11_background.png"), distance: 9 },
         {
             url: getAsset("backgrounds/_10_distant_clouds.png"),
-            parrallaxSpeed: 0.1,
+            distance: 8,
         },
         {
             url: getAsset("backgrounds/_09_distant_clouds1.png"),
-            parrallaxSpeed: 0.2,
+            distance: 7,
         },
-        { url: getAsset("backgrounds/_08_clouds.png"), parrallaxSpeed: 0.3 },
+        { url: getAsset("backgrounds/_08_clouds.png"), distance: 6 },
         {
             url: getAsset("backgrounds/_07_huge_clouds.png"),
-            parrallaxSpeed: 0.3,
+            distance: 5,
         },
-        { url: getAsset("backgrounds/_06_hill2.png"), parrallaxSpeed: 0.1 },
-        { url: getAsset("backgrounds/_05_hill1.png"), parrallaxSpeed: 0.2 },
-        { url: getAsset("backgrounds/_04_bushes.png"), parrallaxSpeed: 0.3 },
+        { url: getAsset("backgrounds/_06_hill2.png"), distance: 4 },
+        { url: getAsset("backgrounds/_05_hill1.png"), distance: 3 },
+        { url: getAsset("backgrounds/_04_bushes.png"), distance: 2 },
         {
             url: getAsset("backgrounds/_03_distant_trees.png"),
-            parrallaxSpeed: 0.4,
+            distance: 1,
         },
         {
             url: getAsset("backgrounds/_02_trees_and_bushes.png"),

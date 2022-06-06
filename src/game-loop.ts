@@ -2,13 +2,13 @@ import { World } from "./framework/world/world";
 import { FRAME_DELAY } from "./framework/constants";
 import { GameStateManager } from "./framework/initializer/game-state.manager";
 import "./game.boot";
+import { Scene } from "./framework/scene/scene";
 
 let frame = 0;
 let loop = () => {
     try {
         World.render();
-        const level = GameStateManager.getCurrentLevel();
-        level?.render(frame);
+        Scene.render(frame);
         GameStateManager.runEndCondition();
 
         frame++;

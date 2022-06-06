@@ -1,6 +1,7 @@
 import { Camera } from "../camera/camera";
 import { Drawer } from "../camera/drawer";
 import { GameObject } from "../game-object/game-object";
+import { Scene } from "../scene/scene";
 
 export class Initializer {
     protected gameObjects: GameObject[] = [];
@@ -15,56 +16,28 @@ export class Initializer {
 
     start() {
         this.registerObjects();
-        this.sortObjectsByZ();
     }
 
     registerObjects() {
+        Scene.setObjects(this.gameObjects);
         this.gameObjects.forEach((object) => {
             object.onLevelStart(this);
         });
     }
 
     addObject(gameObject: GameObject) {
+        Scene.addObject(gameObject);
         this.gameObjects.push(gameObject);
-        gameObject.onLevelStart(this);
-        this.sortObjectsByZ();
     }
 
     getObject(finder: (obj: GameObject) => boolean): GameObject | null {
         return this.gameObjects.find(finder) ?? null;
     }
 
-    removeObject(finder: (obj: GameObject) => boolean) {
-        const index = this.gameObjects.findIndex(finder);
+    removeObject(object: GameObject) {
+        Scene.removeObject(object);
+        const index = this.gameObjects.findIndex((e) => e.id === object.id);
         if (index > -1) this.gameObjects.splice(index, 1);
-    }
-
-    sortObjectsByZ(): GameObject[] {
-        return this.gameObjects.sort(
-            (a, b) => a.calculatedPosition.z - b.calculatedPosition.z
-        );
-    }
-
-    render(frame: number) {
-        if (this.loading) {
-            this.showLoading();
-        } else {
-            this.gameObjects.forEach((obj) => {
-                obj.render(frame);
-            });
-        }
-    }
-
-    protected showLoading() {
-        Drawer.writeText(
-            "Loading...",
-            {
-                x: Camera.getRect().width / 2 - 100,
-                y: Camera.getRect().height / 2 - 50,
-            },
-            "red",
-            40
-        );
     }
 
     protected resetObjectsState() {
@@ -74,13 +47,6 @@ export class Initializer {
     }
 
     end() {
-        this.destroyObjects();
-    }
-
-    protected destroyObjects() {
-        const objects = [...this.gameObjects];
-        objects.forEach((object) => {
-            object.destroy();
-        });
+        Scene.clear();
     }
 }

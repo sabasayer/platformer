@@ -18,6 +18,7 @@ export abstract class Camera {
             y: this.y,
             width: this.width,
             height: this.height,
+            right: this.x + this.width,
         };
     }
 

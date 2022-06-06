@@ -9,6 +9,7 @@ import { ItemObject } from "../item/item";
 import { projectileFactory } from "../projectile/projectile.factory";
 import { EnumObjectState } from "../object-state.enum";
 import { Initializer } from "../../initializer/initializer";
+import { Scene } from "../../scene/scene";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
@@ -160,7 +161,7 @@ export class Player extends GameObject {
             ? -80
             : 80;
         const projectile = projectileFactory(this, { x: velocityX, y: 0 });
-        this.initializer?.addObject(projectile);
+        Scene.addObject(projectile);
     }
 
     die() {

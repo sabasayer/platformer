@@ -12,9 +12,10 @@ import { EnumObjectState } from "./object-state.enum";
 import { BoundingBox } from "./types/bounding-box";
 import { Game } from "../game";
 import { CollisionLogger } from "../logger/collision-logger";
+import { Scene } from "../scene/scene";
 
 export class GameObject {
-    id: number = Math.random();
+    id: number = World.getId();
     protected name?: string;
     protected type: EnumGameObjectType;
     protected position: Position;
@@ -62,6 +63,15 @@ export class GameObject {
         return this.dimension;
     }
 
+    get getBoundingBox(): BoundingBox {
+        return {
+            left: this.position.x,
+            right: this.position.x + this.dimension.width,
+            top: this.position.y,
+            bottom: this.position.y + this.dimension.height,
+        };
+    }
+
     get calculatedPosition() {
         return {
             left: this.position.x,
@@ -105,16 +115,11 @@ export class GameObject {
         return this.type;
     }
 
-    register() {
-        World.registerObject(this);
-    }
-
     setInitializer(initializer: Initializer) {
         this.initializer = initializer;
     }
 
     onLevelStart(initializer: Initializer) {
-        this.register();
         this.setInitializer(initializer);
         this.resetPosition();
     }
@@ -132,15 +137,6 @@ export class GameObject {
         };
 
         this._loading = false;
-    }
-
-    getBoundingBox(): BoundingBox {
-        return {
-            left: this.position.x,
-            right: this.position.x + this.dimension.width,
-            top: this.position.y,
-            bottom: this.position.y + this.dimension.height,
-        };
     }
 
     beforeRender() {
@@ -282,6 +278,10 @@ export class GameObject {
         this.position = position;
     }
 
+    setDimension(dimension: Dimension) {
+        this.dimension = dimension;
+    }
+
     moveX(amount: number) {
         this.position.x += amount;
         const collision = this.checkHorizontalCollision();
@@ -341,13 +341,14 @@ export class GameObject {
 
         if (!this.collidesWith) return res;
 
-        const collision = World.collidesWithWorldBoundaries(this);
+        const collision =
+            Scene.collisionGroup.collidesWithWorldBoundaries(this);
         if (collision.x) {
             this.keepInWorldBoundariesX();
             res.collided = true;
         }
 
-        const collidedObjects = World.detectCollision(this);
+        const collidedObjects = Scene.collisionGroup.detectCollision(this);
         if (!collidedObjects.length) return res;
 
         if (this.hasSolidCollision(collidedObjects))
@@ -366,13 +367,14 @@ export class GameObject {
 
         if (!this.collidesWith) return res;
 
-        const collision = World.collidesWithWorldBoundaries(this);
+        const collision =
+            Scene.collisionGroup.collidesWithWorldBoundaries(this);
         if (collision.y) {
             this.keepInWorldBoundariesY();
             res.collided = true;
         }
 
-        const collidedObjects = World.detectCollision(this);
+        const collidedObjects = Scene.collisionGroup.detectCollision(this);
         if (!collidedObjects.length) return res;
 
         if (this.hasSolidCollision(collidedObjects))
@@ -435,6 +437,6 @@ export class GameObject {
     }
 
     destroy() {
-        World.removeObject(this);
+        Scene.removeObject(this);
     }
 }

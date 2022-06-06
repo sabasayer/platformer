@@ -3,6 +3,7 @@ import { LevelOptions } from "./level.options";
 import { GameObject } from "../game-object/game-object";
 import { World } from "../world/world";
 import { EnumGameObjectType } from "../game-object/game-object-type.enum";
+import { Scene } from "../scene/scene";
 
 export class Level {
     protected prevLevel?: string;
@@ -48,16 +49,16 @@ export class Level {
 
         if (!player || !endGameFlag) return false;
 
-        return World.collidesWithObject(player, endGameFlag, false);
+        return Scene.collisionGroup.collidesWithObject(
+            player,
+            endGameFlag,
+            false
+        );
     }
 
     start() {
         this.initializer.start();
         this.audio?.play();
-    }
-
-    render(frame: number) {
-        this.initializer.render(frame);
     }
 
     end() {

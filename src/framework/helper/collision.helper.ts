@@ -1,5 +1,6 @@
 import { GameObject } from "../game-object/game-object";
 import { BoundingBox } from "../game-object/types/bounding-box";
+import { Dimension } from "../game-object/types/dimension";
 
 class CollisionHelper {
     checkForBoundingBoxes = (
@@ -17,18 +18,36 @@ class CollisionHelper {
     };
 
     checkForObjects = (obj: GameObject, obj2: GameObject): boolean => {
-        if (obj.calculatedPosition.z !== obj2.calculatedPosition.z) return false;
+        if (obj.calculatedPosition.z !== obj2.calculatedPosition.z)
+            return false;
 
         if (!this.checksCollidesWith(obj, obj2)) return false;
 
-        const boundingBox = obj.getBoundingBox();
-        const boundingBoxSecond = obj2.getBoundingBox();
+        const boundingBox = obj.getBoundingBox;
+        const boundingBoxSecond = obj2.getBoundingBox;
 
         return collisionHelper.checkForBoundingBoxes(
             boundingBox,
             boundingBoxSecond
         );
     };
+
+    collidesWithWorldBoundaries(
+        object: GameObject,
+        worldDimensions: Dimension
+    ) {
+        let collisions: { [key: string]: boolean } = {};
+        let boundingBox = object.getBoundingBox;
+        if (boundingBox.right >= worldDimensions.width) collisions.x = true;
+
+        if (boundingBox.left <= 0) collisions.x = true;
+
+        if (boundingBox.top <= 0) collisions.y = true;
+
+        if (boundingBox.bottom >= worldDimensions.height) collisions.y = true;
+
+        return collisions;
+    }
 
     private checksCollidesWith = (
         obj: GameObject,

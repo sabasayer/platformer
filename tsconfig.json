@@ -3,6 +3,7 @@
         "strict": true,
         "baseUrl": ".",
         "target": "ESNext",
+        "allowSyntheticDefaultImports":true,
         "paths": {
             "~/*": ["./*"]
         }

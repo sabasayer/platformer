@@ -39,7 +39,7 @@ export class Menu extends Level {
             if (!element) return;
 
             const hasCollision = collisionHelper.checkForBoundingBoxes(
-                element.getBoundingBox(),
+                element.getBoundingBox,
                 boundingBox
             );
 
