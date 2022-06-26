@@ -1,6 +1,6 @@
 import { FRAME_RATE, MOVEMENT_MULTIPLIER, ENVS } from "../constants";
 import { World } from "../world/world";
-import { SpriteStore } from "~/src/framework/sprite/sprite-store.interface";
+import { SpriteStateMap } from "~/src/framework/sprite/sprite-state-map.interface";
 import { GameObjectOptions } from "./game-object.options";
 import { EnumGameObjectType } from "./game-object-type.enum";
 import { Drawer } from "../camera/drawer";
@@ -13,6 +13,7 @@ import { Game } from "../game";
 import { CollisionLogger } from "../logger/collision-logger";
 import { Scene } from "../scene/scene";
 import { collisionHelper } from "../helper/collision.helper";
+import { assetManager } from "../asset-manager/asset-manager";
 
 export class GameObject {
     id: number = World.getId();
@@ -33,7 +34,7 @@ export class GameObject {
     protected image?: HTMLImageElement;
     protected color?: string;
 
-    protected spriteStore?: SpriteStore;
+    protected spriteStore?: SpriteStateMap;
 
     protected state: EnumObjectState = EnumObjectState.idle;
 
@@ -117,16 +118,7 @@ export class GameObject {
     createImage() {
         if (!this.imageUrl) return;
 
-        this._loading = true;
-
-        let image = new Image();
-        image.src = this.imageUrl;
-        image.onload = () => {
-            this.image = image;
-            this._loading = false;
-        };
-
-        this._loading = false;
+        this.image = assetManager.loadImage(this.imageUrl);
     }
 
     beforeRender() {

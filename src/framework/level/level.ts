@@ -2,6 +2,7 @@ import { LevelOptions } from "./level.options";
 import { GameObject } from "../game-object/game-object";
 import { EnumGameObjectType } from "../game-object/game-object-type.enum";
 import { Scene } from "../scene/scene";
+import { assetManager } from "../asset-manager/asset-manager";
 
 export class Level {
     protected name: string;
@@ -16,8 +17,7 @@ export class Level {
         this.width = options.width;
         this.height = options.height;
         if (options.music) {
-            this.audio = new Audio(options.music);
-            this.audio.volume = 0.5;
+            this.audio = assetManager.loadSound(options.music, 0.5);
         }
     }
 

@@ -1,12 +1,11 @@
+import { GameAnimation } from "../../animation/game-animation";
 import { getAsset } from "../../helper/index";
-import { SpriteAnimation } from "../../sprite/sprite-animation";
 import { GameObject } from "../game-object";
-import { EnumGameObjectType } from "../game-object-type.enum";
 import { EnumObjectState } from "../object-state.enum";
 import { Projectile } from "./projectile";
 import { ProjectileOptions } from "./projectile.options";
 
-const animation = new SpriteAnimation(
+const animation = new GameAnimation(
     getAsset("sprites/fire/fire_sprite.png"),
     { height: 8, width: 8 },
     5

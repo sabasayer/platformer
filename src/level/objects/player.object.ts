@@ -1,23 +1,27 @@
-import { Sprite } from "../../framework/sprite/sprite";
+import { SpriteList } from "../../framework/sprite/sprite-list";
 import { Player } from "../../framework/game-object/player/player";
 
 import { EnumObjectState } from "../../framework/game-object/object-state.enum";
 import { getAsset } from "../../framework/helper/index";
 import { Position } from "../../framework/game-object/types/position";
 
-const playerIdleSprite = new Sprite([
-    getAsset("sprites/player/idle/anim1.png"),
-    getAsset("sprites/player/idle/anim2.png"),
-    getAsset("sprites/player/idle/anim3.png"),
-    getAsset("sprites/player/idle/anim4.png"),
-],1);
-const playerIdleLeftSprite = new Sprite([
+const playerIdleSprite = new SpriteList(
+    [
+        getAsset("sprites/player/idle/anim1.png"),
+        getAsset("sprites/player/idle/anim2.png"),
+        getAsset("sprites/player/idle/anim3.png"),
+        getAsset("sprites/player/idle/anim4.png"),
+    ],
+    1
+);
+
+const playerIdleLeftSprite = new SpriteList([
     getAsset("sprites/player/idle/anim5.png"),
     getAsset("sprites/player/idle/anim6.png"),
     getAsset("sprites/player/idle/anim7.png"),
     getAsset("sprites/player/idle/anim8.png"),
 ]);
-const playerRunSprite = new Sprite(
+const playerRunSprite = new SpriteList(
     [
         getAsset("sprites/player/run/anim5.png"),
         getAsset("sprites/player/run/anim6.png"),
@@ -31,7 +35,7 @@ const playerRunSprite = new Sprite(
     1
 );
 
-const playerRunLeftSprite = new Sprite(
+const playerRunLeftSprite = new SpriteList(
     [
         getAsset("sprites/player/run/anim13.png"),
         getAsset("sprites/player/run/anim14.png"),
@@ -45,10 +49,10 @@ const playerRunLeftSprite = new Sprite(
     1
 );
 
-const playerJumpingSprite = new Sprite([
+const playerJumpingSprite = new SpriteList([
     getAsset("sprites/player/run/anim11.png"),
 ]);
-const playerFallinggSprite = new Sprite([
+const playerFallinggSprite = new SpriteList([
     getAsset("sprites/player/run/anim8.png"),
 ]);
 

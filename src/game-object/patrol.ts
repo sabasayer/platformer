@@ -4,9 +4,9 @@ import { EnumNpcType } from "../framework/game-object/npc/npc-type.enum";
 import { EnumObjectState } from "../framework/game-object/object-state.enum";
 import { Position } from "../framework/game-object/types/position";
 import { getAsset } from "../framework/helper/index";
-import { Sprite } from "../framework/sprite/sprite";
+import { SpriteList } from "../framework/sprite/sprite-list";
 
-const patrolSprite = new Sprite([
+const patrolSprite = new SpriteList([
     getAsset("sprites/npcs/blue_patrol/azul1.png"),
     getAsset("sprites/npcs/blue_patrol/azul2.png"),
     getAsset("sprites/npcs/blue_patrol/azul3.png"),

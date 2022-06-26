@@ -1,41 +1,18 @@
-import { AnimationUtils } from "../utils/animation.utils";
+import { assetManager } from "../asset-manager/asset-manager";
 import { Drawer } from "../camera/drawer";
-import { Position } from "../game-object/types/position";
 import { Dimension } from "../game-object/types/dimension";
+import { Position } from "../game-object/types/position";
+import { Renderable } from "../renderable/renderable.interface";
+import { ImageDimension } from "../utils/image-dimension.interface";
 
-export class Sprite {
-    private imageUrls: string[] = [];
-    images: HTMLImageElement[] = [];
+export class Sprite implements Renderable {
+    image: HTMLImageElement;
 
     constructor(
-        imageUrls?: string[],
-        private oneAnimationCycleTime: number = 1
+        private url: string,
+        private spriteSheetOptions?: ImageDimension
     ) {
-        imageUrls && this.setImageUrls(imageUrls);
-    }
-
-    setImageUrls(imageUrls: string[]) {
-        this.imageUrls = imageUrls;
-        this.imageUrls.forEach((e) => {
-            this.addImage(e);
-        });
-    }
-
-    addImage(url: string) {
-        let image = new Image();
-        image.src = url;
-        image.onload = () => {
-            this.images.push(image);
-        };
-    }
-
-    findImage(frame: number) {
-
-        return AnimationUtils.findItemByFrame(
-            this.images,
-            frame,
-            this.oneAnimationCycleTime
-        );
+        this.image = assetManager.loadImage(url);
     }
 
     render(
@@ -43,11 +20,11 @@ export class Sprite {
         targetPosition: Position,
         targetDimension: Dimension
     ) {
-        const image = this.findImage(frame);
-        if (!image) return false;
-
-        Drawer.drawImage(image, targetPosition, targetDimension);
-
-        return true;
+        Drawer.drawImage(
+            this.image,
+            targetPosition,
+            targetDimension,
+            this.spriteSheetOptions
+        );
     }
 }

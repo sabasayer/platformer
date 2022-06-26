@@ -1,4 +1,4 @@
-import { SpriteStore } from "../sprite/sprite-store.interface";
+import { SpriteStateMap } from "../sprite/sprite-state-map.interface";
 import { GameObject } from "./game-object";
 import { EnumGameObjectType } from "./game-object-type.enum";
 import { Dimension } from "./types/dimension";
@@ -10,7 +10,7 @@ export interface GameObjectOptions {
     name?: string;
     imageUrl?: string;
     color?: string;
-    spriteStore?: SpriteStore;
+    spriteStore?: SpriteStateMap;
     collidesWith?: "all" | EnumGameObjectType[];
     gravityHasEffectOnIt?: boolean;
     type: EnumGameObjectType;

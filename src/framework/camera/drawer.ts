@@ -84,4 +84,13 @@ export abstract class Drawer {
                 dimension.height
             );
     }
+
+    static drawPartialImage(
+        image: HTMLImageElement,
+        absolutePosition: Position,
+        dimension: Dimension,
+        imageDimension: ImageDimension
+    ) {
+        Drawer.drawImage(image, absolutePosition, dimension, imageDimension);
+    }
 }
