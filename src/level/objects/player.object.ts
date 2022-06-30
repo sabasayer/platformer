@@ -2,59 +2,56 @@ import { SpriteList } from "../../framework/sprite/sprite-list";
 import { Player } from "../../framework/game-object/player/player";
 
 import { EnumObjectState } from "../../framework/game-object/object-state.enum";
-import { getAsset } from "../../framework/helper/index";
 import { Position } from "../../framework/game-object/types/position";
+import { GameAnimation } from "~/src/framework/animation/game-animation";
+import { spriteListFactory } from "~/src/framework/sprite/sprite-list-factory";
+import { Sprite } from "~/src/framework/sprite/sprite";
 
-const playerIdleSprite = new SpriteList(
-    [
-        getAsset("sprites/player/idle/anim1.png"),
-        getAsset("sprites/player/idle/anim2.png"),
-        getAsset("sprites/player/idle/anim3.png"),
-        getAsset("sprites/player/idle/anim4.png"),
-    ],
-    1
+const playerIdleSprite = new GameAnimation(
+    spriteListFactory.createFromUrls([
+        "sprites/player/idle/anim1.png",
+        "sprites/player/idle/anim2.png",
+        "sprites/player/idle/anim3.png",
+        "sprites/player/idle/anim4.png",
+    ])
 );
 
-const playerIdleLeftSprite = new SpriteList([
-    getAsset("sprites/player/idle/anim5.png"),
-    getAsset("sprites/player/idle/anim6.png"),
-    getAsset("sprites/player/idle/anim7.png"),
-    getAsset("sprites/player/idle/anim8.png"),
-]);
-const playerRunSprite = new SpriteList(
-    [
-        getAsset("sprites/player/run/anim5.png"),
-        getAsset("sprites/player/run/anim6.png"),
-        getAsset("sprites/player/run/anim7.png"),
-        getAsset("sprites/player/run/anim8.png"),
-        getAsset("sprites/player/run/anim9.png"),
-        getAsset("sprites/player/run/anim10.png"),
-        getAsset("sprites/player/run/anim11.png"),
-        getAsset("sprites/player/run/anim12.png"),
-    ],
-    1
+const playerIdleLeftSprite = new GameAnimation(
+    spriteListFactory.createFromUrls([
+        "sprites/player/idle/anim5.png",
+        "sprites/player/idle/anim6.png",
+        "sprites/player/idle/anim7.png",
+        "sprites/player/idle/anim8.png",
+    ])
+);
+const playerRunSprite = new GameAnimation(
+    spriteListFactory.createFromUrls([
+        "sprites/player/run/anim5.png",
+        "sprites/player/run/anim6.png",
+        "sprites/player/run/anim7.png",
+        "sprites/player/run/anim8.png",
+        "sprites/player/run/anim9.png",
+        "sprites/player/run/anim10.png",
+        "sprites/player/run/anim11.png",
+        "sprites/player/run/anim12.png",
+    ])
 );
 
-const playerRunLeftSprite = new SpriteList(
-    [
-        getAsset("sprites/player/run/anim13.png"),
-        getAsset("sprites/player/run/anim14.png"),
-        getAsset("sprites/player/run/anim15.png"),
-        getAsset("sprites/player/run/anim16.png"),
-        getAsset("sprites/player/run/anim17.png"),
-        getAsset("sprites/player/run/anim18.png"),
-        getAsset("sprites/player/run/anim19.png"),
-        getAsset("sprites/player/run/anim20.png"),
-    ],
-    1
+const playerRunLeftSprite = new GameAnimation(
+    spriteListFactory.createFromUrls([
+        "sprites/player/run/anim13.png",
+        "sprites/player/run/anim14.png",
+        "sprites/player/run/anim15.png",
+        "sprites/player/run/anim16.png",
+        "sprites/player/run/anim17.png",
+        "sprites/player/run/anim18.png",
+        "sprites/player/run/anim19.png",
+        "sprites/player/run/anim20.png",
+    ])
 );
 
-const playerJumpingSprite = new SpriteList([
-    getAsset("sprites/player/run/anim11.png"),
-]);
-const playerFallinggSprite = new SpriteList([
-    getAsset("sprites/player/run/anim8.png"),
-]);
+const playerJumpingSprite = new Sprite("sprites/player/run/anim11.png");
+const playerFallinggSprite = new Sprite("sprites/player/run/anim8.png");
 
 export const createPlayer = (position: Position) =>
     new Player({
@@ -69,7 +66,7 @@ export const createPlayer = (position: Position) =>
             [EnumObjectState.jumping]: playerJumpingSprite,
             [EnumObjectState.falling]: playerFallinggSprite,
         },
-        imageUrl: getAsset("sprites/player/idle/anim1.png"),
+        imageUrl: "sprites/player/idle/anim1.png",
         collidesWith: "all",
         health: 100,
         attackPower: 10,

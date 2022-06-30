@@ -1,7 +1,7 @@
 import { EnumEvent } from "../framework/game-object/menu/event.enum";
 import { Menu } from "../framework/game-object/menu/menu";
 import { StateManager } from "../framework/state-manager/game-state.manager";
-import { LayerZIndexes } from "../framework/constants";
+import { LayerZIndexes, MENU_STATE } from "../framework/constants";
 import { UIElement } from "../framework/game-object/ui/ui-element";
 import { Camera } from "../framework/camera/camera";
 
@@ -21,7 +21,7 @@ const playButton = new UIElement({
 });
 
 export const levelMenu = new Menu({
-    name: "menu",
+    name: MENU_STATE,
     width,
     height,
     events: [

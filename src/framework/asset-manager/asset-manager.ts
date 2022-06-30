@@ -1,3 +1,4 @@
+import { getAsset } from "../helper/index";
 import { Cachable } from "./cachable";
 
 class AssetManager {
@@ -12,7 +13,7 @@ class AssetManager {
         this.loadings.add(url);
 
         image = new Image();
-        image.src = url;
+        image.src = getAsset(url);
         this.images.add(url, image);
 
         image.onload = () => {
@@ -34,7 +35,7 @@ class AssetManager {
 
         this.loadings.add(url);
 
-        audio = new Audio(url);
+        audio = new Audio(getAsset(url));
         audio.volume = volume;
         this.sounds.add(url, audio);
 

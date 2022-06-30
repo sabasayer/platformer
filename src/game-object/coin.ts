@@ -3,8 +3,9 @@ import { ItemObject } from "~/src/framework/game-object/item/item";
 import { EnumItemType } from "~/src/framework/game-object/item/item-type.enum";
 import { EnumObjectState } from "~/src/framework/game-object/object-state.enum";
 import { Position } from "~/src/framework/game-object/types/position";
-import { getAsset } from "~/src/framework/helper/index";
 import { GameAnimation } from "../framework/animation/game-animation";
+import { Sprite } from "../framework/sprite/sprite";
+import { spriteListFactory } from "../framework/sprite/sprite-list-factory";
 
 export class Coin extends ItemObject {
     constructor(position: Position) {
@@ -19,9 +20,14 @@ export class Coin extends ItemObject {
             ],
             spriteStore: {
                 [EnumObjectState.idle]: new GameAnimation(
-                    getAsset("sprites/coins/MonedaD.png"),
-                    { height: 16, width: 16 },
-                    5
+                    spriteListFactory.createFromHorizontalSheet(
+                        "sprites/coins/MonedaD.png",
+                        {
+                            height: 16,
+                            width: 16,
+                        },
+                        5
+                    )
                 ),
             },
             solid: false,

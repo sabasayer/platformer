@@ -1,0 +1,8 @@
+{
+    "levels": [
+        {
+            "name": "level1",
+            "route": "assets/levels/level1.json"
+        }
+    ]
+}

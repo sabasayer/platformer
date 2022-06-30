@@ -46,7 +46,7 @@ export abstract class Drawer {
     ) {
         const position = Camera.calculatePosition(absolutePosition);
 
-        World.ctx.fillStyle = color;
+        World.ctx.strokeStyle = color;
         World.ctx.strokeRect(
             position.x,
             position.y,

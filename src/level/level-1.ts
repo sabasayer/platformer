@@ -1,4 +1,3 @@
-import { getAsset } from "../framework/helper/index";
 import { Level } from "../framework/level/level";
 import { GameObject } from "../framework/game-object/game-object";
 import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
@@ -15,6 +14,7 @@ const object = new GameObject({
     dimension: { width: 250, height: 12 },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
+    color: "rgba(51, 102, 157)",
 });
 
 const object2 = new GameObject({
@@ -23,6 +23,7 @@ const object2 = new GameObject({
     dimension: { width: 211, height: 11 },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
+    color: "rgba(51, 102, 157)",
 });
 
 const object3 = new GameObject({
@@ -31,6 +32,7 @@ const object3 = new GameObject({
     dimension: { width: 211, height: 11 },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
+    color: "rgba(51, 102, 157)",
 });
 
 const object4 = new GameObject({
@@ -39,6 +41,7 @@ const object4 = new GameObject({
     dimension: { width: 50, height: 50 },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
+    color: "rgba(51, 102, 157)",
 });
 
 const objectEndGame = new GameObject({
@@ -54,7 +57,7 @@ const objectEndGame = new GameObject({
     collidesWith: [EnumGameObjectType.Player],
     solid: false,
     gravityHasEffectOnIt: false,
-    imageUrl: getAsset("sprites/red-flag.png"),
+    imageUrl: "sprites/red-flag.png",
 });
 
 const ground = new GameObject({
@@ -69,6 +72,7 @@ const ground = new GameObject({
     },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
+    color: "rgba(51, 102, 157)",
 });
 
 const ground2 = new GameObject({
@@ -83,43 +87,59 @@ const ground2 = new GameObject({
     },
     collidesWith: "all",
     gravityHasEffectOnIt: false,
+    color: "rgba(51, 102, 157)",
+});
+
+const killZone = new GameObject({
+    type: EnumGameObjectType.KillZone,
+    initialPosition: {
+        x: 0,
+        y: 1400,
+    },
+    dimension: {
+        width: 2000,
+        height: 500,
+    },
+    collidesWith: [EnumGameObjectType.Player],
+    gravityHasEffectOnIt: false,
+    color: "red",
 });
 
 const background = new Background({
     initialPosition: { x: 0, y: 0 },
     dimension: { width: 2048, height: 1546 },
     images: [
-        { url: getAsset("backgrounds/_11_background.png"), distance: 9 },
+        { url: "backgrounds/_11_background.png", distance: 9 },
         {
-            url: getAsset("backgrounds/_10_distant_clouds.png"),
+            url: "backgrounds/_10_distant_clouds.png",
             distance: 8,
         },
         {
-            url: getAsset("backgrounds/_09_distant_clouds1.png"),
+            url: "backgrounds/_09_distant_clouds1.png",
             distance: 7,
         },
-        { url: getAsset("backgrounds/_08_clouds.png"), distance: 6 },
+        { url: "backgrounds/_08_clouds.png", distance: 6 },
         {
-            url: getAsset("backgrounds/_07_huge_clouds.png"),
+            url: "backgrounds/_07_huge_clouds.png",
             distance: 5,
         },
-        { url: getAsset("backgrounds/_06_hill2.png"), distance: 4 },
-        { url: getAsset("backgrounds/_05_hill1.png"), distance: 3 },
-        { url: getAsset("backgrounds/_04_bushes.png"), distance: 2 },
+        { url: "backgrounds/_06_hill2.png", distance: 4 },
+        { url: "backgrounds/_05_hill1.png", distance: 3 },
+        { url: "backgrounds/_04_bushes.png", distance: 2 },
         {
-            url: getAsset("backgrounds/_03_distant_trees.png"),
+            url: "backgrounds/_03_distant_trees.png",
             distance: 1,
         },
         {
-            url: getAsset("backgrounds/_02_trees_and_bushes.png"),
+            url: "backgrounds/_02_trees_and_bushes.png",
         },
-        { url: getAsset("backgrounds/_01_ground.png") },
+        { url: "backgrounds/_01_ground.png" },
     ],
 });
 
 export const level1 = new Level({
     name: "level1",
-    // music: getAsset("musics/bg-music.mp3"),
+    // music: "musics/bg-music.mp3"),
     width: 10000,
     height: 1500,
     objects: [
@@ -141,5 +161,6 @@ export const level1 = new Level({
         background,
         score,
         coinScore,
+        killZone,
     ],
 });

@@ -1,14 +1,20 @@
 import { GameAnimation } from "../../animation/game-animation";
-import { getAsset } from "../../helper/index";
+import { Sprite } from "../../sprite/sprite";
+import { spriteListFactory } from "../../sprite/sprite-list-factory";
 import { GameObject } from "../game-object";
 import { EnumObjectState } from "../object-state.enum";
 import { Projectile } from "./projectile";
 import { ProjectileOptions } from "./projectile.options";
 
 const animation = new GameAnimation(
-    getAsset("sprites/fire/fire_sprite.png"),
-    { height: 8, width: 8 },
-    5
+    spriteListFactory.createFromHorizontalSheet(
+        "sprites/fire/fire_sprite.png",
+        {
+            height: 8,
+            width: 8,
+        },
+        5
+    )
 );
 
 export const projectileFactory = (

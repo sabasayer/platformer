@@ -33,6 +33,7 @@ export abstract class AnimationUtils {
             frame,
             oneAnimationCycleTime
         );
+
         return items[index];
     }
 

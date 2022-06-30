@@ -156,7 +156,11 @@ export class GameObject {
     }
 
     renderBoundingBox() {
-        Drawer.strokeRect(this.position, this.dimension, "blue");
+        Drawer.strokeRect(
+            this.position,
+            this.dimension,
+            "rgba(157, 102, 51, 0.7)"
+        );
     }
 
     renderImage(image: HTMLImageElement) {

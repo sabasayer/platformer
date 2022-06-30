@@ -8,8 +8,9 @@ import { Inventory } from "./inventory";
 import { ItemObject } from "../item/item";
 import { projectileFactory } from "../projectile/projectile.factory";
 import { EnumObjectState } from "../object-state.enum";
-import { Initializer } from "../../initializer/initializer";
 import { Scene } from "../../scene/scene";
+import { StateManager } from "../../state-manager/game-state.manager";
+import { MENU_STATE } from "../../constants";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
@@ -19,6 +20,7 @@ export class Player extends GameObject {
     private inventory = new Inventory();
     private attackPower: number;
     private score: number = 0;
+    private projectileSpeed = 50;
 
     constructor(options: PlayerOptions) {
         super({ ...options, type: EnumGameObjectType.Player });
@@ -29,11 +31,6 @@ export class Player extends GameObject {
 
     get getScore() {
         return this.score;
-    }
-
-    onLevelStart(initializer: Initializer) {
-        super.onLevelStart(initializer);
-        this.handleKeyboardEvents();
     }
 
     filterInventory = (finder: (e: ItemObject) => boolean) => {
@@ -133,6 +130,11 @@ export class Player extends GameObject {
                 e.die();
             }
         });
+
+        const isKillZone = collidedObjects.some(
+            (e) => e.getType() === EnumGameObjectType.KillZone
+        );
+        if (isKillZone) this.die();
     }
 
     jump() {
@@ -154,18 +156,21 @@ export class Player extends GameObject {
     }
 
     fire() {
-        const velocityX = [
+        const multiplier = [
             EnumObjectState.movingLeft,
             EnumObjectState.idleLeft,
         ].includes(this.state)
-            ? -80
-            : 80;
+            ? -1
+            : 1;
+
+        const velocityX = this.projectileSpeed * multiplier;
         const projectile = projectileFactory(this, { x: velocityX, y: 0 });
         Scene.addObject(projectile);
     }
 
     die() {
         alert("you died");
+        StateManager.setCurrentState(MENU_STATE);
         this.destroy();
     }
 

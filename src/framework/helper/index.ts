@@ -1,1 +1,2 @@
-export const getAsset = (path:string) => `http://localhost:40/assets/${path}`;
+export const SERVER_URL = "http://localhost:40/";
+export const getAsset = (path: string) => `${SERVER_URL}assets/${path}`;

@@ -5,7 +5,7 @@
     "scripts": {
         "start": "npm run dev & npm run serve",
         "dev": "parcel index.html --open",
-        "serve": "http-server -p 40",
+        "serve": "http-server -p 40 --cors",
         "build": "parcel build index.html"
     },
     "dependencies": {

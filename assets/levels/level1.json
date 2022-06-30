@@ -1,0 +1,24 @@
+{
+    "name": "level1",
+    "music": "musics/bg-music.mp3",
+    "width": 10000,
+    "height": 1500,
+    "objects": [
+        {
+            "type": 2,
+            "initialPosition": { "x": 42, "y": 250 },
+            "dimension": { "width": 250, "height": 12 },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false,
+            "color": "rgba(51, 102, 157)"
+        },
+        {
+            "type": 2,
+            "initialPosition": { "x": 150, "y": 330 },
+            "dimension": { "width": 211, "height": 11 },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false,
+            "color": "rgba(51, 102, 157)"
+        }
+    ]
+}

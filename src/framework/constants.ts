@@ -21,3 +21,5 @@ export const TextConstants = {
     family: "Arial",
     color: "black",
 };
+
+export const MENU_STATE = "menu";

@@ -7,4 +7,5 @@ export enum EnumGameObjectType {
     Npc = 6,
     UI = 7,
     Background = 8,
+    KillZone = 9,
 }
