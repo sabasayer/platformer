@@ -1,0 +1,76 @@
+{
+    "type": 1,
+    "initialPosition": { "x": 30, "y": "130" },
+    "dimension": { "width": 22, "height": 32 },
+    "canMoveAtAir": true,
+    "spriteStateMap": {
+        "1": {
+            "type": "GameAnimation",
+            "options": {
+                "frames": [
+                    "sprites/player/idle/anim1.png",
+                    "sprites/player/idle/anim2.png",
+                    "sprites/player/idle/anim3.png",
+                    "sprites/player/idle/anim4.png"
+                ]
+            }
+        },
+        "2": {
+            "type": "GameAnimation",
+            "options": {
+                "frames": [
+                    "sprites/player/idle/anim5.png",
+                    "sprites/player/idle/anim6.png",
+                    "sprites/player/idle/anim7.png",
+                    "sprites/player/idle/anim8.png"
+                ]
+            }
+        },
+        "4": {
+            "type": "GameAnimation",
+            "options": {
+                "frames": [
+                    "sprites/player/run/anim5.png",
+                    "sprites/player/run/anim6.png",
+                    "sprites/player/run/anim7.png",
+                    "sprites/player/run/anim8.png",
+                    "sprites/player/run/anim9.png",
+                    "sprites/player/run/anim10.png",
+                    "sprites/player/run/anim11.png",
+                    "sprites/player/run/anim12.png"
+                ]
+            }
+        },
+        "3": {
+            "type": "GameAnimation",
+            "options": {
+                "frames": [
+                    "sprites/player/run/anim13.png",
+                    "sprites/player/run/anim14.png",
+                    "sprites/player/run/anim15.png",
+                    "sprites/player/run/anim16.png",
+                    "sprites/player/run/anim17.png",
+                    "sprites/player/run/anim18.png",
+                    "sprites/player/run/anim19.png",
+                    "sprites/player/run/anim20.png"
+                ]
+            }
+        },
+        "7": {
+            "type": "Sprite",
+            "options": {
+                "url": "sprites/player/run/anim11.png"
+            }
+        },
+        "5": {
+            "type": "Sprite",
+            "options": {
+                "url": "sprites/player/run/anim8.png"
+            }
+        }
+    },
+    "imageUrl": "sprites/player/idle/anim1.png",
+    "collidesWith": "all",
+    "health": 100,
+    "attackPower": 10
+}

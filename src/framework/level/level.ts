@@ -3,6 +3,8 @@ import { GameObject } from "../game-object/game-object";
 import { EnumGameObjectType } from "../game-object/game-object-type.enum";
 import { Scene } from "../scene/scene";
 import { assetManager } from "../asset-manager/asset-manager";
+import { Position } from "../game-object/types/position";
+import { Player } from "../game-object/player/player";
 
 export class Level {
     protected name: string;
@@ -10,12 +12,14 @@ export class Level {
     protected gameObjects: GameObject[] = [];
     protected width: number;
     protected height: number;
+    protected playerInitialPosition: Position;
 
     constructor(options: LevelOptions) {
         this.name = options.name;
         this.gameObjects = options.objects;
         this.width = options.width;
         this.height = options.height;
+        this.playerInitialPosition = options.playerInitialPosition;
         if (options.music) {
             this.audio = assetManager.loadSound(options.music, 0.5);
         }
@@ -49,13 +53,25 @@ export class Level {
         );
     }
 
-    start() {
+    start(player?: Player) {
         this.registerObjects();
+
+        if (player) this.initPlayer(player);
+
         this.audio?.play();
     }
 
     registerObjects() {
         Scene.setObjects(this.gameObjects);
+    }
+
+    initPlayer(player: Player) {
+        if (!this.playerInitialPosition)
+            throw new Error("player initial position is not set on level");
+
+        player.setPositions(this.playerInitialPosition);
+        player.resetVelocisty();
+        this.addObject(player);
     }
 
     addObject(gameObject: GameObject) {

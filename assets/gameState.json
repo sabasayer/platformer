@@ -1,8 +1,14 @@
 {
+    "player": "assets/player.json",
     "levels": [
         {
             "name": "level1",
             "route": "assets/levels/level1.json"
+        },
+        {
+            "name": "level2",
+            "route": "assets/levels/level2.json",
+            "lazy": true
         }
     ]
 }

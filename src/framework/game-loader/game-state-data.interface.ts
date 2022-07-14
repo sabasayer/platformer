@@ -4,4 +4,5 @@ export interface GameStateData {
         route: string;
         lazy: boolean;
     }[];
+    player: string;
 }

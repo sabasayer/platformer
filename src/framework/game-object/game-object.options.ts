@@ -10,7 +10,7 @@ export interface GameObjectOptions {
     name?: string;
     imageUrl?: string;
     color?: string;
-    spriteStore?: SpriteStateMap;
+    spriteStateMap?: SpriteStateMap;
     collidesWith?: "all" | EnumGameObjectType[];
     gravityHasEffectOnIt?: boolean;
     type: EnumGameObjectType;

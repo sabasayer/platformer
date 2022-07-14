@@ -28,7 +28,7 @@ export const projectileFactory = (
             x: owner.getPosition.x,
             y: owner.getPosition.y + owner.getDimension.height / 2,
         },
-        spriteStore: {
+        spriteStateMap: {
             [EnumObjectState.movingRight]: animation,
             [EnumObjectState.movingLeft]: animation,
         },

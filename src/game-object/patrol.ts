@@ -23,7 +23,7 @@ export class Patrol extends Npc {
             ],
             gravityHasEffectOnIt: true,
             imageUrl: "sprites/npcs/blue_patrol/azul1.png",
-            spriteStore: {
+            spriteStateMap: {
                 [EnumObjectState.idle]: patrolSprite,
                 [EnumObjectState.movingRight]: patrolSprite,
                 [EnumObjectState.movingLeft]: patrolSprite,

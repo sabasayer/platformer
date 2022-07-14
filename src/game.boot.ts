@@ -1,7 +1,5 @@
 import { MENU_STATE } from "./framework/constants";
 import { StateManager } from "./framework/state-manager/game-state.manager";
-import { level1 } from "./level/level-1";
-import { level2 } from "./level/level-2";
 import { levelMenu } from "./level/level-menu";
 import { levelTest } from "./level/level-test";
 

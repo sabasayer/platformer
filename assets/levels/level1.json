@@ -3,6 +3,7 @@
     "music": "musics/bg-music.mp3",
     "width": 10000,
     "height": 1500,
+    "playerInitialPosition": { "x": 30, "y": 130 },
     "objects": [
         {
             "type": 2,
@@ -19,6 +20,111 @@
             "collidesWith": "all",
             "gravityHasEffectOnIt": false,
             "color": "rgba(51, 102, 157)"
+        },
+        {
+            "type": 2,
+            "initialPosition": { "x": 392, "y": 382 },
+            "dimension": { "width": 211, "height": 11 },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false,
+            "color": "rgba(51, 102, 157)"
+        },
+        {
+            "type": 2,
+            "initialPosition": { "x": 250, "y": 720 },
+            "dimension": { "width": 50, "height": 50 },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false,
+            "color": "rgba(51, 102, 157)"
+        },
+        {
+            "type": 4,
+            "initialPosition": {
+                "x": 590,
+                "y": 850
+            },
+            "dimension": {
+                "width": 50,
+                "height": 50
+            },
+            "collidesWith": [1],
+            "solid": false,
+            "gravityHasEffectOnIt": false,
+            "imageUrl": "sprites/red-flag.png"
+        },
+        {
+            "type": 2,
+            "initialPosition": {
+                "x": 0,
+                "y": 758
+            },
+            "dimension": {
+                "width": 500,
+                "height": 10
+            },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false,
+            "color": "rgba(51, 102, 157)"
+        },
+        {
+            "type": 2,
+            "initialPosition": {
+                "x": 0,
+                "y": 1200
+            },
+            "dimension": {
+                "width": 2000,
+                "height": 1
+            },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false,
+            "color": "rgba(51, 102, 157)"
+        },
+        {
+            "type": 9,
+            "initialPosition": {
+                "x": 0,
+                "y": 1400
+            },
+            "dimension": {
+                "width": 2000,
+                "height": 500
+            },
+            "collidesWith": [1],
+            "gravityHasEffectOnIt": false,
+            "color": "red"
+        },
+        {
+            "type": 8,
+            "initialPosition": { "x": 0, "y": 0 },
+            "dimension": { "width": 2048, "height": 1546 },
+            "images": [
+                { "url": "backgrounds/_11_background.png", "distance": 9 },
+                {
+                    "url": "backgrounds/_10_distant_clouds.png",
+                    "distance": 8
+                },
+                {
+                    "url": "backgrounds/_09_distant_clouds1.png",
+                    "distance": 7
+                },
+                { "url": "backgrounds/_08_clouds.png", "distance": 6 },
+                {
+                    "url": "backgrounds/_07_huge_clouds.png",
+                    "distance": 5
+                },
+                { "url": "backgrounds/_06_hill2.png", "distance": 4 },
+                { "url": "backgrounds/_05_hill1.png", "distance": 3 },
+                { "url": "backgrounds/_04_bushes.png", "distance": 2 },
+                {
+                    "url": "backgrounds/_03_distant_trees.png",
+                    "distance": 1
+                },
+                {
+                    "url": "backgrounds/_02_trees_and_bushes.png"
+                },
+                { "url": "backgrounds/_01_ground.png" }
+            ]
         }
     ]
 }

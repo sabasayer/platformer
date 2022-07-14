@@ -1,4 +1,5 @@
 import { GameObject } from "../game-object/game-object";
+import { Position } from "../game-object/types/position";
 
 export interface LevelOptions {
     name: string;
@@ -6,4 +7,5 @@ export interface LevelOptions {
     width: number;
     height: number;
     music?: string;
+    playerInitialPosition: Position;
 }

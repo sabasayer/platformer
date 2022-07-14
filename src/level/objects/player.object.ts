@@ -1,4 +1,3 @@
-import { SpriteList } from "../../framework/sprite/sprite-list";
 import { Player } from "../../framework/game-object/player/player";
 
 import { EnumObjectState } from "../../framework/game-object/object-state.enum";
@@ -58,7 +57,7 @@ export const createPlayer = (position: Position) =>
         initialPosition: position,
         dimension: { width: 22, height: 32 },
         canMoveAtAir: true,
-        spriteStore: {
+        spriteStateMap: {
             [EnumObjectState.idle]: playerIdleSprite,
             [EnumObjectState.idleLeft]: playerIdleLeftSprite,
             [EnumObjectState.movingRight]: playerRunSprite,

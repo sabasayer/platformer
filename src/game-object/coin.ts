@@ -18,7 +18,7 @@ export class Coin extends ItemObject {
                 EnumGameObjectType.Player,
                 EnumGameObjectType.IdleObject,
             ],
-            spriteStore: {
+            spriteStateMap: {
                 [EnumObjectState.idle]: new GameAnimation(
                     spriteListFactory.createFromHorizontalSheet(
                         "sprites/coins/MonedaD.png",

@@ -86,7 +86,7 @@ export class GameObject {
         this.position = { ...options.initialPosition };
         this.collidesWith = options.collidesWith;
         this.dimension = options.dimension;
-        this.spriteStore = options.spriteStore;
+        this.spriteStore = options.spriteStateMap;
         this.imageUrl = options.imageUrl;
         this.color = options.color;
         this.gravityHasEffectOnIt =
@@ -258,6 +258,11 @@ export class GameObject {
     resetPosition() {
         this.position.x = this.initialPositions.x;
         this.position.y = this.initialPositions.y;
+    }
+
+    resetVelocisty() {
+        this.velocityX = 0;
+        this.velocityY = 0;
     }
 
     setPositions(position: Position) {

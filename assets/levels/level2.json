@@ -1,0 +1,21 @@
+{
+    "name": "level2",
+    "width": 1900,
+    "height": 1500,
+    "playerInitialPosition": { "x": 150, "y": 130 },
+    "objects": [
+        {
+            "type": 2,
+            "dimension": {
+                "height": 45,
+                "width": 250
+            },
+            "initialPosition": {
+                "x": 150,
+                "y": 600
+            },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false
+        }
+    ]
+}

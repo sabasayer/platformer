@@ -3,9 +3,11 @@ import { EnumKeyboardKey } from "../input/keyboard.input";
 import { Level } from "../level/level";
 import { gameLoader } from "../game-loader/game-loader";
 import { MENU_STATE } from "../constants";
+import { Player } from "../game-object/player/player";
 
 class GameStateManager {
     private states: GameState[] = [];
+    private player?: Player;
     private currentState: string = "";
     private isEnding: boolean = false;
 
@@ -22,6 +24,7 @@ class GameStateManager {
             };
         });
 
+        this.player = data.player;
         this.states.push(...states);
     }
 
@@ -49,7 +52,7 @@ class GameStateManager {
             await this.loadLevel(state);
         }
 
-        this.getCurrentLevel()?.start();
+        this.getCurrentLevel()?.start(this.player);
     }
 
     runEndCondition() {
@@ -61,6 +64,7 @@ class GameStateManager {
 
         this.isEnding = true;
         const nextState = this.getNextState(currentState);
+
         if (!nextState) return;
 
         this.setCurrentState(nextState.name);
@@ -73,9 +77,8 @@ class GameStateManager {
 
     getNextState(state: GameState) {
         const order = state.order;
-        return order
-            ? this.states.find((e) => e.order === order + 1)
-            : undefined;
+
+        return this.states.find((e) => e.order === (order ?? 0) + 1);
     }
 
     getCurrentStateObj(): GameState | undefined {
