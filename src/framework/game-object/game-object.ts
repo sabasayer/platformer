@@ -266,7 +266,7 @@ export class GameObject {
     }
 
     setPositions(position: Position) {
-        this.position = position;
+        this.position = { ...position };
     }
 
     setDimension(dimension: Dimension) {
@@ -435,5 +435,6 @@ export class GameObject {
 
     destroy() {
         Scene.removeObject(this);
+        this.pinnedObjects.forEach((e) => e.destroy());
     }
 }

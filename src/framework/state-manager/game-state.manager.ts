@@ -32,7 +32,21 @@ class GameStateManager {
         this.states.push(state);
     }
 
+    reset() {
+        this.states.forEach((state) => {
+            if (state.name !== MENU_STATE) state.level = undefined;
+        });
+    }
+
+    runGameOwer() {
+        this.getCurrentLevel()?.end();
+        this.reset();
+        this.setCurrentState(MENU_STATE);
+    }
+
     private async loadLevel(name: string) {
+        console.log("load level", name);
+
         const level = await gameLoader.loadLevel(name);
         const state = this.states.find((e) => e.name === name);
         if (!state) throw new Error("state not found. Name:" + name);
@@ -55,7 +69,7 @@ class GameStateManager {
         this.getCurrentLevel()?.start(this.player);
     }
 
-    runEndCondition() {
+    async runEndCondition() {
         if (this.isEnding) return;
 
         const currentState = this.getCurrentStateObj();
@@ -67,7 +81,7 @@ class GameStateManager {
 
         if (!nextState) return;
 
-        this.setCurrentState(nextState.name);
+        await this.setCurrentState(nextState.name);
         this.isEnding = false;
     }
 
@@ -87,6 +101,10 @@ class GameStateManager {
 
     getCurrentLevel(): Level | undefined {
         return this.getCurrentStateObj()?.level;
+    }
+
+    getPlayer() {
+        return this.player;
     }
 }
 

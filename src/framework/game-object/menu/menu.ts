@@ -10,7 +10,7 @@ export class Menu extends Level {
     private events: MenuEvent[];
 
     constructor(options: MenuOptions) {
-        super(options);
+        super({ ...options, scoreVisible: false });
         this.events = options.events;
     }
 

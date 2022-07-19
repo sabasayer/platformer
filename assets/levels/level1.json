@@ -95,6 +95,61 @@
             "color": "red"
         },
         {
+            "type": 6,
+            "initialPosition": { "x": 100, "y": 100 },
+            "dimension": { "width": 16, "height": 16 },
+            "collidesWith": [1, 2],
+            "gravityHasEffectOnIt": true,
+            "imageUrl": "sprites/npcs/blue_patrol/azul1.png",
+            "velocityX": 20,
+            "canFly": false,
+            "npcType": 1,
+            "attackPower": 10,
+            "health": 20,
+            "spriteStateMap": {
+                "1": {
+                    "type": "GameAnimation",
+                    "options": {
+                        "frames": [
+                            "sprites/npcs/blue_patrol/azul1.png",
+                            "sprites/npcs/blue_patrol/azul2.png",
+                            "sprites/npcs/blue_patrol/azul3.png"
+                        ]
+                    }
+                },
+                "2": {
+                    "type": "GameAnimation",
+                    "options": {
+                        "frames": [
+                            "sprites/npcs/blue_patrol/azul1.png",
+                            "sprites/npcs/blue_patrol/azul2.png",
+                            "sprites/npcs/blue_patrol/azul3.png"
+                        ]
+                    }
+                },
+                "3": {
+                    "type": "GameAnimation",
+                    "options": {
+                        "frames": [
+                            "sprites/npcs/blue_patrol/azul1.png",
+                            "sprites/npcs/blue_patrol/azul2.png",
+                            "sprites/npcs/blue_patrol/azul3.png"
+                        ]
+                    }
+                },
+                "4": {
+                    "type": "GameAnimation",
+                    "options": {
+                        "frames": [
+                            "sprites/npcs/blue_patrol/azul1.png",
+                            "sprites/npcs/blue_patrol/azul2.png",
+                            "sprites/npcs/blue_patrol/azul3.png"
+                        ]
+                    }
+                }
+            }
+        },
+        {
             "type": 8,
             "initialPosition": { "x": 0, "y": 0 },
             "dimension": { "width": 2048, "height": 1546 },

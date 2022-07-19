@@ -22,4 +22,8 @@ export abstract class KeyboardHelper {
             this.keys[ev.which] = false;
         }
     }
+
+    static reset() {
+        this.keys = {};
+    }
 }

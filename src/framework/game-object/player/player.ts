@@ -10,7 +10,6 @@ import { projectileFactory } from "../projectile/projectile.factory";
 import { EnumObjectState } from "../object-state.enum";
 import { Scene } from "../../scene/scene";
 import { StateManager } from "../../state-manager/game-state.manager";
-import { MENU_STATE } from "../../constants";
 
 export class Player extends GameObject {
     protected velocityX: number = 0;
@@ -26,7 +25,7 @@ export class Player extends GameObject {
         super({ ...options, type: EnumGameObjectType.Player });
         this.canMoveAtAir = options.canMoveAtAir;
         this.attackPower = options.attackPower;
-        this.handleKeyboardEvents();
+        this.speed = options.speed;
     }
 
     get getScore() {
@@ -41,7 +40,7 @@ export class Player extends GameObject {
         return this.attackPower;
     }
 
-    handleKeyboardEvents() {
+    initKeyboardEvents() {
         window.addEventListener("keydown", this.keydown);
         window.addEventListener("keyup", this.keyup);
     }
@@ -170,13 +169,14 @@ export class Player extends GameObject {
 
     die() {
         alert("you died");
-        StateManager.setCurrentState(MENU_STATE);
+        StateManager.runGameOwer();
         this.destroy();
     }
 
     destroy() {
         window.removeEventListener("keydown", this.keydown);
         window.removeEventListener("keyup", this.keyup);
+        KeyboardHelper.reset();
         super.destroy();
     }
 }

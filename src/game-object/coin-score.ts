@@ -1,17 +1,15 @@
 import { LayerZIndexes } from "../framework/constants";
-import { EnumGameObjectType } from "../framework/game-object/game-object-type.enum";
 import { EnumItemType } from "../framework/game-object/item/item-type.enum";
 import { UIElement } from "../framework/game-object/ui/ui-element";
-import { EnumInteractionType } from "../framework/interaction-log/interaction-type.enum";
-import { World } from "../framework/world/world";
-import { playerObject } from "../level/objects/player.object";
+import { StateManager } from "../framework/state-manager/game-state.manager";
 
 const calculateScore = () => {
-    const coins = playerObject.filterInventory(
+    const player = StateManager.getPlayer();
+    const coins = player?.filterInventory(
         (e) => e.getItemType() === EnumItemType.Coin
     );
 
-    return coins.length;
+    return coins?.length ?? 0;
 };
 
 export const coinScore = new UIElement({

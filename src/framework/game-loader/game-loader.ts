@@ -8,6 +8,7 @@ import { ui } from "../ui/ui";
 import { GameObjectData } from "./game-object-data.interface";
 import { GameStateData } from "./game-state-data.interface";
 import { LevelData } from "./level-data.interface";
+import cloneDeep from "lodash/clonedeep";
 
 class GameLoader {
     private gameStateFileRoute = "assets/gameState.json";
@@ -37,7 +38,7 @@ class GameLoader {
         if (!level)
             throw new Error("Level is not found ins state data. Name:" + name);
 
-        let levelData = this.levelData[name];
+        let levelData = cloneDeep(this.levelData[name]);
 
         if (!levelData) {
             levelData = await this.getFile<LevelData>(level.route);

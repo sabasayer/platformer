@@ -5,6 +5,8 @@ import { Scene } from "../scene/scene";
 import { assetManager } from "../asset-manager/asset-manager";
 import { Position } from "../game-object/types/position";
 import { Player } from "../game-object/player/player";
+import { score } from "~/src/game-object/score";
+import { coinScore } from "~/src/game-object/coin-score";
 
 export class Level {
     protected name: string;
@@ -13,6 +15,7 @@ export class Level {
     protected width: number;
     protected height: number;
     protected playerInitialPosition: Position;
+    protected scoreVisible: boolean = true;
 
     constructor(options: LevelOptions) {
         this.name = options.name;
@@ -20,6 +23,7 @@ export class Level {
         this.width = options.width;
         this.height = options.height;
         this.playerInitialPosition = options.playerInitialPosition;
+        this.scoreVisible = options.scoreVisible ?? true;
         if (options.music) {
             this.audio = assetManager.loadSound(options.music, 0.5);
         }
@@ -56,6 +60,7 @@ export class Level {
     start(player?: Player) {
         this.registerObjects();
 
+        if (this.scoreVisible) this.initScoreBoard();
         if (player) this.initPlayer(player);
 
         this.audio?.play();
@@ -65,6 +70,11 @@ export class Level {
         Scene.setObjects(this.gameObjects);
     }
 
+    initScoreBoard() {
+        this.addObject(score);
+        this.addObject(coinScore);
+    }
+
     initPlayer(player: Player) {
         if (!this.playerInitialPosition)
             throw new Error("player initial position is not set on level");
@@ -72,6 +82,7 @@ export class Level {
         player.setPositions(this.playerInitialPosition);
         player.resetVelocisty();
         this.addObject(player);
+        player.initKeyboardEvents();
     }
 
     addObject(gameObject: GameObject) {

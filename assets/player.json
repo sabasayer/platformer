@@ -3,6 +3,7 @@
     "initialPosition": { "x": 30, "y": "130" },
     "dimension": { "width": 22, "height": 32 },
     "canMoveAtAir": true,
+    "speed": 15,
     "spriteStateMap": {
         "1": {
             "type": "GameAnimation",
