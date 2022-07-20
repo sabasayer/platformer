@@ -3,6 +3,8 @@ import { EnumObjectState } from "../game-object/object-state.enum";
 import { Sprite } from "./sprite";
 import { SpriteList } from "./sprite-list";
 
+export type SpriteUnion = Sprite | SpriteList | GameAnimation;
+
 export type SpriteStateMap = {
-    [key in EnumObjectState]?: Sprite | SpriteList | GameAnimation;
+    [key in EnumObjectState]?: SpriteUnion;
 };

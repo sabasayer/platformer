@@ -12,7 +12,7 @@ export interface SpriteListData {
 }
 
 export interface GameAnimationData {
-    frames: string[];
+    frames: (string | SpriteData)[];
     oneAnimationCycleTime?: number;
 }
 

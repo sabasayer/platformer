@@ -33,8 +33,13 @@ const createValue = (
             return new SpriteList(options.urls, options.oneAnimationCycleTime);
         case "GameAnimation":
             return new GameAnimation(
-                spriteListFactory.createFromUrls(options.frames),
+                options.frames.map((e) => createSprite(e)),
                 options.oneAnimationCycleTime
             );
     }
+};
+
+const createSprite = (options: string | SpriteData) => {
+    if (typeof options === "string") return new Sprite(options);
+    return new Sprite(options.url, options.spriteSheetOptions);
 };
