@@ -7,5 +7,6 @@ export enum EnumObjectState {
     fallingLeft = 6,
     jumping = 7,
     jumpingLeft = 8,
-    dying = 9
+    takeDamage = 9,
+    dying = 10,
 }

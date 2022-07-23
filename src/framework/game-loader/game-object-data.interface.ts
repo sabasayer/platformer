@@ -1,8 +1,14 @@
 import { GameObjectTypesUnion } from "../game-object/game-object-types-union";
-import { SpriteStateMapData } from "./sprite-state-map-data";
+import {
+    GameObjectStateMachineData,
+    SpriteStateMapData,
+} from "./game-object-state-machine-data";
 
 export interface GameObjectData
-    extends Omit<GameObjectTypesUnion, "pinnedObjects" | "spriteStateMap"> {
+    extends Omit<
+        GameObjectTypesUnion,
+        "pinnedObjects" | "stateMachineOptions"
+    > {
     pinnedObjects?: GameObjectData[];
-    spriteStateMap?: SpriteStateMapData;
+    stateMachineOptions?: GameObjectStateMachineData;
 }

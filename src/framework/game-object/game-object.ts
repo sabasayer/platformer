@@ -1,6 +1,5 @@
 import { FRAME_RATE, MOVEMENT_MULTIPLIER, ENVS } from "../constants";
 import { World } from "../world/world";
-import { SpriteStateMap } from "~/src/framework/sprite/sprite-state-map.interface";
 import { GameObjectOptions } from "./game-object.options";
 import { EnumGameObjectType } from "./game-object-type.enum";
 import { Drawer } from "../camera/drawer";
@@ -14,6 +13,8 @@ import { CollisionLogger } from "../logger/collision-logger";
 import { Scene } from "../scene/scene";
 import { collisionHelper } from "../helper/collision.helper";
 import { assetManager } from "../asset-manager/asset-manager";
+import { GameObjectStateMachine } from "./state-machine/game-object-state-machine";
+import { GameObjectStateMachineOptions } from "./state-machine/game-object-state-machine.options";
 
 export class GameObject {
     id: number = World.getId();
@@ -34,9 +35,7 @@ export class GameObject {
     protected image?: HTMLImageElement;
     protected color?: string;
 
-    protected spriteStore?: SpriteStateMap;
-
-    protected state: EnumObjectState = EnumObjectState.idle;
+    protected stateMachine?: GameObjectStateMachine;
 
     protected initialPositions: Position;
     protected health?: number;
@@ -46,6 +45,14 @@ export class GameObject {
 
     protected pinnedObjects = new Set<GameObject>();
     private logger: CollisionLogger;
+
+    protected get state() {
+        return this.stateMachine?.state ?? EnumObjectState.idle;
+    }
+
+    protected set state(value: EnumObjectState) {
+        this.stateMachine?.changeState(value);
+    }
 
     get getName() {
         return this.name;
@@ -86,7 +93,6 @@ export class GameObject {
         this.position = { ...options.initialPosition };
         this.collidesWith = options.collidesWith;
         this.dimension = options.dimension;
-        this.spriteStore = options.spriteStateMap;
         this.imageUrl = options.imageUrl;
         this.color = options.color;
         this.gravityHasEffectOnIt =
@@ -104,6 +110,7 @@ export class GameObject {
         this.name = options.name;
         this.logger = new CollisionLogger(this);
 
+        this.createStateMachine(options.stateMachineOptions);
         this.createImage();
     }
 
@@ -116,9 +123,12 @@ export class GameObject {
     }
 
     createImage() {
-        if (!this.imageUrl) return;
+        if (this.imageUrl) this.image = assetManager.loadImage(this.imageUrl);
+    }
 
-        this.image = assetManager.loadImage(this.imageUrl);
+    createStateMachine(stateMachineOptions?: GameObjectStateMachineOptions) {
+        if (stateMachineOptions)
+            this.stateMachine = new GameObjectStateMachine(stateMachineOptions);
     }
 
     beforeRender() {
@@ -142,7 +152,7 @@ export class GameObject {
     }
 
     protected renderBody(frame: number) {
-        if (this.spriteStore && this.renderSprite(frame)) {
+        if (this.stateMachine && this.renderByState(frame)) {
             return;
         }
 
@@ -167,13 +177,10 @@ export class GameObject {
         Drawer.drawImage(image, this.position, this.dimension);
     }
 
-    renderSprite(frame: number): boolean {
+    renderByState(frame: number): boolean {
         return (
-            this.spriteStore?.[this.state]?.render(
-                frame,
-                this.position,
-                this.dimension
-            ) ?? false
+            this.stateMachine?.render(frame, this.position, this.dimension) ??
+            false
         );
     }
 

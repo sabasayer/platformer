@@ -8,10 +8,7 @@ import { Renderable } from "../renderable/renderable.interface";
 export class SpriteList implements Renderable {
     images: HTMLImageElement[] = [];
 
-    constructor(
-        private urls: string[],
-        private oneAnimationCycleTime: number = 1
-    ) {
+    constructor(private urls: string[], private animationDuration: number = 1) {
         this.loadImages(urls);
     }
 
@@ -25,7 +22,7 @@ export class SpriteList implements Renderable {
         return AnimationUtils.findItemByFrame(
             this.images,
             frame,
-            this.oneAnimationCycleTime
+            this.animationDuration
         );
     }
 

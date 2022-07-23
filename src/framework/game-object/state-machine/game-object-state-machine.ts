@@ -5,6 +5,7 @@ import { Position } from "../types/position";
 import {
     GameObjectStateMachineOptions,
     GameObjectStateMap,
+    GameObjectStateValue,
 } from "./game-object-state-machine.options";
 
 export class GameObjectStateMachine {
@@ -29,13 +30,7 @@ export class GameObjectStateMachine {
         const stateMap = this.states[this.currentState];
         const duration = stateMap?.duration;
 
-        if (duration) {
-            this.timeOut = setTimeout(() => {
-                this.changeState(
-                    stateMap.durationEndState ?? this.previousState
-                );
-            }, duration);
-        }
+        if (duration) this.handleDuration(stateMap, duration);
     }
 
     render(frame: number, targetPosition: Position, dimension: Dimension) {
@@ -43,5 +38,11 @@ export class GameObjectStateMachine {
         if (!state) return;
 
         state.sprite.render(frame, targetPosition, dimension);
+    }
+
+    private handleDuration(stateMap: GameObjectStateValue, duration: number) {
+        this.timeOut = setTimeout(() => {
+            this.changeState(stateMap.durationEndState ?? this.previousState);
+        }, duration);
     }
 }

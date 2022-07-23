@@ -14,7 +14,7 @@ import { StateManager } from "../../state-manager/game-state.manager";
 export class Player extends GameObject {
     protected velocityX: number = 0;
     private speed: number = 30;
-    private jumpForce: number = 80;
+    private jumpForce: number = 100;
     private canMoveAtAir: boolean = false;
     private inventory = new Inventory();
     private attackPower: number;

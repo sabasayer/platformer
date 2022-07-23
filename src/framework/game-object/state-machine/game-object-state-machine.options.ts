@@ -1,12 +1,14 @@
-import { SpriteUnion } from "../../sprite/sprite-state-map.interface";
+import { SpriteUnion } from "../../sprite/sprite-union";
 import { EnumObjectState } from "../object-state.enum";
 
+export interface GameObjectStateValue {
+    sprite: SpriteUnion;
+    duration?: number;
+    durationEndState?: EnumObjectState;
+}
+
 export type GameObjectStateMap = {
-    [key in EnumObjectState]: {
-        sprite: SpriteUnion;
-        duration?: number;
-        durationEndState?: EnumObjectState;
-    };
+    [key in EnumObjectState]?: GameObjectStateValue;
 };
 
 export interface GameObjectStateMachineOptions {

@@ -6,6 +6,8 @@ import { boot } from "./game.boot";
 
 boot();
 
+console.log(FRAME_DELAY);
+
 let frame = 0;
 let loop = () => {
     try {

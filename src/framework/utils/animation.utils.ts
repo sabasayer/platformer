@@ -7,31 +7,31 @@ export abstract class AnimationUtils {
      *
      * @param itemsLength total sprites length in animation
      * @param frame current frame
-     * @param oneAnimationCycleTime how much second will it take to finish this animation
+     * @param animationDuration how much second will it take to finish this animation
      */
     static findIndexByFrame(
         itemsLength: number,
         frame: number,
-        oneAnimationCycleTime: number = 1
+        animationDuration: number = 1
     ): number {
         if (!itemsLength) return 0;
 
         const framePerImage =
-            (FRAME_PER_SECOND / itemsLength) * oneAnimationCycleTime;
+            (FRAME_PER_SECOND / itemsLength) * animationDuration;
         return Math.floor(frame / framePerImage) % itemsLength;
     }
 
     static findItemByFrame<T>(
         items: T[],
         frame: number,
-        oneAnimationCycleTime?: number
+        animationDuration?: number
     ): T | undefined {
         if (!items.length) return;
 
         const index = this.findIndexByFrame(
             items.length,
             frame,
-            oneAnimationCycleTime
+            animationDuration
         );
 
         return items[index];
@@ -41,14 +41,14 @@ export abstract class AnimationUtils {
         totalCount: number,
         frame: number,
         oneItemDimension: Dimension,
-        oneAnimationCycleTime?: number
+        animationDuration?: number
     ): ImageDimension | undefined {
         if (!totalCount) return;
 
         const index = this.findIndexByFrame(
             totalCount,
             frame,
-            oneAnimationCycleTime
+            animationDuration
         );
 
         return {

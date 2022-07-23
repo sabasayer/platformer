@@ -1,6 +1,6 @@
-import { SpriteStateMap } from "../sprite/sprite-state-map.interface";
 import { GameObject } from "./game-object";
 import { EnumGameObjectType } from "./game-object-type.enum";
+import { GameObjectStateMachineOptions } from "./state-machine/game-object-state-machine.options";
 import { Dimension } from "./types/dimension";
 import { Position } from "./types/position";
 
@@ -10,7 +10,7 @@ export interface GameObjectOptions {
     name?: string;
     imageUrl?: string;
     color?: string;
-    spriteStateMap?: SpriteStateMap;
+    stateMachineOptions?: GameObjectStateMachineOptions;
     collidesWith?: "all" | EnumGameObjectType[];
     gravityHasEffectOnIt?: boolean;
     type: EnumGameObjectType;

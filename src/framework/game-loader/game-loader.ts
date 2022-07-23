@@ -1,4 +1,3 @@
-import { Drawer } from "../camera/drawer";
 import { createGameObject } from "../game-object/game-object-factory";
 import { Player } from "../game-object/player/player";
 import { SERVER_URL } from "../helper/index";

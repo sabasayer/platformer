@@ -7,14 +7,14 @@ import { Sprite } from "../sprite/sprite";
 export class GameAnimation implements Renderable {
     constructor(
         private frames: Sprite[],
-        private oneAnimationCycleTime: number = 1
+        private animationDuration: number = 1
     ) {}
 
     findFrame(frame: number) {
         return AnimationUtils.findItemByFrame(
             this.frames,
             frame,
-            this.oneAnimationCycleTime
+            this.animationDuration
         );
     }
 

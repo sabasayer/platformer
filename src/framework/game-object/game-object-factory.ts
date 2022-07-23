@@ -1,5 +1,5 @@
 import { GameObjectData } from "../game-loader/game-object-data.interface";
-import { createSpriteStateMap } from "../sprite/sprite-state-map-factory";
+import { createStateMachineOptions } from "../sprite/state-machine-factory";
 import { Background } from "./background/background";
 import { GameObject } from "./game-object";
 import { EnumGameObjectType } from "./game-object-type.enum";
@@ -16,8 +16,8 @@ export const createGameObject = (data: GameObjectData): GameObject => {
     const options: GameObjectTypesUnion = {
         ...data,
         pinnedObjects,
-        spriteStateMap: data.spriteStateMap
-            ? createSpriteStateMap(data.spriteStateMap)
+        stateMachineOptions: data.stateMachineOptions
+            ? createStateMachineOptions(data.stateMachineOptions)
             : undefined,
     };
 
