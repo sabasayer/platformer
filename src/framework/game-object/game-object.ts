@@ -15,6 +15,7 @@ import { collisionHelper } from "../helper/collision.helper";
 import { assetManager } from "../asset-manager/asset-manager";
 import { GameObjectStateMachine } from "./state-machine/game-object-state-machine";
 import { GameObjectStateMachineOptions } from "./state-machine/game-object-state-machine.options";
+import { ImageDimension } from "../utils/image-dimension.interface";
 
 export class GameObject {
     id: number = World.getId();
@@ -32,6 +33,7 @@ export class GameObject {
     protected gravityHasEffectOnIt: boolean = true;
     protected solid: boolean = true;
     protected imageUrl?: string = "";
+    imageOptions?: ImageDimension;
     protected image?: HTMLImageElement;
     protected color?: string;
 
@@ -94,6 +96,7 @@ export class GameObject {
         this.collidesWith = options.collidesWith;
         this.dimension = options.dimension;
         this.imageUrl = options.imageUrl;
+        this.imageOptions = options.imageOptions;
         this.color = options.color;
         this.gravityHasEffectOnIt =
             options.gravityHasEffectOnIt ?? this.gravityHasEffectOnIt;
@@ -174,7 +177,12 @@ export class GameObject {
     }
 
     renderImage(image: HTMLImageElement) {
-        Drawer.drawImage(image, this.position, this.dimension);
+        Drawer.drawImage(
+            image,
+            this.position,
+            this.dimension,
+            this.imageOptions
+        );
     }
 
     renderByState(frame: number): boolean {
@@ -228,6 +236,8 @@ export class GameObject {
     }
 
     private calculateState() {
+        if (this.state === EnumObjectState.takeDamage) return;
+
         if (!this.velocityY && !this.velocityX) {
             this.state =
                 this.lastHorizontalState === EnumObjectState.movingLeft
@@ -424,6 +434,8 @@ export class GameObject {
         if (this.health == undefined) return false;
 
         // run take damage animation
+
+        this.stateMachine?.changeState(EnumObjectState.takeDamage);
 
         this.health -= damage;
         if (this.health <= 0) {

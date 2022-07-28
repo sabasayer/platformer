@@ -14,7 +14,7 @@ export class Level {
     protected gameObjects: GameObject[] = [];
     protected width: number;
     protected height: number;
-    protected playerInitialPosition: Position;
+    protected playerInitialPosition?: Position;
     protected scoreVisible: boolean = true;
 
     constructor(options: LevelOptions) {

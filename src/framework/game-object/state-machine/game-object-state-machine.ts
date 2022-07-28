@@ -23,8 +23,6 @@ export class GameObjectStateMachine {
     }
 
     changeState(state: EnumObjectState) {
-        if (this.timeOut) clearTimeout(this.timeOut);
-
         this.previousState = this.currentState;
         this.currentState = state;
         const stateMap = this.states[this.currentState];
@@ -37,12 +35,19 @@ export class GameObjectStateMachine {
         const state = this.states[this.currentState];
         if (!state) return;
 
+        if (this.currentState === EnumObjectState.takeDamage)
+            console.log(EnumObjectState[this.currentState]);
+
         state.sprite.render(frame, targetPosition, dimension);
     }
 
     private handleDuration(stateMap: GameObjectStateValue, duration: number) {
         this.timeOut = setTimeout(() => {
-            this.changeState(stateMap.durationEndState ?? this.previousState);
+            let nextState = stateMap.durationEndState ?? this.previousState;
+            if (nextState === this.currentState)
+                nextState = EnumObjectState.idle;
+
+            this.changeState(nextState);
         }, duration);
     }
 }

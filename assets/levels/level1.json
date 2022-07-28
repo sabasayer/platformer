@@ -1,10 +1,22 @@
 {
     "name": "level1",
-    "music": "musics/bg-music.mp3",
     "width": 10000,
     "height": 1500,
     "playerInitialPosition": { "x": 30, "y": 130 },
     "objects": [
+        {
+            "type": 2,
+            "initialPosition": { "x": 100, "y": 100 },
+            "dimension": { "width": 16, "height": 16 },
+            "collidesWith": "all",
+            "imageUrl": "sprites/atlas.png",
+            "imageOptions": {
+                "x": 0,
+                "y": 16,
+                "width": 16,
+                "height": 16
+            }
+        },
         {
             "type": 2,
             "initialPosition": { "x": 42, "y": 250 },
@@ -163,7 +175,7 @@
         },
         {
             "type": 6,
-            "initialPosition": { "x": 100, "y": 100 },
+            "initialPosition": { "x": 60, "y": 100 },
             "dimension": { "width": 16, "height": 16 },
             "collidesWith": [1, 2],
             "gravityHasEffectOnIt": true,

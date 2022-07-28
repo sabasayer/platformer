@@ -98,6 +98,19 @@
                         "url": "sprites/player/jump/jump-left.png"
                     }
                 }
+            },
+            "9": {
+                "duration": 500,
+                "durationEndState": 1,
+                "sprite": {
+                    "type": "GameAnimation",
+                    "options": {
+                        "frames": [
+                            "sprites/player/jump/takeDamage.png",
+                            "sprites/player/jump/takeDamage2.png"
+                        ]
+                    }
+                }
             }
         }
     },

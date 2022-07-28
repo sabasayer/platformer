@@ -1,3 +1,4 @@
+import { ImageDimension } from "../utils/image-dimension.interface";
 import { GameObject } from "./game-object";
 import { EnumGameObjectType } from "./game-object-type.enum";
 import { GameObjectStateMachineOptions } from "./state-machine/game-object-state-machine.options";
@@ -9,6 +10,7 @@ export interface GameObjectOptions {
     dimension: Dimension;
     name?: string;
     imageUrl?: string;
+    imageOptions?: ImageDimension;
     color?: string;
     stateMachineOptions?: GameObjectStateMachineOptions;
     collidesWith?: "all" | EnumGameObjectType[];

@@ -7,6 +7,6 @@ export interface LevelOptions {
     width: number;
     height: number;
     music?: string;
-    playerInitialPosition: Position;
+    playerInitialPosition?: Position;
     scoreVisible?: boolean;
 }
