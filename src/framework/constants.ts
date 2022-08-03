@@ -23,3 +23,6 @@ export const TextConstants = {
 };
 
 export const MENU_STATE = "menu";
+export const END_GAME_STATE = "end_game";
+
+export const STATIC_LEVELS = [MENU_STATE, END_GAME_STATE];

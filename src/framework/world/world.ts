@@ -1,4 +1,4 @@
-import { InteractionLogContainer } from "../interaction-log/interaction-log-container";
+import { InteractionLogContainer } from "../logger/interaction-log/interaction-log-container";
 
 class GameWorld {
     gravity: number = 13;

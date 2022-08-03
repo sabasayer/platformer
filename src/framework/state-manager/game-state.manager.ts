@@ -2,14 +2,21 @@ import { GameState } from "../state-manager/game-states.interface";
 import { EnumKeyboardKey } from "../input/keyboard.input";
 import { Level } from "../level/level";
 import { gameLoader } from "../game-loader/game-loader";
-import { MENU_STATE } from "../constants";
+import { END_GAME_STATE, MENU_STATE, STATIC_LEVELS } from "../constants";
 import { Player } from "../game-object/player/player";
+import { World } from "../world/world";
 
 class GameStateManager {
     private states: GameState[] = [];
     private player?: Player;
     private currentState: string = "";
     private isEnding: boolean = false;
+
+    get levels() {
+        return this.states
+            .filter((e) => !STATIC_LEVELS.includes(e.name))
+            .map((e) => e.level);
+    }
 
     async load() {
         const data = await gameLoader.load();
@@ -34,13 +41,14 @@ class GameStateManager {
 
     reset() {
         this.states.forEach((state) => {
-            if (state.name !== MENU_STATE) state.level = undefined;
+            if (!STATIC_LEVELS.includes(state.name)) state.level = undefined;
         });
     }
 
     runGameOwer() {
         this.getCurrentLevel()?.end();
         this.reset();
+        World.interactionLogContainer.reset();
         this.setCurrentState(MENU_STATE);
     }
 
@@ -92,7 +100,11 @@ class GameStateManager {
     getNextState(state: GameState) {
         const order = state.order;
 
-        return this.states.find((e) => e.order === (order ?? 0) + 1);
+        const nextState = this.states.find((e) => e.order === (order ?? 0) + 1);
+        if (nextState) return nextState;
+
+        if (this.currentState !== END_GAME_STATE)
+            return this.states.find((e) => e.name === END_GAME_STATE);
     }
 
     getCurrentStateObj(): GameState | undefined {

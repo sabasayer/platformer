@@ -35,9 +35,6 @@ export class GameObjectStateMachine {
         const state = this.states[this.currentState];
         if (!state) return;
 
-        if (this.currentState === EnumObjectState.takeDamage)
-            console.log(EnumObjectState[this.currentState]);
-
         state.sprite.render(frame, targetPosition, dimension);
     }
 

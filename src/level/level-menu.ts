@@ -1,5 +1,5 @@
-import { EnumEvent } from "../framework/game-object/menu/event.enum";
-import { Menu } from "../framework/game-object/menu/menu";
+import { EnumEvent } from "../framework/level/menu/event.enum";
+import { Menu } from "../framework/level/menu/menu";
 import { StateManager } from "../framework/state-manager/game-state.manager";
 import { LayerZIndexes, MENU_STATE } from "../framework/constants";
 import { UIElement } from "../framework/game-object/ui/ui-element";

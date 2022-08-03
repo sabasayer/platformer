@@ -1,0 +1,220 @@
+{
+    "name": "level2",
+    "width": 1900,
+    "height": 1500,
+    "music": "musics/bg-music.mp3",
+    "playerInitialPosition": { "x": 150, "y": 130 },
+    "endType": 2,
+    "objects": [
+        {
+            "type": 2,
+            "dimension": {
+                "height": 45,
+                "width": 250
+            },
+            "initialPosition": {
+                "x": 150,
+                "y": 600
+            },
+            "collidesWith": "all",
+            "gravityHasEffectOnIt": false
+        },
+        {
+            "npcType": 3,
+            "type": 6,
+            "initialPosition": { "x": 400, "y": 100 },
+            "dimension": { "width": 16, "height": 16 },
+            "collidesWith": [1, 2],
+            "gravityHasEffectOnIt": true,
+            "velocityX": 20,
+            "canFly": false,
+            "attackPower": 10,
+            "health": 20,
+            "stateMachineOptions": {
+                "initial": 1,
+                "states": {
+                    "1": {
+                        "sprite": {
+                            "type": "GameAnimation",
+                            "options": {
+                                "frames": [
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 0,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 16,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 32,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 48,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "2": {
+                        "sprite": {
+                            "type": "GameAnimation",
+                            "options": {
+                                "frames": [
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 0,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 16,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 32,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 48,
+                                            "y": 48,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "3": {
+                        "sprite": {
+                            "type": "GameAnimation",
+                            "options": {
+                                "frames": [
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 0,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 16,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 32,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 48,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "4": {
+                        "sprite": {
+                            "type": "GameAnimation",
+                            "options": {
+                                "frames": [
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 0,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 16,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 32,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    },
+                                    {
+                                        "url": "sprites/npcs/boss/goblin_spritesheet.png",
+                                        "spriteSheetOptions": {
+                                            "x": 48,
+                                            "y": 0,
+                                            "width": 16,
+                                            "height": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

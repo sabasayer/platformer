@@ -1,4 +1,4 @@
-import { EnumInteractionType } from "../../interaction-log/interaction-type.enum";
+import { EnumInteractionType } from "../../logger/interaction-log/interaction-type.enum";
 import { Scene } from "../../scene/scene";
 import { World } from "../../world/world";
 import { GameObject } from "../game-object";

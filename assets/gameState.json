@@ -9,6 +9,11 @@
             "name": "level2",
             "route": "assets/levels/level2.json",
             "lazy": true
+        },
+        {
+            "name": "level3",
+            "route": "assets/levels/level3.json",
+            "lazy": true
         }
     ]
 }

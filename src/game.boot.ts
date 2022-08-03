@@ -1,9 +1,10 @@
 import { MENU_STATE } from "./framework/constants";
+import { endGameLevel } from "./framework/level/end-game/end-game";
 import { StateManager } from "./framework/state-manager/game-state.manager";
 import { levelMenu } from "./level/level-menu";
 import { levelTest } from "./level/level-test";
 
-export const boot = () => {
+export const boot = async () => {
     // StateManager.addState({
     //     name: levelMenu.getName(),
     //     level: levelMenu,
@@ -24,5 +25,10 @@ export const boot = () => {
 
     StateManager.setCurrentState(MENU_STATE);
 
-    StateManager.load();
+    await StateManager.load();
+
+    StateManager.addState({
+        name: endGameLevel.getName(),
+        level: endGameLevel,
+    });
 };

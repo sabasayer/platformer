@@ -1,5 +1,6 @@
 import { GameObject } from "../game-object/game-object";
 import { Position } from "../game-object/types/position";
+import { EnumLevelEndType } from "./level-end-type.enum";
 
 export interface LevelOptions {
     name: string;
@@ -9,4 +10,5 @@ export interface LevelOptions {
     music?: string;
     playerInitialPosition?: Position;
     scoreVisible?: boolean;
+    endType?: EnumLevelEndType;
 }

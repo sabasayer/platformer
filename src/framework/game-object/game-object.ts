@@ -72,6 +72,10 @@ export class GameObject {
         return this.dimension;
     }
 
+    get getHealth() {
+        return this.health;
+    }
+
     get getBoundingBox(): BoundingBox {
         return {
             left: this.position.x,

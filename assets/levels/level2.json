@@ -2,6 +2,7 @@
     "name": "level2",
     "width": 1900,
     "height": 1500,
+    "endType": 1,
     "music": "musics/bg-music.mp3",
     "playerInitialPosition": { "x": 150, "y": 130 },
     "objects": [
@@ -17,6 +18,21 @@
             },
             "collidesWith": "all",
             "gravityHasEffectOnIt": false
+        },
+        {
+            "type": 4,
+            "initialPosition": {
+                "x": 170,
+                "y": 550
+            },
+            "dimension": {
+                "width": 50,
+                "height": 50
+            },
+            "collidesWith": [1],
+            "solid": false,
+            "gravityHasEffectOnIt": false,
+            "imageUrl": "sprites/red-flag.png"
         }
     ]
 }

@@ -7,6 +7,10 @@ import { Position } from "../game-object/types/position";
 import { Player } from "../game-object/player/player";
 import { score } from "~/src/game-object/score";
 import { coinScore } from "~/src/game-object/coin-score";
+import { EnumLevelEndType } from "./level-end-type.enum";
+import { Npc } from "../game-object/npc/npc";
+import { EnumNpcType } from "../game-object/npc/npc-type.enum";
+import { TimeLogger } from "../logger/time-logger";
 
 export class Level {
     protected name: string;
@@ -16,6 +20,8 @@ export class Level {
     protected height: number;
     protected playerInitialPosition?: Position;
     protected scoreVisible: boolean = true;
+    protected endType?: EnumLevelEndType;
+    protected timeLogger = new TimeLogger();
 
     constructor(options: LevelOptions) {
         this.name = options.name;
@@ -24,9 +30,14 @@ export class Level {
         this.height = options.height;
         this.playerInitialPosition = options.playerInitialPosition;
         this.scoreVisible = options.scoreVisible ?? true;
+        this.endType = options.endType;
         if (options.music) {
             this.audio = assetManager.loadSound(options.music, 0.5);
         }
+    }
+
+    get playTime() {
+        return this.timeLogger.diff;
     }
 
     get dimensions() {
@@ -41,6 +52,27 @@ export class Level {
     }
 
     endCondition(): boolean {
+        switch (this.endType) {
+            case EnumLevelEndType.flag:
+                return this.flagEndLevelCondition();
+            case EnumLevelEndType.boss:
+                return this.bossEndLevelCondition();
+            default:
+                return false;
+        }
+    }
+
+    bossEndLevelCondition(): boolean {
+        const boss = this.gameObjects.find(
+            (e) =>
+                e.getType() === EnumGameObjectType.Npc &&
+                (e as Npc).getNpcType() === EnumNpcType.Boss
+        );
+
+        return (boss?.getHealth ?? 0) <= 0;
+    }
+
+    flagEndLevelCondition(): boolean {
         const player = this.gameObjects.find(
             (e) => e.getType() === EnumGameObjectType.Player
         );
@@ -64,6 +96,8 @@ export class Level {
         if (player) this.initPlayer(player);
 
         this.audio?.play();
+        this.timeLogger.reset();
+        this.timeLogger.start();
     }
 
     registerObjects() {
@@ -110,5 +144,6 @@ export class Level {
         // run end animation
         this.audio?.pause();
         Scene.clear();
+        this.timeLogger.end();
     }
 }
